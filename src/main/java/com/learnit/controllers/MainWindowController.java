@@ -1,4 +1,4 @@
-package com.learnit;
+package com.learnit.controllers;
 
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
@@ -39,21 +39,16 @@ public class MainWindowController {
 
     @FXML
     TabPane tabPane;
-
     @FXML
     GridPane FlexibleInformationContainer;
-
     @FXML
     Label label;
     Button button;
-
     @FXML
     HTMLEditor htmlEditor;
-
     @FXML
     Button chooseFile;
     FileChooser fileChooser;
-
 
     public void initialize(){
         //FlexibleInformationContainer = new TilePane();

@@ -16,7 +16,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ComboBox?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.MainWindowController">
+<?import org.kordamp.bootstrapfx.scene.layout.Panel?>
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
 
     <TabPane fx:id="tabPane">
         <Tab id="1" fx:id="filesTab" closable="false" onSelectionChanged="#onTabChanged" text="FilesTab" />
@@ -41,6 +42,7 @@
     <HBox>
         <TextField fx:id="path" HBox.hgrow="ALWAYS"/>
         <Button fx:id="chooseFile" onMouseClicked="#selectSingleFile"/>
+        <Panel fx:id="panel" prefHeight="250" prefWidth="250" style="-fx-background-color:blue;"/>
     </HBox>
 
     <Button fx:id="setHtmlText" onMouseClicked="#onTextChanged" prefHeight="20.0" prefWidth="20.0" />

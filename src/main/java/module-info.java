@@ -2,6 +2,8 @@ module com.learnit.learnit {
     requires javafx.web;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.base;
+    requires javafx.graphics;
 
 
     requires org.controlsfx.controls;
@@ -18,4 +20,9 @@ module com.learnit.learnit {
     exports com.learnit;
     exports com.learnit.textconverters;
     opens com.learnit.textconverters to javafx.fxml;
+    exports com.learnit.datasets;
+    opens com.learnit.datasets to javafx.fxml;
+    exports com.learnit.controllers;
+    opens com.learnit.controllers to javafx.fxml;
+
 }

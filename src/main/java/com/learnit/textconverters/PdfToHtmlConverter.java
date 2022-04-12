@@ -10,7 +10,6 @@ public class PdfToHtmlConverter extends TextConverter{
 
     @Override
     public String convert() throws IOException, NullPointerException{
-
         return null;
     }
 }
