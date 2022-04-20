@@ -1,6 +1,7 @@
 package com.learnit.controllers;
 
 import com.learnit.MainWindow;
+import com.learnit.Settings;
 import com.learnit.datasets.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +13,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Callback;
+import javafx.util.Pair;
+import org.controlsfx.dialog.LoginDialog;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.InetAddress;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,6 +59,10 @@ public class CardItemController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void onCardClicked(){
 
     }
 }

@@ -1,13 +1,16 @@
 package com.learnit.controllers;
 
+import com.learnit.MainWindow;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -26,31 +29,37 @@ import static com.learnit.textconverters.SupportedTextFormats.*;
 //There is logic of main window
 public class MainWindowController {
     @FXML
-    public Tab filesTab;
+    public Tab lTab;// library tab
+    @FXML
+    public Tab cTab; //Cards tab
+    @FXML
+    public Tab rTab; //revisingTab
+    @FXML
+    public Tab tTab; //tags tab
+    @FXML
+    public TabPane tabPane;
 
-    @FXML
-    public Tab cardsTab;
+    FXMLLoader lLoader, cLoader, rLoader, tLoader;
 
-    @FXML
-    public Tab repetitionTab;
-    public TextArea textArea;
-    public Button setHtmlText;
-    public TextField path;
+    public MainWindowController(){
+        lTab = new Tab();
+        rTab = new Tab();
+        tTab = new Tab();
+        cTab = new Tab();
 
-    @FXML
-    TabPane tabPane;
-    @FXML
-    GridPane FlexibleInformationContainer;
-    @FXML
-    Label label;
-    Button button;
-    @FXML
-    HTMLEditor htmlEditor;
-    @FXML
-    Button chooseFile;
-    FileChooser fileChooser;
+        lLoader = new FXMLLoader();
+        rLoader = new FXMLLoader();
+        cLoader = new FXMLLoader();
+        tLoader = new FXMLLoader();
 
-    public void initialize(){
+        lLoader.setLocation(MainWindow.class.getResource("LibraryWindow.fxml"));
+        rLoader.setLocation(MainWindow.class.getResource("RevisingWindow.fxml"));
+        cLoader.setLocation(MainWindow.class.getResource("CardWindow.fxml"));
+        tLoader.setLocation(MainWindow.class.getResource("TagsWindow.fxml"));
+
+    }
+
+    public void initialize()  {/*
         //FlexibleInformationContainer = new TilePane();
         ArrayList<Button> list = new ArrayList<>();
 
@@ -71,17 +80,39 @@ public class MainWindowController {
                                         .collect(Collectors.toList());
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt, *.docx, *.doc, *.pdf)", extensionFilter);
-        fileChooser.getExtensionFilters().add(extFilter);
-    }
+        fileChooser.getExtensionFilters().add(extFilter);*/
+
+        //Just trying to set up main window
+        try{
+            TilePane tilePane = lLoader.load();
+            lTab.setContent(tilePane);
+
+            tilePane = tLoader.load();
+            tTab.setContent(tilePane);
+
+            tilePane = cLoader.load();
+            cTab.setContent(tilePane);
+
+            //tilePane = rLoader.load();
+            //rTab.setContent(tilePane);
+
+        } catch (IOException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.show();
+            e.printStackTrace();
+        }
+
+     }
 
     @FXML
     void selectSingleFile(){
-        File our = fileChooser.showOpenDialog(null);
-        if(our != null) path.setText(our.getAbsolutePath());
+       /* File our = fileChooser.showOpenDialog(null);
+        if(our != null) path.setText(our.getAbsolutePath());*/
     }
 
     void onButtonClick(){
-        System.out.println("Button clicked!");
+        /*System.out.println("Button clicked!");
         Runnable task = () -> {
             try {
                 Thread.sleep(150);
@@ -102,12 +133,12 @@ public class MainWindowController {
             }
         };
 
-        new Thread(task).start();
+        new Thread(task).start();*/
     }
 
     @FXML
     void onTextChanged(){
-        try {
+        /*try {
             TextConverterFactory textConverterFactory = TextConverterFactory.getInstance();
             TextConverter textConverter;
             String filePath = (path.getText().isBlank() || path.getText().isEmpty())? "C:\\Users\\dinar\\Desktop\\TextFilesExamples\\Вакансия.docx" : path.getText();
@@ -119,7 +150,7 @@ public class MainWindowController {
 
         } catch (IOException|NullPointerException ex){
             ex.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
