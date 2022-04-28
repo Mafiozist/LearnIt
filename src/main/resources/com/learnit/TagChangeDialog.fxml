@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXScrollPane?>
+<?import javafx.geometry.Insets?>
+<!--StackPane needs for correct working of JfxDialog-->
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<StackPane fx:id="stackPane"
+           fx:controller="com.learnit.controllers.TagChangeWindowController"
+           xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           minWidth="-Infinity" minHeight="-Infinity"
+           maxHeight="Infinity" maxWidth="Infinity" >
+                <VBox id="vBox" fx:id="vBox">
+
+                        <TextField fx:id="textField" VBox.vgrow="ALWAYS" promptText="Search..." alignment="CENTER"/>
+                        <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" >
+                                <VBox id ="innerVBox" fx:id="innerVBox" VBox.vgrow="ALWAYS"/>
+                        </ScrollPane>
+
+                </VBox>
+</StackPane>
