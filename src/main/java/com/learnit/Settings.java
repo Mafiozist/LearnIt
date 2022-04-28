@@ -22,14 +22,14 @@ public class Settings {
     ////////////////////////
     //Settings in tags window
     //Fonts and size of text the same for all the tags but colour and image are unique
-
+    private static double tagChangeWindowWidth, tagChangeWindowHeight;
 
     ////////////////////////Settings in card window
-    private double cwCardWidth;
-    private double cwWindowCardHeight;
+    private static double cwCardWidth;
+    private static double cwWindowCardHeight;
 
 
-    ////////////////////////Settings in cards appearance
+    ////////////////////////Settings in cardHolders appearance
     private static int caTagQuantity;// between 0 and 9 because
 
 
@@ -42,12 +42,26 @@ public class Settings {
         //revisingFontsChooser.setPlaceholder(new Label("Something went wrong"));
         rFontsChooser.setItems(rFontNames);
         rFont = Font.font(rFontsChooser.getValue(), 25d);
+
+        //tagChangeWindowWidth = 170d;
+        tagChangeWindowHeight = 600d;
+
         System.out.println();
     }
 
+    //Tags
     public static int getCaTagQuantity() {
         return caTagQuantity;
     }
+
+    public static double getTagChangeWindowWidth() {
+        return tagChangeWindowWidth;
+    }
+    public static double getTagChangeWindowHeight(){
+        return tagChangeWindowHeight;
+    }
+
+    //Cards
     public double getCwCardWidth() {
         return cwCardWidth;
     }
@@ -62,7 +76,7 @@ public class Settings {
 
     }
 
-    public static Settings getSettingsInstance() throws NullPointerException {
+    public static Settings getSettings(){
         if(settings == null) settings = new Settings();
         return settings;
     }

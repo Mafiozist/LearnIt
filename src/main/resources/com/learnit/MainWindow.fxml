@@ -7,16 +7,18 @@
 
 <!--I think i need use a grid model to future implementation of dragAndDrop functionality-->
 
+
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
    <children>
-      <TextField fx:id="search" />
-      <TabPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="849.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-         <tabs>
-            <Tab text="Revising" fx:id="rTab"/>
-            <Tab text="Library" fx:id="lTab"/>
-            <Tab text="Cards" fx:id="cTab"/>
-            <Tab text="Tags" fx:id="tTab"/>
-         </tabs>
+      <TextField fx:id="search" promptText="Search..." alignment="CENTER"/>
+      <TabPane fx:id="tabPane" maxHeight="Infinity" maxWidth="Infinity"
+               minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0"
+               prefWidth="849.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+         <Tab fx:id="rTab" text="Revising"/>
+         <Tab fx:id="lTab" text="Library"/>
+         <Tab fx:id="cTab" text="Cards"/>
+         <Tab fx:id="tTab" text="Tags"/>
       </TabPane>
    </children>
 </VBox>

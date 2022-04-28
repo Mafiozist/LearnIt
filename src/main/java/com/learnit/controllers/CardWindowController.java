@@ -2,11 +2,10 @@ package com.learnit.controllers;
 
 
 import com.learnit.MainWindow;
-import com.learnit.datasets.Card;
+import com.learnit.datasets.CardHolder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
@@ -27,12 +26,12 @@ public class CardWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<CardHolder> cardHolders = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            cards.add(new Card());
+            cardHolders.add(new CardHolder());
         }
 
-        for (int i = 0; i < cards.size(); i++) {
+        for (int i = 0; i < cardHolders.size(); i++) {
             //loading card
             FXMLLoader fxmlCardLoader = new FXMLLoader();
             fxmlCardLoader.setLocation(MainWindow.class.getResource("CardItem.fxml"));
@@ -45,7 +44,7 @@ public class CardWindowController implements Initializable {
                 CardItemController itemController = fxmlCardLoader.getController();
 
                 //
-                itemController.setData(cards.get(i));
+                itemController.setData(cardHolders.get(i));
 
                 tilePane.getChildren().add(vBox);
             } catch (IOException e) {

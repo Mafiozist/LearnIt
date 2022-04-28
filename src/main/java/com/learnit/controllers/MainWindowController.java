@@ -1,29 +1,12 @@
 package com.learnit.controllers;
 
+import com.jfoenix.controls.JFXTabPane;
 import com.learnit.MainWindow;
-import com.learnit.textconverters.SupportedTextFormats;
-import com.learnit.textconverters.TextConverter;
-import com.learnit.textconverters.TextConverterFactory;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.web.HTMLEditor;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-
-import javax.xml.transform.TransformerConfigurationException;
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.learnit.textconverters.SupportedTextFormats.*;
-
 
 //Constructor is worked before creating of xml file //This file for experements use until work it's done
 //There is logic of main window
@@ -38,6 +21,9 @@ public class MainWindowController {
     public Tab tTab; //tags tab
     @FXML
     public TabPane tabPane;
+    @FXML
+    public TextField search;
+
 
     FXMLLoader lLoader, cLoader, rLoader, tLoader;
 
@@ -46,6 +32,7 @@ public class MainWindowController {
         rTab = new Tab();
         tTab = new Tab();
         cTab = new Tab();
+
 
         lLoader = new FXMLLoader();
         rLoader = new FXMLLoader();
@@ -59,29 +46,7 @@ public class MainWindowController {
 
     }
 
-    public void initialize()  {/*
-        //FlexibleInformationContainer = new TilePane();
-        ArrayList<Button> list = new ArrayList<>();
-
-        button = new Button();
-        button.setOnAction(event -> {
-            onButtonClick();
-        });
-
-        button.setPrefSize(200,200);
-        button.setStyle("-fx-padding: 10px; -fx-color: red;");
-        FlexibleInformationContainer.getChildren().add(button);
-
-        //Dynamically adding new extension to filer of SupportedTextFormats ENUM by using Stream
-        fileChooser = new FileChooser();
-        List<String> extensionFilter = Stream.of(SupportedTextFormats.values())
-                                        .map(Enum::name)
-                                        .map(extension -> "*."+ extension.toLowerCase())
-                                        .collect(Collectors.toList());
-
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt, *.docx, *.doc, *.pdf)", extensionFilter);
-        fileChooser.getExtensionFilters().add(extFilter);*/
-
+    public void initialize()  {
         //Just trying to set up main window
         try{
             TilePane tilePane = lLoader.load();
@@ -107,8 +72,7 @@ public class MainWindowController {
 
     @FXML
     void selectSingleFile(){
-       /* File our = fileChooser.showOpenDialog(null);
-        if(our != null) path.setText(our.getAbsolutePath());*/
+
     }
 
     void onButtonClick(){
@@ -138,19 +102,7 @@ public class MainWindowController {
 
     @FXML
     void onTextChanged(){
-        /*try {
-            TextConverterFactory textConverterFactory = TextConverterFactory.getInstance();
-            TextConverter textConverter;
-            String filePath = (path.getText().isBlank() || path.getText().isEmpty())? "C:\\Users\\dinar\\Desktop\\TextFilesExamples\\Вакансия.docx" : path.getText();
 
-            textConverter= textConverterFactory.createTextConverter(filePath);
-
-            textArea.setText(textConverter.convert());
-            htmlEditor.setHtmlText( textArea.getText());
-
-        } catch (IOException|NullPointerException ex){
-            ex.printStackTrace();
-        }*/
     }
 
     @FXML

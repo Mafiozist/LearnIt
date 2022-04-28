@@ -11,15 +11,16 @@
       prefHeight="170.0"
       prefWidth="200.0"
       xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1">
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.learnit.controllers.LibraryItemController"
+      fx:id="lCard"
+      style="-fx-border-color: red;">
 
-   <children>
-      <ImageView id="libraryImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
-      <Label id="libraryName" prefHeight="20.0" prefWidth="200.0"
-             alignment="CENTER"
-             contentDisplay="CENTER"
-             text="There is a name of your information"
-             textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-   </children>
-
+   <ImageView fx:id="imgView" id="libraryImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+              preserveRatio="true" VBox.vgrow="ALWAYS"/>
+   <Label fx:id="name" id="libraryName" prefHeight="20.0" prefWidth="200.0"
+          alignment="CENTER"
+          contentDisplay="CENTER"
+          text="There is a name of your information"
+          textAlignment="CENTER" VBox.vgrow="ALWAYS"/>
 </VBox>

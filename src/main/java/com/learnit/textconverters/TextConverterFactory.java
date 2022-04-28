@@ -26,12 +26,12 @@ public class TextConverterFactory {
 
       switch (SupportedTextFormats.valueOf(fileType.toUpperCase(Locale.ROOT))){
          case TXT:
-            //textConverter = new TxtToHtmlConverter(filePath);
+            textConverter = new TxtToHtmlConverter(filePath);
             break;
 
-         case  PDF:
+         /*case  PDF:
             textConverter = new PdfToHtmlConverter(filePath);
-            break;
+            break;*/
 
          case DOC:
          case DOCX:
@@ -39,7 +39,6 @@ public class TextConverterFactory {
             break;
 
          default:
-
             throw new IllegalStateException("Unexpected value: " + fileType);
       }
 
