@@ -1,30 +1,27 @@
 package com.learnit.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.learnit.MainWindow;
+import com.learnit.database.data.tables.Book;
+import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.HTMLEditor;
-import javafx.stage.Stage;
+import javafx.scene.web.WebView;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CreateEditBookWindowController implements Initializable {
@@ -34,30 +31,33 @@ public class CreateEditBookWindowController implements Initializable {
     public BorderPane borderPane; //for simple information alignment
     @FXML
     public StackPane stackPane; //for Jfx dialogs
-    ScrollPane scrollPane;
-    int[] tagsIds;
 
+    Book book;
+    int[] IdChangedTags;
     Node node;
     ToolBar bar;
     Button tagButton;
 
     public CreateEditBookWindowController(){
-
+        tagButton = new Button();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tagButton = new Button();
+        WebView webview = (WebView) htmlEditor.lookup("WebView");
+        GridPane.setHgrow(webview, Priority.ALWAYS);
+        GridPane.setVgrow(webview, Priority.ALWAYS);
+
         tagButton.setOnMouseClicked(event -> {
             StackPane layout = null;
+
             try {
 
-                //Нужно что-то сделать с повторяющимся кодом - это плохо
+                //Нужно что-то сделать с повторяющимся кодом - это плохо, но времени уже мало...
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainWindow.class.getResource("TagChangeDialog.fxml"));
                 layout = fxmlLoader.load();
                 TagChangeWindowController controller = fxmlLoader.getController();
-
 
                 //Костыль
                 JFXButton button = new JFXButton("Save");
@@ -71,12 +71,12 @@ public class CreateEditBookWindowController implements Initializable {
                 button.setOnMouseClicked(closeEvent->{
 
                     try {
-                        tagsIds = TagHolder.getInstance().getTagsIdsByNames(controller.getChangedTagsNames());
+                        IdChangedTags = TagHolder.getInstance().getTagsIdsByNames(controller.getNamesChangedTags());
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
-                    System.out.println(tagsIds.length);
+                    //System.out.println(tagsIds.length);
                     jfxDialog.close();
                 });
 
@@ -113,5 +113,14 @@ public class CreateEditBookWindowController implements Initializable {
             });
 
         }
+    }
+
+    public void setHtmlEditorText(String htmlText) {
+        htmlEditor.setHtmlText(htmlText);
+    }
+
+    public void setBook(Book book){
+        this.book = book;
+        setHtmlEditorText(book.getHtmlText());
     }
 }

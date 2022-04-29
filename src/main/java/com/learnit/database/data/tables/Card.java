@@ -1,5 +1,5 @@
 package com.learnit.database.data.tables;
 
-public class Cards {
+public class Card {
 
 }

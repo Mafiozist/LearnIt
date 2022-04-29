@@ -4,19 +4,20 @@
 <?import javafx.scene.web.HTMLEditor?>
 
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <StackPane fx:id="stackPane" fx:controller="com.learnit.controllers.CreateEditBookWindowController"
            xmlns="http://javafx.com/javafx/17"
            xmlns:fx="http://javafx.com/fxml/1"
            minWidth="100" minHeight="150">
-    <!--<BorderPane fx:id="borderPane" maxHeight="Infinity"
-                maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                prefHeight="579.0" prefWidth="830.0">
 
-        <center>-->
-          <HTMLEditor fx:id="htmlEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
-                      prefHeight="200.0" prefWidth="506.0" BorderPane.alignment="CENTER"
-                      minWidth="100" minHeight="150"/>
-        <!--</center>
+                <HTMLEditor fx:id="htmlEditor"
+                            htmlText=
+                                    "&lt;html&gt;
+                                        &lt;head&gt;
+                                        &lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;
+                                        /body&gt;&lt;
+                                    /html&gt;"
+                            BorderPane.alignment="CENTER"
+                            minWidth="100" minHeight="150"/>
 
-    </BorderPane>-->
 </StackPane>

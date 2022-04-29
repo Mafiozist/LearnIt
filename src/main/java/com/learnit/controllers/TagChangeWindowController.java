@@ -1,41 +1,21 @@
 package com.learnit.controllers;
 
 import com.jfoenix.controls.*;
-import com.learnit.MainWindow;
-import com.learnit.Settings;
-import com.learnit.database.data.tables.Tags;
+import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TagChangeWindowController implements Initializable {
@@ -48,36 +28,37 @@ public class TagChangeWindowController implements Initializable {
     @FXML
     StackPane stackPane;
 
+    ArrayList<Tag> tags;
     ObservableList<JFXCheckBox> observableList, changedObservableList;
-
-    TagHolder tagHolder;
 
     public TagChangeWindowController(){
         observableList = FXCollections.observableList(new ArrayList<JFXCheckBox>());
         changedObservableList = FXCollections.observableList(new ArrayList<>());
-
-        try {
-            tagHolder = TagHolder.getInstance();
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-
+    }
+    public TagChangeWindowController(ArrayList<Tag> tags){
+        super();
+        this.tags = tags;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (Tags tag: tagHolder.getTags()) {
-            JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
 
+        try {
+            for (Tag tag: tags) {
+                JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
 
-            jfxCheckBox.setOnMouseClicked(event -> {
-                if(changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                else {changedObservableList.add(jfxCheckBox);}
-            });
+                jfxCheckBox.setOnMouseClicked(event -> {
+                    if(changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                    else {changedObservableList.add(jfxCheckBox);}
+                });
 
-            jfxCheckBox.setPadding(new Insets(5));
-            observableList.add(jfxCheckBox);
+                jfxCheckBox.setPadding(new Insets(5));
+                observableList.add(jfxCheckBox);
+            }
+        } catch (NullPointerException exception){
+            exception.printStackTrace();
         }
+
 
         innerVBox.getChildren().addAll(observableList);
 
@@ -113,7 +94,7 @@ public class TagChangeWindowController implements Initializable {
 
     }
 
-    public String[] getChangedTagsNames(){
+    public String[] getNamesChangedTags(){
         String[] changedTags = new String[changedObservableList.size()];
         int i = 0;
         for (JFXCheckBox c: changedObservableList) {

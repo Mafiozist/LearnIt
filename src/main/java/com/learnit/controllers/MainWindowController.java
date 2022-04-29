@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTabPane;
 import com.learnit.MainWindow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.TilePane;
 import java.io.IOException;
@@ -52,11 +53,19 @@ public class MainWindowController {
             TilePane tilePane = lLoader.load();
             lTab.setContent(tilePane);
 
+            //Adding gap between each card
+            tilePane.setPadding(new Insets(10,0,0,10));
+            tilePane.hgapProperty().set(10);
+            tilePane.vgapProperty().set(10);
+            ///////////////////////////
+
             tilePane = tLoader.load();
             tTab.setContent(tilePane);
 
             tilePane = cLoader.load();
             cTab.setContent(tilePane);
+
+
 
             //tilePane = rLoader.load();
             //rTab.setContent(tilePane);

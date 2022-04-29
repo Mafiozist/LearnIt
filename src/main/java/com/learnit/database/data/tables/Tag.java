@@ -1,18 +1,10 @@
 package com.learnit.database.data.tables;
 
-import com.learnit.database.connection.OfflineDatabaseConnection;
-import com.learnit.datasets.TagHolder;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
-
-public class Tags  {
+public class Tag {
    private static int size;
    private int appId;
 
@@ -27,14 +19,14 @@ public class Tags  {
    private Boolean Highlighter;
    private Color HighlighterColor;
 
-   public Tags() {
+   public Tag() {
       size++;
       appId = size;
       priority = 0;
       color = Color.AQUA;
    }
 
-   public Tags setId(int id) {
+   public Tag setId(int id) {
       this.id = id;
       return this;
    }
@@ -47,11 +39,11 @@ public class Tags  {
       return id;
    }
 
-   public Tags setName(String name){
+   public Tag setName(String name){
       this.name = name;
       return this;
    }
-   public Tags setImg(Image img){
+   public Tag setImg(Image img){
       /// TODO: 28.04.2022 converting img to blob and reverse
       this.img = img;
       return this;

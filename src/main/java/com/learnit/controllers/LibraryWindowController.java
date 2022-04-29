@@ -1,7 +1,7 @@
 package com.learnit.controllers;
 
 import com.learnit.MainWindow;
-import com.learnit.datasets.Library;
+import com.learnit.database.data.tables.Book;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
@@ -11,10 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.jsoup.internal.NonnullByDefault;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +36,13 @@ public class LibraryWindowController implements Initializable {
         MenuItem addBook = new MenuItem("AddBook");
         MenuItem addNewBook = new MenuItem("AddNewBook");
 
+        addNewBook.setOnAction(actionEvent -> {
+            System.out.println(actionEvent.getSource());
+            openEditDialog(new Book());
+        });
+
         addBook.setOnAction(actionEvent -> {
+
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose file to work with");
 
@@ -50,21 +58,24 @@ public class LibraryWindowController implements Initializable {
             try {
                 TextConverterFactory textConverterFactory = TextConverterFactory.getInstance();
                 TextConverter textConverter = textConverterFactory.createTextConverter(file.getPath());
-                Library library = new Library();
+
+                Book book = new Book();
+                book.setName(file.getName().split("\\.")[0]);
+                book.setHtmlText(textConverter.convert());
 
                 //Need something to do with data
                 //create UI card of info and visualize it
                 FXMLLoader bookloader = new FXMLLoader();
                 bookloader.setLocation(MainWindow.class.getResource("LibraryItem.fxml"));
                 VBox vBox = bookloader.load();
+
+                vBox.setOnMouseClicked(event -> {
+                    openEditDialog(book);
+                });
+
                 LibraryItemController controller = bookloader.getController();
-
-                //There is opened window where user can change main information
-                //controller.setName(library.getName());
-                //controller.setImg(library.getImg());
-
+                controller.setBook(book);
                 tilePane.getChildren().add(vBox);
-
 
             }catch (IOException |  NullPointerException ex) {
                 /*Alert alert = new Alert(Alert.AlertType.NONE);
@@ -77,28 +88,6 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
-        addNewBook.setOnAction(actionEvent -> {
-            FXMLLoader wloader = new FXMLLoader();
-            wloader.setLocation(MainWindow.class.getResource("CreateEditBookWindow.fxml"));
-            CreateEditBookWindowController controller = wloader.getController();
-
-            try {
-                Stage bWindow = new Stage();
-                bWindow.setTitle("The name of the book");
-                Scene scene = new Scene(wloader.load(),800, 600);
-                System.out.println(scene);
-
-                bWindow.setResizable(true);
-                bWindow.setScene(scene);
-                bWindow.show();
-
-                System.out.println(bWindow);
-            } catch (IOException ex){
-                ex.printStackTrace();
-            }
-
-
-        });
 
         contextMenu.getItems().addAll(addBook,addNewBook);
     }
@@ -120,6 +109,35 @@ public class LibraryWindowController implements Initializable {
             //System.out.println(event.getTarget());
         });
 
+
+
+    }
+
+    public void openEditDialog(Book book){
+        FXMLLoader wloader = new FXMLLoader();
+        wloader.setLocation(MainWindow.class.getResource("CreateEditBookWindow.fxml"));
+
+        Stage bWindow = new Stage();
+        bWindow.setTitle(book.getName());
+        try {
+            Scene scene = new Scene(wloader.load(),800, 600);
+            CreateEditBookWindowController controller = wloader.getController();
+            controller.setBook(book);
+            //System.out.println(scene);
+
+            bWindow.setResizable(true);
+            bWindow.setScene(scene);
+            bWindow.show();
+
+            //System.out.println(bWindow);
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+        bWindow.setOnCloseRequest(windowEvent -> {
+            // TODO: 29.04.2022 saving data to db
+            System.out.println("Window is closed and data is saved.");
+        });
     }
 
 }

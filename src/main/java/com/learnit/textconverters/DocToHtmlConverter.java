@@ -26,7 +26,7 @@ public class DocToHtmlConverter extends TextConverter{
 
         Document doc = Jsoup.parse(htmlBase); //Использование Jsoup для парсинга текста в html
         doc.body().append(html);
-        System.out.println(doc.html());
+        System.out.println("Converter activity is done");
 
         return doc.html();
     }

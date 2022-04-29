@@ -13,7 +13,7 @@ public class CardHolder {
     private int width, height; //These attributes should be in common for all the instances
     private String question;
     private String text; //the main information for revising
-    private TagHolder tags;
+    private TagHolder tag;
 
     public CardHolder(){
         id = new Random().nextInt();
@@ -25,7 +25,7 @@ public class CardHolder {
         text = "This is an initial text. You always could change it.";
 
         try {
-            tags = TagHolder.getInstance();
+            tag = TagHolder.getInstance();
 
         } catch (SQLException ex){
             ex.printStackTrace();
