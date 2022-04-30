@@ -18,7 +18,6 @@ public class LibraryItemController implements Initializable {
     public Label name;
     @FXML
     public VBox lCard;
-
     public Book book;
 
     @Override

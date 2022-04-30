@@ -2,25 +2,28 @@ package com.learnit.controllers;
 
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Book;
+import com.learnit.datasets.Library;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.jsoup.internal.NonnullByDefault;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -30,8 +33,13 @@ public class LibraryWindowController implements Initializable {
     @FXML
     public TilePane tilePane;
     private ContextMenu contextMenu;
+    private ObservableList<Book> books;
+
 
     public LibraryWindowController(){
+
+        books = FXCollections.observableList(Library.getInstance().getBooks());
+
         contextMenu = new ContextMenu();
         MenuItem addBook = new MenuItem("AddBook");
         MenuItem addNewBook = new MenuItem("AddNewBook");
@@ -42,17 +50,7 @@ public class LibraryWindowController implements Initializable {
         });
 
         addBook.setOnAction(actionEvent -> {
-
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose file to work with");
-
-            List<String> extensionFilter = Stream.of(SupportedTextFormats.values()).map(Enum::name)
-                    .map(extension -> "*."+ extension.toLowerCase())
-                    .collect(Collectors.toList());
-
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text formats ", extensionFilter);
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showOpenDialog(tilePane.getScene().getWindow());
+            File file = getFileWithFilter();
 
             //Converting data from files and parsing them to ... db
             try {
@@ -65,29 +63,11 @@ public class LibraryWindowController implements Initializable {
 
                 //Need something to do with data
                 //create UI card of info and visualize it
-                FXMLLoader bookloader = new FXMLLoader();
-                bookloader.setLocation(MainWindow.class.getResource("LibraryItem.fxml"));
-                VBox vBox = bookloader.load();
-
-                vBox.setOnMouseClicked(event -> {
-                    openEditDialog(book);
-                });
-
-                LibraryItemController controller = bookloader.getController();
-                controller.setBook(book);
-                tilePane.getChildren().add(vBox);
-
+                openEditDialog(book);
             }catch (IOException |  NullPointerException ex) {
-                /*Alert alert = new Alert(Alert.AlertType.NONE);
-                alert.setContentText(ex.getLocalizedMessage());
-                alert.setTitle("Ошибка, возможно файл пустой!");
-                alert.setOnCloseRequest(dialogEvent -> {alert.close(); dialogEvent.consume();});
-                alert.initModality(Modality.WINDOW_MODAL);
-                alert.show();*/
-                ex.printStackTrace();
+                ex.printStackTrace(); //todo alert
             }
         });
-
 
         contextMenu.getItems().addAll(addBook,addNewBook);
     }
@@ -109,35 +89,98 @@ public class LibraryWindowController implements Initializable {
             //System.out.println(event.getTarget());
         });
 
+        books.addListener((ListChangeListener<? super Book>) change ->{
+            while (change.next()){
+                if(change.wasAdded()){
+                    updateUI(change.getList().get(0)); //Because at the same time, i am always add one book for now
+                }
+                if (change.wasRemoved()){
+                    // TODO: 30.04.2022 delete from library UI and db
+                }
 
+            }
+        });
 
+        updateUI();
     }
 
     public void openEditDialog(Book book){
         FXMLLoader wloader = new FXMLLoader();
         wloader.setLocation(MainWindow.class.getResource("CreateEditBookWindow.fxml"));
-
+        CreateEditBookWindowController controller = null;
         Stage bWindow = new Stage();
         bWindow.setTitle(book.getName());
         try {
             Scene scene = new Scene(wloader.load(),800, 600);
-            CreateEditBookWindowController controller = wloader.getController();
+            controller = wloader.getController();
             controller.setBook(book);
             //System.out.println(scene);
 
             bWindow.setResizable(true);
             bWindow.setScene(scene);
             bWindow.show();
-
             //System.out.println(bWindow);
         } catch (IOException ex){
-            ex.printStackTrace();
+            ex.printStackTrace(); //todo alert
         }
 
+        CreateEditBookWindowController finalController = controller;
         bWindow.setOnCloseRequest(windowEvent -> {
-            // TODO: 29.04.2022 saving data to db
-            System.out.println("Window is closed and data is saved.");
+            if (finalController != null) {
+                book.setHtmlText(finalController.htmlEditor.getHtmlText());
+            }
+            if (book.getId() != -1){
+                Library.getInstance().updateBook(book);
+            }
+            else if (book.getId() == -1){ //If object aren't taken from db
+
+                if(!Library.getInstance().getBooks().contains(book)){
+                    updateUI(book);
+                    Library.getInstance().addBook(book);
+                }
+            }
+
         });
+    }
+
+    public void updateUI()  {
+        for (Book book: books )  {
+            updateUI(book);
+        }
+    }
+
+    public void updateUI(Book book) {
+        FXMLLoader bookloader = new FXMLLoader();
+        bookloader.setLocation(MainWindow.class.getResource("LibraryItem.fxml"));
+        VBox vBox = null;
+
+            try {
+                vBox = bookloader.load();
+                vBox.setOnMousePressed(event -> {
+                    if(event.isPrimaryButtonDown()) openEditDialog(book);
+                });
+            } catch (IOException e) {
+                e.printStackTrace(); // TODO: 30.04.2022 alert
+            }
+
+            LibraryItemController controller = bookloader.getController();
+            controller.setBook(book);
+
+            tilePane.getChildren().add(vBox);
+
+    }
+
+    public File getFileWithFilter(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file to work with");
+
+        List<String> extensionFilter = Stream.of(SupportedTextFormats.values()).map(Enum::name)
+                .map(extension -> "*."+ extension.toLowerCase())
+                .collect(Collectors.toList());
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text formats ", extensionFilter);
+        fileChooser.getExtensionFilters().add(extFilter);
+        return fileChooser.showOpenDialog(tilePane.getScene().getWindow());
     }
 
 }

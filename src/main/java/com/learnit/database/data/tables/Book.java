@@ -3,6 +3,9 @@ package com.learnit.database.data.tables;
 import com.learnit.MainWindow;
 import javafx.scene.image.Image;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,6 +30,10 @@ public class Book {
 
     public int getId() {
         return id;
+    }
+    public Book setId(int id){
+        this.id = id;
+        return this;
     }
     public int getAppId() {
         return appId;
@@ -68,18 +75,12 @@ public class Book {
         return this;
     }
 
+    //Date
     public Date getCreateDate() {
         return createDate;
     }
-
-    //Date
     public Date getChangeDate() {
         return changeDate;
-    }
-
-    public Book setChangeDate(Date changeDate) {
-        this.changeDate = changeDate;
-        return this;
     }
 
     public Image getTitleImg() throws NullPointerException  {
@@ -89,8 +90,9 @@ public class Book {
 
         return titleImg;
     }
-    public Book setTitleImg(Image titleImg) {
-        this.titleImg = titleImg;
+    public Book setTitleImg(byte[] titleImg) {
+        Image image = new Image(new ByteArrayInputStream(titleImg));
+        this.titleImg = image;
         return this;
     }
 

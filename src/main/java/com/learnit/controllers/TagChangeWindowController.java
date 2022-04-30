@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -44,16 +45,20 @@ public class TagChangeWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            for (Tag tag: tags) {
-                JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
+            if(tags != null) {
+                for (Tag tag : tags) {
+                    JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
 
-                jfxCheckBox.setOnMouseClicked(event -> {
-                    if(changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                    else {changedObservableList.add(jfxCheckBox);}
-                });
+                    jfxCheckBox.setOnMouseClicked(event -> {
+                        if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                        else {
+                            changedObservableList.add(jfxCheckBox);
+                        }
+                    });
 
-                jfxCheckBox.setPadding(new Insets(5));
-                observableList.add(jfxCheckBox);
+                    jfxCheckBox.setPadding(new Insets(5));
+                    observableList.add(jfxCheckBox);
+                }
             }
         } catch (NullPointerException exception){
             exception.printStackTrace();
@@ -76,13 +81,16 @@ public class TagChangeWindowController implements Initializable {
                 jfxDialog.setContent(layout);
                 jfxDialog.show();
 
-                cancel.setOnMouseClicked(event -> {
-                    jfxDialog.close();
+                cancel.setOnMousePressed(event -> {
+                    if(event.isPrimaryButtonDown()) jfxDialog.close();
                 });
 
-                yes.setOnMouseClicked(event -> {
-                    jfxDialog.close();
-                    stackPane.getScene().getWindow().hide();
+                yes.setOnMousePressed(event -> { //todo there is needless to close dialog but need to make the parent window active to add tags and then observable list updates it to TagsChangeWindow
+                    if(event.isPrimaryButtonDown()) {
+                        jfxDialog.close();
+                        Stage obj = (Stage) stackPane.getScene().getWindow();
+                        obj.setIconified(true);
+                    }
 
                 });
                 layout.setActions(yes,cancel);
