@@ -4,7 +4,9 @@ import com.jfoenix.controls.JFXBadge;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.transitions.JFXFillTransition;
 import com.learnit.MainWindow;
+import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
@@ -13,17 +15,23 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// TODO: 01.05.2022 create tag
+// TODO: 01.05.2022 edit tag 
+// TODO: 01.05.2022 update tag
 public class TagsWindowController implements Initializable {
     @FXML
     JFXListView<HBox> jfxListView;
@@ -77,12 +85,32 @@ public class TagsWindowController implements Initializable {
 
                         for (int j = 0; j < 3; j++) {
                             JFXButton button1 = new JFXButton("Task");
-                            button1.setPadding(new Insets(10,0,10,0));//todo button with hover effect
+                            button1.setLineSpacing(10);//todo button with hover effect
+
+                            //Animation
+                            button1.setOnMouseEntered(e -> {
+                                JFXFillTransition fillTransition = new JFXFillTransition();
+                                fillTransition.setRegion(button1);
+                                fillTransition.setFromValue(Color.WHITE);
+                                fillTransition.setToValue(Color.AQUA);
+                                fillTransition.setDuration(Duration.millis(200));
+                                fillTransition.play();
+                            });
+
+                            button1.setOnMouseExited(e -> {
+                                JFXFillTransition fillTransition = new JFXFillTransition();
+                                fillTransition.setRegion(button1);
+                                fillTransition.setFromValue(Color.AQUA);
+                                fillTransition.setToValue(Color.WHITE);
+                                fillTransition.setDuration(Duration.millis(200));
+                                fillTransition.play();
+                            });
+
                             vBox.getChildren().add(button1);
                         }
 
                         jfxPopup.setPopupContent(vBox);
-                        jfxPopup.show(jfxListView, JFXPopup.PopupVPosition.TOP,JFXPopup.PopupHPosition.LEFT, event.getX() + 10, event.getY() + 40 );
+                        jfxPopup.show(jfxListView, JFXPopup.PopupVPosition.TOP,JFXPopup.PopupHPosition.LEFT, event.getX() +10, event.getY() + 40 );
                     }});
             }
 

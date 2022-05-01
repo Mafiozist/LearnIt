@@ -24,7 +24,6 @@ module com.learnit.learnit {
     requires com.jfoenix;
 
 
-
     opens com.learnit to javafx.fxml;
     exports com.learnit;
     exports com.learnit.textconverters;
