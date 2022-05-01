@@ -1,11 +1,14 @@
 package com.learnit.controllers;
 
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTabPane;
 import com.learnit.MainWindow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import java.io.IOException;
 
@@ -59,8 +62,8 @@ public class MainWindowController {
             tilePane.vgapProperty().set(10);
             ///////////////////////////
 
-            tilePane = tLoader.load();
-            tTab.setContent(tilePane);
+            JFXListView stackPane=tLoader.load();
+            tTab.setContent(stackPane);
 
             tilePane = cLoader.load();
             cTab.setContent(tilePane);

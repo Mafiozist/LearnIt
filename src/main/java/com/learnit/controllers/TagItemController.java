@@ -20,6 +20,7 @@ public class TagItemController implements Initializable {
     @FXML
     public ImageView img;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tLabel = new Label("Welcome!");
