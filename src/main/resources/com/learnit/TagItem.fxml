@@ -4,17 +4,15 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.HBox?>
-<HBox fx:id="tHBox"
-      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" prefHeight="48.0"
-      prefWidth="159.0" stylesheets="@css/BaseTag.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.learnit.controllers.TagItemController">
+<HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"  styleClass="tagitem">
+
     <BorderPane>
         <center>
-                <Label id="tLabel" fx:id="tLabel" alignment="CENTER" contentDisplay="CENTER"
-                     text="Maths facts" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
+                <Label id="tLabel" fx:id="tLabel" styleClass="tagitem" alignment="CENTER" contentDisplay="CENTER" text="Maths facts" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
                    <font>
                       <Font size="6.0" />
                    </font>
@@ -22,12 +20,8 @@
         </center>
 
         <left>
-                <ImageView fx:id="img" blendMode="MULTIPLY" cache="true"
-                           pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"
-                           fitHeight="30" fitWidth="30">
-                   <image>
+                <ImageView fx:id="img" blendMode="MULTIPLY" styleClass="tagitem" cache="true" fitHeight="30" fitWidth="30" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                       <Image url="@thumbnails/math.png" />
-                   </image>
                 </ImageView>
         </left>
     </BorderPane>

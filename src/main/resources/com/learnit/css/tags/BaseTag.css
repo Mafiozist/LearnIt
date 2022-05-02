@@ -1,0 +1,16 @@
+#tHBox.tagitem {
+   -fx-border-color: rgb(9, 108, 121);
+   -fx-border-insests: 5;
+   -fx-border-width: 4;
+   -fx-border-radius: 10.0;
+   -fx-background-color: transparent;
+}
+#tLabel.tagitem {
+   -fx-text-align: center;
+   -fx-font-size: 10;
+   -fx-font-weight: bold;
+   -fx-font-style: normal;
+   -fx-font-family: 'Times New Roman', Times, serif;
+   -fx-text-fill: rgb(40, 12, 92);
+}
+

@@ -23,6 +23,7 @@ module com.learnit.learnit {
     requires java.naming;
     requires com.jfoenix;
 
+    requires fr.brouillard.oss.cssfx;
 
     opens com.learnit to javafx.fxml;
     exports com.learnit;

@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import com.jfoenix.controls.JFXListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane fx:id="borderPane" stylesheets="@css/TagsWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.TagsWindowController">
+    <left>
+        <JFXListView id="jfxListView" fx:id="jfxListView" />
+    </left>
 
-<?import com.jfoenix.controls.JFXNodesList?>
-<JFXListView fx:id="jfxListView" id="jfxListView" xmlns="http://javafx.com/javafx"
-             xmlns:fx="http://javafx.com/fxml"
-             fx:controller="com.learnit.controllers.TagsWindowController"
-             prefHeight="400.0" prefWidth="600.0" stylesheets="@css/TagsWindow.css">
+    <center>
+        <VBox>
+            <HBox>
+                <ColorPicker fx:id="borderColorPicker"/>
+                <ColorPicker fx:id="fontColorPicker"/>
+            </HBox>
+            <TextArea fx:id="cssTextArea"/>
+        </VBox>
 
 
-</JFXListView>
-
+    </center>
+</BorderPane>

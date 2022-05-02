@@ -24,12 +24,7 @@ public class CardHolder {
         question = "This is an initial question.";
         text = "This is an initial text. You always could change it.";
 
-        try {
-            tag = TagHolder.getInstance();
-
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
+        tag = TagHolder.getInstance();
 
     }
 

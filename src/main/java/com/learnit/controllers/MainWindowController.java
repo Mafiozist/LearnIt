@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -62,8 +63,8 @@ public class MainWindowController {
             tilePane.vgapProperty().set(10);
             ///////////////////////////
 
-            JFXListView stackPane=tLoader.load();
-            tTab.setContent(stackPane);
+            BorderPane borderPane =tLoader.load();
+            tTab.setContent(borderPane);
 
             tilePane = cLoader.load();
             cTab.setContent(tilePane);

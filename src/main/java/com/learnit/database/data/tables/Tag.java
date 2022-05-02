@@ -24,6 +24,7 @@ public class Tag {
       appId = size;
       priority = 0;
       color = Color.AQUA;
+      name = "InitialName";
    }
 
    public Tag setId(int id) {

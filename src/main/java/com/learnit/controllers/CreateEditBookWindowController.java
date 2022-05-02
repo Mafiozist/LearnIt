@@ -55,7 +55,7 @@ public class CreateEditBookWindowController implements Initializable {
         
         tagButton.setOnMousePressed(event -> {
             if(event.isPrimaryButtonDown())  {
-                StackPane layout = null;
+                StackPane layout;
                 try {
                     //Нужно что-то сделать с повторяющимся кодом - это плохо, но времени уже мало...
                     FXMLLoader fxmlLoader = new FXMLLoader();
@@ -74,11 +74,7 @@ public class CreateEditBookWindowController implements Initializable {
 
                     button.setOnMousePressed(closeEvent -> {
 
-                        try {
-                            IdChangedTags = TagHolder.getInstance().getTagsIdsByNames(controller.getNamesChangedTags());
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        IdChangedTags = TagHolder.getInstance().getTagsIdsByNames(controller.getNamesChangedTags());
 
                         //System.out.println(tagsIds.length);
                         jfxDialog.close();

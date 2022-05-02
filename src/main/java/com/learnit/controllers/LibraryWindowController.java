@@ -92,7 +92,7 @@ public class LibraryWindowController implements Initializable {
         books.addListener((ListChangeListener<? super Book>) change ->{
             while (change.next()){
                 if(change.wasAdded()){
-                    updateUI(change.getList().get(0)); //Because at the same time, i am always add one book for now
+                    addToUI(change.getList().get(0)); //Because at the same time, i am always add one book for now
                 }
                 if (change.wasRemoved()){
                     // TODO: 30.04.2022 delete from library UI and db
@@ -101,7 +101,7 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
-        updateUI();
+        addToUI();
     }
 
     public void openEditDialog(Book book){
@@ -135,7 +135,7 @@ public class LibraryWindowController implements Initializable {
             else if (book.getId() == -1){ //If object aren't taken from db
 
                 if(!Library.getInstance().getBooks().contains(book)){
-                    updateUI(book);
+                    addToUI(book);
                     Library.getInstance().addBook(book);
                 }
             }
@@ -143,13 +143,13 @@ public class LibraryWindowController implements Initializable {
         });
     }
 
-    public void updateUI()  {
+    public void addToUI()  {
         for (Book book: books )  {
-            updateUI(book);
+            addToUI(book);
         }
     }
 
-    public void updateUI(Book book) {
+    public void addToUI(Book book) {
         FXMLLoader bookloader = new FXMLLoader();
         bookloader.setLocation(MainWindow.class.getResource("LibraryItem.fxml"));
         VBox vBox = null;

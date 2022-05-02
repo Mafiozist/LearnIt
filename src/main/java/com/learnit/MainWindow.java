@@ -4,6 +4,7 @@ import com.learnit.controllers.LibraryWindowController;
 import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
+import fr.brouillard.oss.cssfx.CSSFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +22,7 @@ import java.util.Properties;
 public class MainWindow extends Application {
     @Override
     public void start(Stage stage)  {
-
+        CSSFX.start();
         //Current windows locale
         Locale currentLocale = Locale.getDefault();
         Settings settings = Settings.getSettings();
