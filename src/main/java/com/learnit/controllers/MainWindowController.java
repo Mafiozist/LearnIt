@@ -29,7 +29,6 @@ public class MainWindowController {
     @FXML
     public TextField search;
 
-
     FXMLLoader lLoader, cLoader, rLoader, tLoader;
 
     public MainWindowController(){
