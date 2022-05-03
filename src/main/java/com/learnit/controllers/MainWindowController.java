@@ -74,10 +74,7 @@ public class MainWindowController {
             //rTab.setContent(tilePane);
 
         } catch (IOException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.show();
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: 03.05.2022 alert
         }
 
      }

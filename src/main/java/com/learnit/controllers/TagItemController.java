@@ -3,6 +3,7 @@ package com.learnit.controllers;
 import com.learnit.CssParser;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Tag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -26,55 +27,71 @@ public class TagItemController implements Initializable {
     public ImageView img;
     private Tag tag;
 
-    CssParser cssParser;
+    private CssParser cssParser;
+
     //For tag change functionality
     private final String defaultCssContent =
             "#tHBox.tagitem {\n" +
-            "   -fx-border-color: rgb(33, 125, 151);\n" +
-            "   -fx-border-insests: 1;\n" +
-            "   -fx-border-width: 10;\n" +
-            "   -fx-border-radius: 10.0;\n" +
-            "   -fx-background-color: transparent;\n" +
-            "}\n" +
+                    "    -fx-border-color: rgb(33, 125, 151);\n" +
+                    "    -fx-border-insets: 1;\n" +
+                    "    -fx-border-width: 10;\n" +
+                    "    -fx-border-radius: 10.0;\n" +
+                    "    -fx-background-color: transparent;\n" +
+                    "}\n" +
             "#tLabel.tagitem {\n" +
-            "   -fx-text-fill: rgb(23, 125, 125);\n" +
-            "   -fx-text-align: right;\n" +
-            "   -fx-font-size: 15;\n" +
-            "   -fx-font-weight: bold;\n" +
-            "   -fx-font-style: normal;\n" +
-            "   -fx-font-family: 'Times New Roman', Times, serif;\n" +
-            " }\n";
+                    "    -fx-text-fill: rgb(23, 125, 125);\n" +
+                    "    -fx-text-align: right;\n" +
+                    "    -fx-font-size: 15;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-font-style: normal;\n" +
+                    "    -fx-font-family: 'Times New Roman', Times, serif;\n" +
+                    "}\n" +
+            "#borderPane.tagitem {\n" +
+                    "    -fx-border-color: rgb(33, 125, 151);\n" +
+                    "    -fx-border-insets: 1;\n" +
+                    "    -fx-border-width: 10;\n" +
+                    "    -fx-border-radius: 10.0;\n" +
+                    "    -fx-background-color: transparent;\n" +
+                    "}";
 
-    public TagItemController(Tag tag){
+    public TagItemController(URL url,Tag tag){
+        this.tag = tag;
 
         if(tag.getId()!=-1) {
-            this.tag = tag;
-
             //Getting absolute path to the data
-            File file = new File("resources/css/tags/test.txt");
+            File file = new File(url.getPath());
             StringBuilder sb = new StringBuilder(file.getAbsolutePath());
-            sb.replace(sb.indexOf(file.getName()),sb.length(),"");
+            sb.replace(sb.indexOf("target"),sb.length(),"src/main/resources/com/learnit/css/tags/");
             ////////////////////////////////////////////////////////////
 
             String formatedStr = sb.toString() + tag.getId() + ".css";
+            formatedStr = formatedStr.replace("\\","/");
 
             cssParser = new CssParser(
-              defaultCssContent,
-              MainWindow.class.getResource(String.format("css/tags/%d.css",
-              tag.getId())),
-              formatedStr);
+                    defaultCssContent,
+                    MainWindow.class.getResource(String.format("css/tags/%d.css", tag.getId())), formatedStr);
             tHBox = new HBox();
+            //cssParser.parse();
         } else if(tag.getId() == -1){ //Object isn't contained at db
             this.tag = tag;
         }
-
-        cssParser.parse();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setData(tag);
+
         tHBox.getStylesheets().add(cssParser.getNewCssUrl().toExternalForm());
+    }
+
+    public void updateCss(){
+       tHBox.getStylesheets().clear();
+       tHBox.getStylesheets().add(cssParser.getNewCssUrl().toExternalForm());
+    }
+
+    public void updateCssFromFile(){
+        tHBox.getStylesheets().clear();
+        tHBox.getStylesheets().add("file:///"+cssParser.getNewCssPath().replace("\\","/"));
     }
 
     public String getNewCssPath() {
@@ -94,6 +111,11 @@ public class TagItemController implements Initializable {
     public String getNewCssContent() {
         return cssParser.getNewCssContent();
     }
+
+    public CssParser getCssParser() {
+        return cssParser;
+    }
+
     public void setNewCssContent(String css){
         cssParser.setNewCssContent(css);
     }

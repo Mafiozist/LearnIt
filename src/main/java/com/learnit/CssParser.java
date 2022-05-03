@@ -3,7 +3,9 @@ package com.learnit;
 import javafx.css.Stylesheet;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,24 +23,92 @@ public class CssParser {
     public CssParser(){
     }
 
-    public void parse(){
-
-    }
-
     public CssParser(String baseCssContent, URL newCssUrl, String newCssPath){
         this.baseCssContent = baseCssContent;
         this.newCssUrl = newCssUrl;
         this.newCssPath = newCssPath;
-        initBaseCssFiles();
+
+        if(newCssUrl != null) newCssContent = getCssData(newCssUrl.getPath());
+
+        //exception.printStackTrace();
+        System.out.println("URL data is empty");
+        newCssPath = getNewCssFileByContent(baseCssContent, newCssPath).getPath();
     }
 
-    public String getCssData(String path) throws IOException {
-        FileReader fileReader = new FileReader(path);
+
+    public void parse(){
+        cssMap = new HashMap<>();
+
+        cssMap.put("1","2");
+        cssMap.remove("1");
+        try {
+            StringBuilder sb = new StringBuilder(newCssContent);
+            int start, end = 0;
+            for (int i = 0; i < newCssContent.length(); i++) {
+                start = sb.indexOf("-", i);
+                end = sb.indexOf(";", i) + 1;
+
+                if (start == -1 || end == -1) return;
+
+                char[] arr = new char[end - start];
+                String parsedCssAtribute = new String("");
+                sb.getChars(start, end, arr, 0);
+                parsedCssAtribute = String.valueOf(arr);
+
+                String attribute = parsedCssAtribute.split(":")[0];
+                String parameter = parsedCssAtribute.split(":")[1];
+
+                try {
+                    cssMap.put(attribute + ":", parameter);
+                } catch (UnsupportedOperationException exception) {
+                    exception.printStackTrace();
+                }
+
+                i= end;
+            }
+
+        }catch(NullPointerException  exception){
+            exception.printStackTrace(); // TODO: 03.05.2022 alert new css content is null
+        }
+    }
+
+    public void updateCssFile(int tagId){
+        File[] fileArr = new File[]{ // TODO: 03.05.2022 i have no idea which of these files changes and uses the CSSFX
+                new File((String.format("D:/JavaProjects/LearnIt/src/main/resources/com/learnit/css/tags/%s", tagId+".css"))),
+                new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags%s",tagId+".css")))
+        };
+
+        try {
+            for (File file: fileArr) {
+                if(file.canWrite()){
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write(newCssContent);
+                    fileWriter.close();
+                }
+            }
+        } catch (IOException ex){
+            ex.printStackTrace(); // TODO: 01.05.2022 alert
+        }
+    }
+
+    public void updateCssFile(String content, int id){
+        newCssContent = content;
+        updateCssFile(id);
+    }
+
+
+    public String getCssData(String path) {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         Stream<String> lines = bufferedReader.lines();
         return setCssDataFormatting(lines.collect(Collectors.joining()));
     }
-    
+
     private StringBuilder setEndOfLineAfter(StringBuilder stringBuilder, String rawCssData,String chr){
         for (int i = 0; i < rawCssData.length(); i++) {
 
@@ -85,15 +155,6 @@ public class CssParser {
         return stringBuilder.toString();
     }
 
-    void initBaseCssFiles(){
-        try {
-            newCssContent = getCssData(newCssUrl.getPath());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            System.out.println("URL data is empty");
-            newCssPath = getNewCssFileByContent(newCssContent, newCssPath).getPath();
-        }
-    }
 
     public String getBaseCssContent() {
         return baseCssContent;
@@ -108,6 +169,17 @@ public class CssParser {
     }
 
     public URL getNewCssUrl() {
+        File file = new File(newCssPath);
+        if (file.exists() && !newCssPath.isEmpty()){
+
+            try {
+                newCssUrl = file.toURI().toURL();
+            } catch (MalformedURLException e) {
+                System.out.println("getNewCssUrl exception: smth went wrjong with url. Again.");
+                e.printStackTrace();
+            }
+
+        }
         return newCssUrl;
     }
 
@@ -116,6 +188,7 @@ public class CssParser {
     }
 
     public String getNewCssContent() {
+        if(newCssContent == null) return baseCssContent;
         return newCssContent;
     }
 

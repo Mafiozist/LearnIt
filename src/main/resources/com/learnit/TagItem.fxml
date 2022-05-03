@@ -10,7 +10,7 @@
 <HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"  styleClass="tagitem">
 
-    <BorderPane>
+    <BorderPane fx:id="borderPane" id="borderPane">
         <center>
                 <Label id="tLabel" fx:id="tLabel" styleClass="tagitem" alignment="CENTER" contentDisplay="CENTER" text="Maths facts" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
                    <font>
