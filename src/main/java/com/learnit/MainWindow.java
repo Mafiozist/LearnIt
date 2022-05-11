@@ -15,7 +15,9 @@ import org.junit.jupiter.api.Tag;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -25,7 +27,6 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage stage)  {
         CSSFX.start();
-
 
         //Current windows locale
         Locale currentLocale = Locale.getDefault();

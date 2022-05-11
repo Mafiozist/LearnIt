@@ -5,7 +5,7 @@ import com.jfoenix.controls.*;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-import com.mysql.cj.xdevapi.Schema;
+//import com.mysql.cj.xdevapi.Schema;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -228,7 +228,7 @@ public class TagsWindowController implements Initializable {
 
     }
 
-    //They are here to take data from TextArea(cssTextArea) to change color values and give to user more comfortable control
+    //They are here to take data from TextArea(cssTextArea) to change color values and give to user more comfortable control of css
     public void changeColorParameter(String cssObject,String parameter, int r, int g, int  b) throws NullPointerException {
         StringBuilder sb = new StringBuilder(cssTextArea.getText());
         String newValue = String.format("rgb(%d,%d,%d)", r, g, b);
@@ -390,7 +390,7 @@ public class TagsWindowController implements Initializable {
     public void removeTagFromUi(Tag tag){
         for (HBox hbox: jfxListView.getItems()) {
             TagItemController controller = (TagItemController) hbox.getUserData();
-            if(controller.getTag().equals(tag)){
+            if(controller!=null && controller.getTag().equals(tag)){
                 jfxListView.getItems().remove(tag);
                 controller.getCssParser().removeCssFile();
             }

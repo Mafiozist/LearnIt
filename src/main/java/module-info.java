@@ -5,7 +5,7 @@ module com.learnit.learnit {
     requires javafx.base;
     requires javafx.graphics;
     requires java.sql;
-    requires mysql.connector.java;
+    //requires mysql.connector.java;
     requires org.junit.jupiter.api;
     requires org.junit.platform.commons;
 
@@ -24,6 +24,7 @@ module com.learnit.learnit {
     requires com.jfoenix;
 
     requires fr.brouillard.oss.cssfx;
+    requires com.h2database;
 
     opens com.learnit to javafx.fxml;
     exports com.learnit;

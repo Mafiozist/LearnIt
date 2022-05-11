@@ -29,12 +29,18 @@ public class Library {
 
     private Library() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
+        ResultSet resultSet = null;
+        try {
+            connection = OfflineDatabaseConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getBooksQuery);
+            resultSet = preparedStatement.executeQuery();
+        }catch (NullPointerException exception){
+            exception.printStackTrace();
+            System.out.println("Cannot connect to db"); // TODO: 11.05.2022 db connection error
+        }
 
-        connection = OfflineDatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(getBooksQuery);
-        ResultSet resultSet = preparedStatement.executeQuery();
 
-        while (resultSet.next()){
+        while (resultSet != null && resultSet.next()){
             Book book = new Book();
             book.setId(resultSet.getInt(1));
             book.setName(resultSet.getString(2));

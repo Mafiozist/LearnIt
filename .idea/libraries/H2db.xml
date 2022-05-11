@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="H2db">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/resources/com/learnit/drivers/h2/bin/h2-2.1.212.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
