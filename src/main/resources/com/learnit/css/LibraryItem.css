@@ -1,0 +1,16 @@
+#vBox{
+    -fx-border-color: black;
+    
+}
+  
+#libraryImage{
+    -fx-border-color: blue;
+    -fx-border-radius: 5;
+    
+}
+
+#libraryName{
+    -fx-border-color: red;
+}
+
+

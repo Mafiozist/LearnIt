@@ -5,6 +5,8 @@ import javafx.css.Stylesheet;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -72,29 +74,49 @@ public class CssParser {
         }
     }
 
-    public void updateCssFile(int tagId){
+    public boolean updateCssFile(int tagId){
         File[] fileArr = new File[]{ // TODO: 03.05.2022 i have no idea which of these files changes and uses the CSSFX
                 new File((String.format("D:/JavaProjects/LearnIt/src/main/resources/com/learnit/css/tags/%s", tagId+".css"))),
-                new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags%s",tagId+".css")))
+                new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags/%s",tagId+".css")))
         };
 
+       return updateFiles(fileArr);
+    }
+
+    private boolean updateCssFile(String name){
+        File[] fileArr = new File[]{ // TODO: 03.05.2022 i have no idea which of these files changes and uses the CSSFX
+                new File((String.format("D:/JavaProjects/LearnIt/src/main/resources/com/learnit/css/tags/%s", name+".css"))),
+                new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags/%s",name+".css")))
+        };
+        return updateFiles(fileArr);
+    }
+
+    public boolean updateCssFile(String content, int id){
+        newCssContent = content;
+        return updateCssFile(id);
+    }
+
+    private boolean updateCssFile(String content, String name){
+        newCssContent = content;
+        return updateCssFile(name);
+    }
+    private boolean updateFiles(File[] arr){
+        boolean isUpdated = false;
         try {
-            for (File file: fileArr) {
+            for (File file: arr) {
                 if(file.canWrite()){
                     FileWriter fileWriter = new FileWriter(file);
                     fileWriter.write(newCssContent);
                     fileWriter.close();
+                    isUpdated = true;
                 }
             }
         } catch (IOException ex){
             ex.printStackTrace(); // TODO: 01.05.2022 alert
         }
+        return isUpdated;
     }
 
-    public void updateCssFile(String content, int id){
-        newCssContent = content;
-        updateCssFile(id);
-    }
 
 
     public String getCssData(String path) {
@@ -155,7 +177,6 @@ public class CssParser {
         return stringBuilder.toString();
     }
 
-
     public String getBaseCssContent() {
         return baseCssContent;
     }
@@ -166,6 +187,17 @@ public class CssParser {
 
     public void setNewCssPath(String newCssPath) {
         this.newCssPath = newCssPath;
+    }
+
+    public boolean removeCssFile(){
+        boolean isFileRemoved = false;
+        try {
+            Files.delete(Path.of(newCssPath));
+            isFileRemoved = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isFileRemoved;
     }
 
     public URL getNewCssUrl() {

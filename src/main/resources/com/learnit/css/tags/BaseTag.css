@@ -1,16 +1,22 @@
 #tHBox.tagitem {
-   -fx-border-color: rgb(9, 108, 121);
-   -fx-border-insests: 5;
-   -fx-border-width: 4;
-   -fx-border-radius: 10.0;
-   -fx-background-color: transparent;
+    -fx-border-color: rgb(33, 125, 151);
+    -fx-border-insets: 1;
+    -fx-border-width: 10;
+    -fx-border-radius: 10.0;
+    -fx-background-color: transparent;
 }
 #tLabel.tagitem {
-   -fx-text-align: center;
-   -fx-font-size: 10;
-   -fx-font-weight: bold;
-   -fx-font-style: normal;
-   -fx-font-family: 'Times New Roman', Times, serif;
-   -fx-text-fill: rgb(40, 12, 92);
+    -fx-text-fill: rgb(23, 125, 125);
+    -fx-text-align: right;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-font-style: normal;
+    -fx-font-family: 'Times New Roman', Times, serif;
 }
-
+#borderPane.tagitem {
+    -fx-border-color: rgb(33, 125, 151);
+    -fx-border-insests: 1;
+    -fx-border-width: 10;
+    -fx-border-radius: 10.0;
+    -fx-background-color: transparent;
+}

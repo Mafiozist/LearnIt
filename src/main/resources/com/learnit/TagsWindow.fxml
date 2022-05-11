@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.HBox?>
-<BorderPane fx:id="borderPane" stylesheets="@css/TagsWindow.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.TagsWindowController">
-    <left>
-        <JFXListView id="jfxListView" fx:id="jfxListView" />
-    </left>
-
-    <center>
-        <VBox>
-            <HBox>
-                <ColorPicker fx:id="borderColorPicker"/>
-                <ColorPicker fx:id="fontColorPicker"/>
-            </HBox>
-            <TextArea fx:id="cssTextArea"/>
-        </VBox>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 
-    </center>
-</BorderPane>
+<HBox fx:id="root" stylesheets="@css/TagsWindow.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.learnit.controllers.TagsWindowController">
+
+    <JFXListView id="jfxListView" fx:id="jfxListView" minWidth="250" maxWidth="Infinity" />
+    <TextArea fx:id="cssTextArea" VBox.vgrow="SOMETIMES" maxWidth="350" HBox.hgrow="SOMETIMES" />
+    <GridPane>
+        <Label text="Название тега" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="tagName" promptText="Изменить название тега" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+       <Label text="Отступ снаружи" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Slider fx:id="borderInsets" max="15" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+       <Label text="Радиус границ" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Slider fx:id="borderRadius" max="25" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+       <Label text="Ширина границы" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Slider fx:id="borderWidth" max="10" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+       <Label text="Радиус фона" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Slider fx:id="backgroundRadius" max="35" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+       <Label text="Цвет границы" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <ColorPicker fx:id="borderColorPicker" HBox.hgrow="SOMETIMES" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+       <Label text="Цвет шрифта" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <ColorPicker fx:id="fontColorPicker" HBox.hgrow="SOMETIMES" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+       <Label text="Цвет фона" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+        <ColorPicker fx:id="backgroundColorPicker" HBox.hgrow="SOMETIMES" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        <CheckBox text="Прозрачный фон" fx:id="transparentBackground" GridPane.rowIndex="7" GridPane.columnIndex="2"/>
+
+       <JFXButton fx:id="changeFont" onMousePressed="#onMousePressed" text="Изменить шрифт" textAlignment="CENTER" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+        <JFXButton fx:id="defaultButton" onMousePressed="#onMousePressed" text="Вернуть по-умолчанию" textAlignment="CENTER" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+    </GridPane>
+
+</HBox>

@@ -7,10 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
+
 import java.io.IOException;
 
 //Constructor is worked before creating of xml file //This file for experements use until work it's done
@@ -62,7 +60,7 @@ public class MainWindowController {
             tilePane.vgapProperty().set(10);
             ///////////////////////////
 
-            BorderPane borderPane =tLoader.load();
+            HBox borderPane =tLoader.load();
             tTab.setContent(borderPane);
 
             tilePane = cLoader.load();

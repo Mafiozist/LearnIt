@@ -41,11 +41,10 @@ public class LibraryWindowController implements Initializable {
         books = FXCollections.observableList(Library.getInstance().getBooks());
 
         contextMenu = new ContextMenu();
-        MenuItem addBook = new MenuItem("AddBook");
-        MenuItem addNewBook = new MenuItem("AddNewBook");
+        MenuItem addBook = new MenuItem("Добавить существуюшую книгу");
+        MenuItem addNewBook = new MenuItem("Создать книгу");
 
         addNewBook.setOnAction(actionEvent -> {
-            System.out.println(actionEvent.getSource());
             openEditDialog(new Book());
         });
 
@@ -139,7 +138,6 @@ public class LibraryWindowController implements Initializable {
                     Library.getInstance().addBook(book);
                 }
             }
-
         });
     }
 

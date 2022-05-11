@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
 
-<HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"  styleClass="tagitem">
+<HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" styleClass="tagitem" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
 
-    <BorderPane fx:id="borderPane" id="borderPane">
-        <center>
-                <Label id="tLabel" fx:id="tLabel" styleClass="tagitem" alignment="CENTER" contentDisplay="CENTER" text="Maths facts" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
-                   <font>
-                      <Font size="6.0" />
-                   </font>
-                </Label>
-        </center>
+      <AnchorPane>
+           <Label id="tLabel" fx:id="tLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="tagitem" text="Tag item" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+      </AnchorPane>
 
-        <left>
-                <ImageView fx:id="img" blendMode="MULTIPLY" styleClass="tagitem" cache="true" fitHeight="30" fitWidth="30" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                      <Image url="@thumbnails/math.png" />
-                </ImageView>
-        </left>
-    </BorderPane>
+                <!--
+      <ImageView fx:id="img" blendMode="MULTIPLY" styleClass="tagitem" cache="true" fitHeight="30" fitWidth="30" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <Image url="@thumbnails/math.png" />
+      </ImageView> Not working yet-->
+
 </HBox>

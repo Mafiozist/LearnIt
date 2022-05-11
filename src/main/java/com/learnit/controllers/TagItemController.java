@@ -35,8 +35,9 @@ public class TagItemController implements Initializable {
                     "    -fx-border-color: rgb(33, 125, 151);\n" +
                     "    -fx-border-insets: 1;\n" +
                     "    -fx-border-width: 10;\n" +
-                    "    -fx-border-radius: 10.0;\n" +
-                    "    -fx-background-color: transparent;\n" +
+                    "    -fx-border-radius: 10;\n" +
+                    "    -fx-background-color:transparent;\n" +
+                    "    -fx-background-radius: 10;\n"+
                     "}\n" +
             "#tLabel.tagitem {\n" +
                     "    -fx-text-fill: rgb(23, 125, 125);\n" +
@@ -45,14 +46,7 @@ public class TagItemController implements Initializable {
                     "    -fx-font-weight: bold;\n" +
                     "    -fx-font-style: normal;\n" +
                     "    -fx-font-family: 'Times New Roman', Times, serif;\n" +
-                    "}\n" +
-            "#borderPane.tagitem {\n" +
-                    "    -fx-border-color: rgb(33, 125, 151);\n" +
-                    "    -fx-border-insets: 1;\n" +
-                    "    -fx-border-width: 10;\n" +
-                    "    -fx-border-radius: 10.0;\n" +
-                    "    -fx-background-color: transparent;\n" +
-                    "}";
+                    "}\n";
 
     public TagItemController(URL url,Tag tag){
         this.tag = tag;
@@ -65,11 +59,13 @@ public class TagItemController implements Initializable {
             ////////////////////////////////////////////////////////////
 
             String formatedStr = sb.toString() + tag.getId() + ".css";
+            //String formatedStr = sb.toString() + tag.getName() + ".css";
             formatedStr = formatedStr.replace("\\","/");
 
             cssParser = new CssParser(
                     defaultCssContent,
                     MainWindow.class.getResource(String.format("css/tags/%d.css", tag.getId())), formatedStr);
+
             tHBox = new HBox();
             //cssParser.parse();
         } else if(tag.getId() == -1){ //Object isn't contained at db
@@ -84,7 +80,7 @@ public class TagItemController implements Initializable {
         tHBox.getStylesheets().add(cssParser.getNewCssUrl().toExternalForm());
     }
 
-    public void updateCss(){
+    public void updateCssOnNode(){
        tHBox.getStylesheets().clear();
        tHBox.getStylesheets().add(cssParser.getNewCssUrl().toExternalForm());
     }
