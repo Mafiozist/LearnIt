@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import org.kordamp.bootstrapfx.scene.layout.Panel?>
+<?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<BorderPane fx:id="cardViewFace" id="CardViewFace" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            maxWidth="Infinity" maxHeight="Infinity">
+
+   <center>
+      <Label fx:id="label" wrapText="true" BorderPane.alignment="CENTER" />
+   </center>
+
+   <bottom>
+      <JFXButton fx:id="changeToBack" text="К ответу" BorderPane.alignment="BOTTOM_CENTER"/>
+   </bottom>
+
+</BorderPane>

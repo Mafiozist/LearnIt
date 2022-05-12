@@ -10,7 +10,7 @@ import java.sql.*;
 public class OfflineDatabaseConnection {
     private static OfflineDatabaseConnection connection;
     private static Connection dbLink;
-
+    // TODO: 11.05.2022 autocreating db 
     private String tags =
             "CREATE TABLE tags (\n" +
             "  id INT UNSIGNED NOT NULL AUTO_INCREMENT,\n" +

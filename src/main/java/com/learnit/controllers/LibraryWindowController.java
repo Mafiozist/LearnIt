@@ -1,5 +1,7 @@
 package com.learnit.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXScrollPane;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Book;
 import com.learnit.datasets.Library;
@@ -9,21 +11,20 @@ import com.learnit.textconverters.TextConverterFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -32,20 +33,30 @@ import java.util.stream.Stream;
 public class LibraryWindowController implements Initializable {
     @FXML
     public TilePane tilePane;
-    private ContextMenu contextMenu;
+    @FXML
+    public JFXScrollPane scrollPane;
+
+    private ContextMenu contextMenu, removeContextMenu;
     private ObservableList<Book> books;
 
 
     public LibraryWindowController(){
-
         books = FXCollections.observableList(Library.getInstance().getBooks());
 
         contextMenu = new ContextMenu();
-        MenuItem addBook = new MenuItem("Добавить существуюшую книгу");
-        MenuItem addNewBook = new MenuItem("Создать книгу");
+        MenuItem addBook = new MenuItem("Добавить");
+        MenuItem addNewBook = new MenuItem("Создать");
+        removeContextMenu = new ContextMenu();
+        MenuItem removeBook = new MenuItem("Удалить");
 
         addNewBook.setOnAction(actionEvent -> {
             openEditDialog(new Book());
+        });
+
+        removeBook.setOnAction(actionEvent -> {
+            //VBox vBox = (VBox) ((Node)actionEvent.getTarget());
+            //LibraryItemController controller= (LibraryItemController) vBox.getUserData();
+            //System.out.println(controller.book.getName());
         });
 
         addBook.setOnAction(actionEvent -> {
@@ -69,6 +80,7 @@ public class LibraryWindowController implements Initializable {
         });
 
         contextMenu.getItems().addAll(addBook,addNewBook);
+        removeContextMenu.getItems().add(removeBook);
     }
 
     @Override
@@ -88,15 +100,16 @@ public class LibraryWindowController implements Initializable {
             //System.out.println(event.getTarget());
         });
 
+
         books.addListener((ListChangeListener<? super Book>) change ->{
             while (change.next()){
                 if(change.wasAdded()){
-                    addToUI(change.getList().get(0)); //Because at the same time, i am always add one book for now
+                    addToUI(change.getAddedSubList().get(0)); //Because at the same time, i am always add only one book
                 }
                 if (change.wasRemoved()){
                     // TODO: 30.04.2022 delete from library UI and db
+                    removeFromUi(change.getRemoved().get(0));
                 }
-
             }
         });
 
@@ -134,8 +147,8 @@ public class LibraryWindowController implements Initializable {
             else if (book.getId() == -1){ //If object aren't taken from db
 
                 if(!Library.getInstance().getBooks().contains(book)){
-                    addToUI(book);
                     Library.getInstance().addBook(book);
+                    addToUI(book);
                 }
             }
         });
@@ -157,6 +170,15 @@ public class LibraryWindowController implements Initializable {
                 vBox.setOnMousePressed(event -> {
                     if(event.isPrimaryButtonDown()) openEditDialog(book);
                 });
+
+                VBox finalVBox = vBox;
+                vBox.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                    @Override
+                    public void handle(ContextMenuEvent contextMenuEvent) {
+                        removeContextMenu.show(finalVBox, contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY());
+                    }
+                });
+
             } catch (IOException e) {
                 e.printStackTrace(); // TODO: 30.04.2022 alert
             }
@@ -164,9 +186,14 @@ public class LibraryWindowController implements Initializable {
             LibraryItemController controller = bookloader.getController();
             controller.setBook(book);
 
-            tilePane.getChildren().add(vBox);
+             tilePane.getChildren().add(vBox);
 
     }
+
+    public void removeFromUi(Book book){
+
+    }
+
 
     public File getFileWithFilter(){
         FileChooser fileChooser = new FileChooser();

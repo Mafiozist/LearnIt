@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<BorderPane fx:id="root"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color:red;"
+            fx:controller="com.learnit.controllers.RevisingWindowController">
+
+   <center>
+
+   </center>
+
+   <right>
+      <BorderPane  BorderPane.alignment="CENTER">
+         <center>
+            <VBox alignment="CENTER_LEFT" spacing="15.0" BorderPane.alignment="CENTER">
+               <JFXRadioButton text="Все">
+                  <toggleGroup>
+                     <ToggleGroup fx:id="revisingState" />
+                  </toggleGroup>
+               </JFXRadioButton>
+               <JFXRadioButton id="books" text="Книги" toggleGroup="$revisingState" />
+               <JFXRadioButton id="tags" text="Тэги" toggleGroup="$revisingState" />
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
+            </VBox>
+         </center>
+      </BorderPane>
+   </right>
+</BorderPane>

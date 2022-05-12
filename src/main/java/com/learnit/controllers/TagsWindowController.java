@@ -139,7 +139,7 @@ public class TagsWindowController implements Initializable {
                         @Override
                         public void changed(ObservableValue<? extends String> observableValue, String old, String current) {
                             currentController.setNewCssContent(current);
-                            currentController.getCssParser().updateCssFile(current, currentController.getTag().getId());
+                            currentController.getCssParser().updateCssFile(url,current, currentController.getTag().getId());
                             currentController.updateCssOnNode();
                         }
                     });

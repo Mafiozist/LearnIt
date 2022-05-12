@@ -37,7 +37,6 @@ public class CssParser {
         newCssPath = getNewCssFileByContent(baseCssContent, newCssPath).getPath();
     }
 
-
     public void parse(){
         cssMap = new HashMap<>();
 
@@ -74,32 +73,36 @@ public class CssParser {
         }
     }
 
-    public boolean updateCssFile(int tagId){
+    public boolean updateCssFile(URL url,int tagId){
+        StringBuilder sb1 = new StringBuilder(url.getPath());
+        StringBuilder sb2 = new StringBuilder(url.getPath());
+        sb1.replace(sb1.indexOf("/target/"),sb1.length(), String.format("/src/main/resources/com/learnit/css/tags/%s",tagId +".css"));
+        sb2.replace(sb2.indexOf("/target/"), sb2.length(), String.format("/target/classes/com/learnit/css/tags/%s",tagId+".css"));
+
         File[] fileArr = new File[]{ // TODO: 03.05.2022 i have no idea which of these files changes and uses the CSSFX
-                new File((String.format("D:/JavaProjects/LearnIt/src/main/resources/com/learnit/css/tags/%s", tagId+".css"))),
-                new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags/%s",tagId+".css")))
+                new File(sb1.toString()),
+                new File(sb2.toString())
         };
 
        return updateFiles(fileArr);
     }
 
-    private boolean updateCssFile(String name){
-        File[] fileArr = new File[]{ // TODO: 03.05.2022 i have no idea which of these files changes and uses the CSSFX
+    public boolean updateCssFile(URL url,String content, int id){
+        newCssContent = content;
+        return updateCssFile(url,id);
+    }
+
+    /*private boolean updateCssFile(URL url,String name){
+        File[] fileArr = new File[]{
                 new File((String.format("D:/JavaProjects/LearnIt/src/main/resources/com/learnit/css/tags/%s", name+".css"))),
                 new File((String.format("D:/JavaProjects/LearnIt/target/classes/com/learnit/css/tags/%s",name+".css")))
         };
         return updateFiles(fileArr);
     }
-
-    public boolean updateCssFile(String content, int id){
+    private boolean updateCssFile(URL url, String content, String name){
         newCssContent = content;
-        return updateCssFile(id);
-    }
-
-    private boolean updateCssFile(String content, String name){
-        newCssContent = content;
-        return updateCssFile(name);
-    }
+        return updateCssFile(url,name);
+    }*/
     private boolean updateFiles(File[] arr){
         boolean isUpdated = false;
         try {

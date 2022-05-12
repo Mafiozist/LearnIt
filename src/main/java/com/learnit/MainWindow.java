@@ -44,7 +44,7 @@ public class MainWindow extends Application {
         }
 
 
-        stage.setTitle("Hello!");
+        stage.setTitle("PRAGMA");
         stage.setWidth(500);
         stage.setHeight(500);
         stage.setResizable(true);

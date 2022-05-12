@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.web.WebView?>
+
+
+<?import javafx.scene.layout.VBox?>
+<BorderPane fx:id="cardViewBack" id="cardViewBack"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+   <center>
+      <WebView BorderPane.alignment="TOP_CENTER"/>
+   </center>
+
+   <bottom>
+
+         <HBox fx:id="buttonContainer" alignment="CENTER" spacing="55.0" BorderPane.alignment="BOTTOM_CENTER" >
+            <JFXButton fx:id="repeat" text="Повторить"/>
+            <JFXButton fx:id="hard" text="Трудно"/>
+            <JFXButton fx:id="good" text="Хорошо"/>
+            <JFXButton fx:id="easy" text="Легко"/>
+            <JFXButton fx:id="changeToFace" text="К вопросу"/>
+         </HBox>
+
+   </bottom>
+
+</BorderPane>

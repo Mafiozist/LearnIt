@@ -10,10 +10,8 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
    <children>
-      <TextField fx:id="search" promptText="Search..." alignment="CENTER"/>
-      <TabPane fx:id="tabPane" maxHeight="Infinity" maxWidth="Infinity"
-               minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0"
-               prefWidth="849.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+      <TextField fx:id="search" promptText="Поиск..." alignment="CENTER"/>
+      <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="SOMETIMES">
 
          <Tab fx:id="rTab" text="Revising"/>
          <Tab fx:id="lTab" text="Library"/>
