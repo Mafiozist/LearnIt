@@ -35,7 +35,7 @@ public class OfflineDatabaseConnection {
         String dbUser="root";
         String dbPass="root";
         //String url="jdbc:mysql://localhost/"+dbName;
-        String url="jdbc:h2:~/"+dbName+";IFEXISTS=TRUE";
+        String url="jdbc:h2:./resources/"+dbName+";IFEXISTS=TRUE";
 
         try {
             //Class.forName("com.mysql.cj.jdbc.Driver");
