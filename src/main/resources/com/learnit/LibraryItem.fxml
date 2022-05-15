@@ -4,13 +4,24 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="vBox" fx:id="lCard" alignment="TOP_CENTER"
-      styleClass="LibraryCard" stylesheets="@css/LibraryItem.css"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.LibraryItemController">
+<?import java.lang.String?>
+<VBox id="vBox" fx:id="vBox" alignment="TOP_CENTER" stylesheets="@css/LibraryItem.css"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.learnit.controllers.LibraryItemController" maxWidth="200" maxHeight="300">
+
+      <styleClass>
+            <String fx:value="shadow" />
+            <String fx:value="white-background" />
+            <String fx:value="mouse-moved"/>
+            <!--<String fx:value="selected"/>-->
+            <String fx:value="round-layout"/>
+      </styleClass>
+
       <userData>
             <fx:reference source="controller"/>
       </userData>
+
       <ImageView id="libraryImage" fx:id="imgView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-      <Label id="libraryName" fx:id="name" alignment="CENTER" contentDisplay="CENTER"  text="There is a name of your information" textAlignment="CENTER" />
+      <Label id="libraryName" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"  text="There is a name of your information" textAlignment="CENTER" />
 
 </VBox>

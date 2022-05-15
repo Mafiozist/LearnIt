@@ -8,7 +8,7 @@
 <HBox fx:id="root" stylesheets="@css/TagsWindow.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.learnit.controllers.TagsWindowController">
 
-    <JFXListView id="jfxListView" fx:id="jfxListView" minWidth="250" maxWidth="Infinity" />
+    <JFXListView id="jfxListView" fx:id="jfxListView" minWidth="250" maxWidth="Infinity"/>
     <TextArea fx:id="cssTextArea" VBox.vgrow="SOMETIMES" maxWidth="350" HBox.hgrow="SOMETIMES" />
     <GridPane>
         <Label text="Название тега" GridPane.rowIndex="0" GridPane.columnIndex="0"/>

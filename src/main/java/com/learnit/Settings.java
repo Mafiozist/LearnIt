@@ -32,11 +32,22 @@ public class Settings {
     ////////////////////////Settings in cardHolders appearance
     private static int caTagQuantity;// between 0 and 9 because
 
+    ///////////////////////RevisingSettings/////////////////////
+    private static int minutesToAgain = 5;
+    private static int goodInterval = 2;
+    public static  int easyInterval = 3;
+    public static  int hardInterval = 1;
+    public static int maxIntervalToRevise;
+
+    private static double goodIntervalMultiplier = 1.3;
+    public static  double easyIntervalMultiplier = 1.5;
+    public static  double hardIntervalMultiplier = 0.5d;
+    private static int maxCardsPerDay = 75;
 
     //Taking data from pc...
     private Settings(){
         rFontNames = FXCollections.observableList(Font.getFontNames());
-        rFontsChooser = new ComboBox<String>();
+        rFontsChooser = new ComboBox<>();
         caTagQuantity = 9;
 
         //revisingFontsChooser.setPlaceholder(new Label("Something went wrong"));

@@ -5,23 +5,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.web.WebView?>
 
-
-<?import javafx.scene.layout.VBox?>
 <BorderPane fx:id="cardViewBack" id="cardViewBack"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@css/RevisingWindow.css">
    <center>
-      <WebView BorderPane.alignment="TOP_CENTER"/>
+      <WebView fx:id="answer" BorderPane.alignment="TOP_CENTER"/>
    </center>
 
    <bottom>
 
-         <HBox fx:id="buttonContainer" alignment="CENTER" spacing="55.0" BorderPane.alignment="BOTTOM_CENTER" >
-            <JFXButton fx:id="repeat" text="Повторить"/>
-            <JFXButton fx:id="hard" text="Трудно"/>
-            <JFXButton fx:id="good" text="Хорошо"/>
-            <JFXButton fx:id="easy" text="Легко"/>
-            <JFXButton fx:id="changeToFace" text="К вопросу"/>
+         <HBox styleClass="buttons-back-layout" fx:id="buttonContainer" alignment="CENTER" BorderPane.alignment="BOTTOM_CENTER" >
+            <JFXButton fx:id="repeat" text="Повторить" styleClass="jfxbutton"/>
+            <JFXButton fx:id="hard" text="Трудно" styleClass="jfxbutton"/>
+            <JFXButton fx:id="good" text="Хорошо" styleClass="jfxbutton"/>
+            <JFXButton fx:id="easy" text="Легко" styleClass="jfxbutton"/>
+            <JFXButton fx:id="changeToFace" text="К вопросу" styleClass="jfxbutton"/>
          </HBox>
 
    </bottom>

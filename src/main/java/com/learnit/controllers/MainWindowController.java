@@ -16,17 +16,17 @@ import java.io.IOException;
 //There is logic of main window
 public class MainWindowController {
     @FXML
-    public Tab lTab;// library tab
+    private Tab lTab;// library tab
     @FXML
-    public Tab cTab; //Cards tab
+    private Tab cTab; //Cards tab
     @FXML
-    public Tab rTab; //revisingTab
+    private Tab rTab; //revisingTab
     @FXML
-    public Tab tTab; //tags tab
+    private Tab tTab; //tags tab
     @FXML
-    public TabPane tabPane;
+    private TabPane tabPane;
     @FXML
-    public TextField search;
+    private TextField search;
 
     FXMLLoader lLoader, cLoader, rLoader, tLoader;
 
@@ -35,7 +35,6 @@ public class MainWindowController {
         rTab = new Tab();
         tTab = new Tab();
         cTab = new Tab();
-
 
         lLoader = new FXMLLoader();
         rLoader = new FXMLLoader();
@@ -52,29 +51,25 @@ public class MainWindowController {
     public void initialize()  {
         //Just trying to set up main window
         try{
-            StackPane stackPane = lLoader.load();
-            lTab.setContent(stackPane);
+            lTab.setContent( lLoader.load());
         } catch (IOException e){
             e.printStackTrace();
         }
 
         try {
-            HBox borderPane = tLoader.load();
-            tTab.setContent(borderPane);
+            tTab.setContent(tLoader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            BorderPane bp = rLoader.load();
-            rTab.setContent(bp);
+            rTab.setContent(rLoader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            TilePane tilePane = cLoader.load();
-            cTab.setContent(tilePane);
+            cTab.setContent(cLoader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }

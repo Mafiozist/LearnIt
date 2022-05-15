@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.web.WebView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +22,7 @@ public class CardReviseFaceController implements Initializable {
     @FXML
     BorderPane cardViewFace;
     @FXML
-    Label label;
+    WebView question;
     @FXML
     JFXButton changeToBack;
 
@@ -31,9 +32,8 @@ public class CardReviseFaceController implements Initializable {
 
     public CardReviseFaceController(BorderPane root){
         cardViewFace = new BorderPane();
-        label = new Label();
         backController = new CardReviseBackController(root, this);
-
+        question = new WebView();
         this.root = root;
     }
 
@@ -42,13 +42,17 @@ public class CardReviseFaceController implements Initializable {
         changeToBack.setOnMousePressed(event -> {
           if (event.isPrimaryButtonDown()) toBackside();
         });
+        question.setOnMousePressed(mouseEvent->{
+            if(mouseEvent.isPrimaryButtonDown()) toBackside();
+        });
 
-        label.setText(card.getQuestion());
+        question.contextMenuEnabledProperty().setValue(false);
+        setData(card);
     }
 
     public void setData(Card card){
         this.card = card;
-        label.setText(card.getQuestion());
+        question.getEngine().loadContent(card.getQuestion());
     }
 
     public void toBackside(){

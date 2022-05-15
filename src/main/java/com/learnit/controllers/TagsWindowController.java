@@ -73,7 +73,11 @@ public class TagsWindowController implements Initializable {
         removeTag = new MenuItem("Удалить");
         addTag = new MenuItem("Добавить");
         contextMenu.getItems().addAll(addTag,removeTag);
-        validationSupport = new ValidationSupport();
+
+        jfxListView.setOnScroll(scrollEvent -> {
+            jfxListView.refresh();
+        });
+
     }
 
     @Override
@@ -93,126 +97,122 @@ public class TagsWindowController implements Initializable {
         });
 
 
-        tags.addListener(new ListChangeListener<Tag>() {
-            @Override
-            public void onChanged(Change<? extends Tag> change) {
-                while (change.next()){
-                    if(change.wasAdded()){// if tag was created by user
-                        Tag tag = change.getAddedSubList().get(0);
-                        TagHolder.getInstance().addTag(tag); //adding it to db
-                        tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
-                        addTagsToUi(url, tag); // cause at 1 operation adding 1 tag as well
-                    }
-                    else if(change.wasRemoved()){
-                        TagHolder.getInstance().removeTag(change.getRemoved().get(0));
-                        removeTagFromUi(change.getRemoved().get(0));
-                    }
+        tags.addListener((ListChangeListener<Tag>) change -> {
+
+            while (change.next()){
+                if(change.wasAdded()){// if tag was created by user
+                    Tag tag = change.getAddedSubList().get(0);
+                    TagHolder.getInstance().addTag(tag); //adding it to db
+                    tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
+                    addTagsToUi(url, tag); // cause at 1 operation adding 1 tag as well
+                }
+                else if(change.wasRemoved()){
+                    TagHolder.getInstance().removeTag(change.getRemoved().get(0));
+                    removeTagFromUi(change.getRemoved().get(0));
                 }
             }
         });
 
-        jfxListView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if((event.isPrimaryButtonDown() || event.isSecondaryButtonDown()) &&
-                        !jfxListView.getItems().isEmpty() && jfxListView.getSelectionModel().isSelected(jfxListView.getSelectionModel().getSelectedIndex())) {
-                    currentController = (TagItemController) jfxListView.getSelectionModel().getSelectedItem().getUserData();
-                    cssTextArea.setText(currentController.getNewCssContent());
+
+        jfxListView.setOnMousePressed(event -> {
+            if((event.isPrimaryButtonDown() || event.isSecondaryButtonDown()) &&
+                    !jfxListView.getItems().isEmpty() && jfxListView.getSelectionModel().isSelected(jfxListView.getSelectionModel().getSelectedIndex())) {
+                currentController = (TagItemController) jfxListView.getSelectionModel().getSelectedItem().getUserData();
+                cssTextArea.setText(currentController.getNewCssContent());
 
 
-                    setIntColorParameter(borderColorPicker, "tHBox.tagitem", "-fx-border-color");
-                    setIntColorParameter(fontColorPicker, "tLabel.tagitem", "-fx-text-fill");
-                    setIntColorParameter(backgroundColorPicker, "tHBox.tagitem", "-fx-background-color");
+                setIntColorParameter(borderColorPicker, "tHBox.tagitem", "-fx-border-color");
+                setIntColorParameter(fontColorPicker, "tLabel.tagitem", "-fx-text-fill");
+                setIntColorParameter(backgroundColorPicker, "tHBox.tagitem", "-fx-background-color");
 
-                    borderRadius.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-radius"));
-                    borderWidth.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-width"));
-                    borderInsets.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-insets"));
-                    backgroundRadius.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-background-radius"));
+                borderRadius.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-radius"));
+                borderWidth.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-width"));
+                borderInsets.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-border-insets"));
+                backgroundRadius.setValue(getSingleIntParameter("tHBox.tagitem", "-fx-background-radius"));
 
-                    tagName.setText(currentController.getTag().getName()); // TODO: 05.05.2022 change the name of the tag here and at db
+                tagName.setText(currentController.getTag().getName()); // TODO: 05.05.2022 change the name of the tag here and at db
 
 
-                    transparentBackground.selectedProperty()
-                            .setValue(isStringParameterSet("tHBox.tagitem", "-fx-background-color", "transparent"));
+                transparentBackground.selectedProperty()
+                        .setValue(isStringParameterSet("tHBox.tagitem", "-fx-background-color", "transparent"));
 
-                    cssTextArea.textProperty().addListener(new ChangeListener<String>() {
-                        @Override
-                        public void changed(ObservableValue<? extends String> observableValue, String old, String current) {
-                            currentController.setNewCssContent(current);
-                            currentController.getCssParser().updateCssFile(url,current, currentController.getTag().getId());
-                            currentController.updateCssOnNode();
+                cssTextArea.textProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observableValue, String old, String current) {
+                        currentController.setNewCssContent(current);
+                        currentController.getCssParser().updateCssFile(url,current, currentController.getTag().getId());
+                        currentController.updateCssOnNode();
+                    }
+                });
+
+                borderColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
+                    changeColorParameter("tHBox.tagitem",
+                            "-fx-border-color",
+                            (int) (t1.getRed() * 255),
+                            (int) (t1.getGreen() * 255),
+                            (int) (t1.getBlue() * 255));
+                });
+
+                fontColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
+                    changeColorParameter("tLabel.tagitem",
+                            "-fx-text-fill",
+                            (int) (t1.getRed() * 255),
+                            (int) (t1.getGreen() * 255),
+                            (int) (t1.getBlue() * 255));
+                });
+
+                backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
+                    changeColorParameter("tHBox.tagitem",
+                            "-fx-background-color",
+                            (int) (t1.getRed() * 255),
+                            (int) (t1.getGreen() * 255),
+                            (int) (t1.getBlue() * 255));
+                });
+
+                borderInsets.valueProperty().addListener((observableValue, number, t1) ->
+                        changeIntParameter("tHBox.tagitem", "-fx-border-insets", (int) borderInsets.getValue()));
+
+                borderWidth.valueProperty().addListener((observableValue, number, t1) ->
+                        changeIntParameter("tHBox.tagitem", "-fx-border-width", (int) borderWidth.getValue()));
+
+                borderRadius.valueProperty().addListener((observableValue, number, t1) ->
+                        changeIntParameter("tHBox.tagitem", "-fx-border-radius", (int) borderRadius.getValue()));
+
+                backgroundRadius.valueProperty().addListener((observableValue, number, t1) ->
+                        changeIntParameter("tHBox.tagitem", "-fx-background-radius", (int) backgroundRadius.getValue()));
+
+                defaultButton.setOnMousePressed(defaultEvent -> {
+                    if (defaultEvent.isPrimaryButtonDown()) {
+                        cssTextArea.setText(currentController.getCssParser().getBaseCssContent());
+                    }
+                });
+
+                transparentBackground.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+                    if (t1) setStringColorParameter("tHBox.tagitem", "-fx-background-color", "transparent");
+                });
+
+                removeTag.setOnAction(actionEvent -> {
+                    tags.remove(currentController.getTag());
+                    jfxListView.getItems().remove(jfxListView.getSelectionModel().getSelectedItem());
+                });
+
+                tagName.setOnKeyPressed(keyEvent -> {
+                    if(keyEvent.getCode().equals(KeyCode.ENTER)){
+                        if (tagName.getText().equals(currentController.getTag().getName())) return;
+
+                        int id = TagHolder.getInstance().getTagIdByName(tagName.getText());
+
+                        if(id != -1){
+                            showMessageDialog("Такой тег уже существует!");
                         }
-                    });
-
-                    borderColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                        changeColorParameter("tHBox.tagitem",
-                                "-fx-border-color",
-                                (int) (t1.getRed() * 255),
-                                (int) (t1.getGreen() * 255),
-                                (int) (t1.getBlue() * 255));
-                    });
-
-                    fontColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                        changeColorParameter("tLabel.tagitem",
-                                "-fx-text-fill",
-                                (int) (t1.getRed() * 255),
-                                (int) (t1.getGreen() * 255),
-                                (int) (t1.getBlue() * 255));
-                    });
-
-                    backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                        changeColorParameter("tHBox.tagitem",
-                                "-fx-background-color",
-                                (int) (t1.getRed() * 255),
-                                (int) (t1.getGreen() * 255),
-                                (int) (t1.getBlue() * 255));
-                    });
-
-                    borderInsets.valueProperty().addListener((observableValue, number, t1) ->
-                            changeIntParameter("tHBox.tagitem", "-fx-border-insets", (int) borderInsets.getValue()));
-
-                    borderWidth.valueProperty().addListener((observableValue, number, t1) ->
-                            changeIntParameter("tHBox.tagitem", "-fx-border-width", (int) borderWidth.getValue()));
-
-                    borderRadius.valueProperty().addListener((observableValue, number, t1) ->
-                            changeIntParameter("tHBox.tagitem", "-fx-border-radius", (int) borderRadius.getValue()));
-
-                    backgroundRadius.valueProperty().addListener((observableValue, number, t1) ->
-                            changeIntParameter("tHBox.tagitem", "-fx-background-radius", (int) backgroundRadius.getValue()));
-
-                    defaultButton.setOnMousePressed(defaultEvent -> {
-                        if (defaultEvent.isPrimaryButtonDown()) {
-                            cssTextArea.setText(currentController.getCssParser().getBaseCssContent());
+                        else {
+                            currentController.getTag().setName(tagName.getText());
+                            currentController.setData(currentController.getTag());
+                            TagHolder.getInstance().updateTag(currentController.getTag());
                         }
-                    });
+                    }
+                });
 
-                    transparentBackground.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-                        if (t1) setStringColorParameter("tHBox.tagitem", "-fx-background-color", "transparent");
-                    });
-
-                    removeTag.setOnAction(actionEvent -> {
-                        tags.remove(currentController.getTag());
-                        jfxListView.getItems().remove(jfxListView.getSelectionModel().getSelectedItem());
-                    });
-
-                    tagName.setOnKeyPressed(keyEvent -> { 
-                        if(keyEvent.getCode().equals(KeyCode.ENTER)){
-                            if (tagName.getText().equals(currentController.getTag().getName())) return;
-
-                            int id = TagHolder.getInstance().getTagIdByName(tagName.getText());
-
-                            if(id != -1){
-                                showMessageDialog("Такой тег уже существует!");
-                            }
-                            else {
-                                currentController.getTag().setName(tagName.getText());
-                                currentController.setData(currentController.getTag());
-                                TagHolder.getInstance().updateTag(currentController.getTag());
-                            }
-                        }
-                    });
-
-                }
             }
         });
 
@@ -378,7 +378,7 @@ public class TagsWindowController implements Initializable {
             });
         }
 
-        jfxListView.getItems().add(hBox);
+        jfxListView.getItems().add(0,hBox);
     }
 
     public void addTagsToUi(URL url){

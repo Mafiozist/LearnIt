@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import org.kordamp.bootstrapfx.scene.layout.Panel?>
-<?import javafx.scene.layout.GridPane?>
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.web.WebView?>
 <BorderPane fx:id="cardViewFace" id="CardViewFace" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            maxWidth="Infinity" maxHeight="Infinity">
+            maxWidth="Infinity" maxHeight="Infinity" stylesheets="@css/RevisingWindow.css">
 
    <center>
-      <Label fx:id="label" wrapText="true" BorderPane.alignment="CENTER" />
+      <WebView fx:id="question" BorderPane.alignment="CENTER" />
    </center>
 
    <bottom>
-      <JFXButton fx:id="changeToBack" text="К ответу" BorderPane.alignment="BOTTOM_CENTER"/>
+      <JFXButton fx:id="changeToBack" text="К ответу" BorderPane.alignment="BOTTOM_CENTER" styleClass="jfxbutton"/>
    </bottom>
 
 </BorderPane>

@@ -1,6 +1,7 @@
 package com.learnit.controllers;
 
 import com.learnit.MainWindow;
+import com.learnit.database.data.tables.Card;
 import com.learnit.datasets.CardHolder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,19 +19,19 @@ import java.util.ResourceBundle;
 //This controller will be able to change data and apperience of card view
 public class CardItemController implements Initializable {
     @FXML
-    public VBox cardVBox;
+    private VBox cardVBox;
     @FXML
-    public GridPane tagsGridPane;
+    private GridPane tagsGridPane;
     @FXML
-    public Label questionLabel;
+    private Label questionLabel;
 
     public CardItemController(){
 
     }
 
     //The method uses for setting data from card (Card.java) into CardItem.fxm by serializing
-    public void setData(CardHolder cardHolder) throws IOException {
-        questionLabel.setText(cardHolder.getQuestion());
+    public void setData(Card card) throws IOException {
+        questionLabel.setText(card.getQuestion());
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {

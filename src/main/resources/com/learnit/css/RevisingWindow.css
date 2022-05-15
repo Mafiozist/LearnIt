@@ -1,0 +1,10 @@
+
+.jfxbutton{
+
+}
+.jfxbutton: hover{
+    -fx-background-color: #E4E4E4;
+}
+.buttons-back-layout{
+    -fx-spacing: 25;
+}

@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-
-<?import com.jfoenix.controls.JFXScrollPane?>
 <?import javafx.scene.control.ScrollPane?>
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.learnit.controllers.LibraryWindowController" >
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import com.jfoenix.controls.JFXButton?>
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.LibraryWindowController">
+    <VBox stylesheets="@css/LibraryItem.css" >
+            <HBox>
+                <TextField fx:id="search" HBox.hgrow="ALWAYS" promptText="Поиск..." alignment="CENTER"/>
+                <JFXButton fx:id="selectTags" text="Выбрать по тегам" HBox.hgrow="ALWAYS"/>
+            </HBox>
 
-    <JFXScrollPane>
-        <TilePane fx:id="tilePane" hgap="15" vgap="15">
-                 <padding>
-                    <Insets left="10" top="10"/>
-                 </padding>
-        </TilePane>
-    </JFXScrollPane>
-
+            <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                        <TilePane fx:id="tilePane" hgap="15" styleClass="transparent" tileAlignment="CENTER_LEFT" vgap="15">
+                                <padding>
+                                    <Insets left="10" top="10" />
+                                </padding>
+                        </TilePane>
+                </ScrollPane>
+            </StackPane>
+    </VBox>
 </StackPane>
-

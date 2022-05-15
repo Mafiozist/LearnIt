@@ -32,21 +32,15 @@ public class MainWindow extends Application {
         Locale currentLocale = Locale.getDefault();
         Settings settings = Settings.getSettings();
 
-       /* Locale locale = new Locale("ru","RU");
-        ResourceBundle bundle = ResourceBundle.getBundle("com.learnit.properties.TabName", locale);*/
         Scene scene = null;
         try {
-            Library library = Library.getInstance();
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("MainWindow.fxml") /*, bundle*/);
             scene = new Scene(fxmlLoader.load());
         } catch (IOException exception){
             exception.printStackTrace();
         }
 
-
-        stage.setTitle("PRAGMA");
-        stage.setWidth(500);
-        stage.setHeight(500);
+        stage.setTitle("СХИПИ");
         stage.setResizable(true);
         stage.setScene(scene);
         stage.show();

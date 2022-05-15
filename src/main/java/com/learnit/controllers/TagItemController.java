@@ -18,13 +18,13 @@ import java.util.ResourceBundle;
 
 public class TagItemController implements Initializable {
     @FXML
-    public HBox tHBox;
+    private HBox tHBox;
     @FXML
-    public Label tLabel;
+    private Label tLabel;
     @FXML
-    public BorderPane borderLabelPane ,borderImgPane;
+    private BorderPane borderLabelPane ,borderImgPane;
     @FXML
-    public ImageView img;
+    private ImageView img;
     private Tag tag;
 
     private CssParser cssParser;
@@ -76,7 +76,6 @@ public class TagItemController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setData(tag);
-
         tHBox.getStylesheets().add(cssParser.getNewCssUrl().toExternalForm());
     }
 

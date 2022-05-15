@@ -2,21 +2,15 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
-
 <!--I think i need use a grid model to future implementation of dragAndDrop functionality-->
 
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
-   <children>
-      <TextField fx:id="search" promptText="Поиск..." alignment="CENTER"/>
-      <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="SOMETIMES">
 
-         <Tab fx:id="rTab" text="Revising"/>
-         <Tab fx:id="lTab" text="Library"/>
-         <Tab fx:id="cTab" text="Cards"/>
-         <Tab fx:id="tTab" text="Tags"/>
-      </TabPane>
-   </children>
-</VBox>
+<TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+         xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
+
+    <Tab fx:id="rTab" text="Revising"/>
+    <Tab fx:id="lTab" text="Library"/>
+    <Tab fx:id="cTab" text="Cards"/>
+    <Tab fx:id="tTab" text="Tags"/>
+</TabPane>

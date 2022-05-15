@@ -2,6 +2,7 @@ package com.learnit.controllers;
 
 
 import com.learnit.MainWindow;
+import com.learnit.database.data.tables.Card;
 import com.learnit.datasets.CardHolder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class CardWindowController implements Initializable {
     @FXML
-    TilePane tilePane;
+    private TilePane tilePane;
 
 
     //I could use lookup to change settings from diff nodes if it will be needed
@@ -26,12 +27,9 @@ public class CardWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<CardHolder> cardHolders = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            cardHolders.add(new CardHolder());
-        }
+        ArrayList<Card> cardHolders = new ArrayList<>(CardHolder.getInstance().getCards());
 
-        for (int i = 0; i < cardHolders.size(); i++) {
+        for (Card cardHolder : cardHolders) {
             //loading card
             FXMLLoader fxmlCardLoader = new FXMLLoader();
             fxmlCardLoader.setLocation(MainWindow.class.getResource("CardItem.fxml"));
@@ -44,7 +42,7 @@ public class CardWindowController implements Initializable {
                 CardItemController itemController = fxmlCardLoader.getController();
 
                 //
-                itemController.setData(cardHolders.get(i));
+                itemController.setData(cardHolder);
 
                 tilePane.getChildren().add(vBox);
             } catch (IOException e) {
