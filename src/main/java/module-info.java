@@ -11,8 +11,6 @@ module com.learnit.learnit {
 
 
     requires org.controlsfx.controls;
-    requires validatorfx;
-    requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
     //For parsing to html of doc/docx files

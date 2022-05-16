@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <!--I think i need use a grid model to future implementation of dragAndDrop functionality-->
 
 
-
-<TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
-         xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.MainWindowController">
+<?import javafx.scene.layout.StackPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.learnit.controllers.MainWindowController" stylesheets="@css/MainWindow.css">
+<JFXTabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" >
 
     <Tab fx:id="rTab" text="Revising"/>
     <Tab fx:id="lTab" text="Library"/>
     <Tab fx:id="cTab" text="Cards"/>
     <Tab fx:id="tTab" text="Tags"/>
-</TabPane>
+</JFXTabPane>
+        </StackPane>

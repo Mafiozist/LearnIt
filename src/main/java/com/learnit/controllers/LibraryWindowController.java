@@ -19,21 +19,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,12 +48,12 @@ public class LibraryWindowController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-    private ContextMenu contextMenu, removeContextMenu;
+    private ContextMenu contextMenu;
     private ObservableList<Book> books;
-    private FilteredList<VBox> filtredBooks;
-    private ArrayList<VBox> tempBooksUi;
-    private ObservableList<VBox> booksUi;
-
+    private FilteredList<StackPane> filtredBooks;
+    private ArrayList<StackPane> tempBooksUi;
+    private ObservableList<StackPane> booksUi;
+    private JFXDialog singleJfxDialog;
 
     public LibraryWindowController(){
         books = FXCollections.observableList(Library.getInstance().getBooks());
@@ -68,26 +64,11 @@ public class LibraryWindowController implements Initializable {
         booksUi = FXCollections.observableList(tempBooksUi);
         MenuItem addBook = new MenuItem("Добавить");
         MenuItem addNewBook = new MenuItem("Создать");
-        removeContextMenu = new ContextMenu();
-        MenuItem removeBook = new MenuItem("Удалить");
 
-        scrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
-            @Override
-            public void changed(ObservableValue<? extends Bounds> observableValue, Bounds bounds, Bounds t1) {
-                tilePane.setPrefSize(bounds.getWidth(),bounds.getHeight());
-            }
-        });
+        scrollPane.viewportBoundsProperty().addListener((observableValue, bounds, t1) -> tilePane.setPrefSize(bounds.getWidth(),bounds.getHeight()));
 
-        addNewBook.setOnAction(actionEvent -> {
-            openEditDialog(new Book());
-        });
+        addNewBook.setOnAction(actionEvent -> openEditDialog(new Book()));
 
-
-        removeBook.setOnAction(actionEvent -> {
-            //VBox vBox = (VBox) ((Node)actionEvent.getTarget());
-            //LibraryItemController controller= (LibraryItemController) vBox.getUserData();
-            //System.out.println(controller.book.getName());
-        });
 
         addBook.setOnAction(actionEvent -> {
             File file = getFileWithFilter();
@@ -114,16 +95,13 @@ public class LibraryWindowController implements Initializable {
         box.getChildren().add(1, new JFXButton());
 
         contextMenu.getItems().addAll(addBook,addNewBook);
-        removeContextMenu.getItems().add(removeBook);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //Setting up a context menu for tile pane
-        tilePane.setOnContextMenuRequested(contextMenuEvent -> {
-            contextMenu.show(tilePane, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
-        } );
+        tilePane.setOnContextMenuRequested(contextMenuEvent -> contextMenu.show(tilePane, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY()));
 
         //it`s needs to close context menu because of standard auto hide doesn't work as I need
         tilePane.setOnMouseClicked(event -> {
@@ -146,30 +124,10 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
-        selectTags.setOnMousePressed(pressed->{
-            if(pressed.isPrimaryButtonDown()){
-                JFXDialog jfxDialog = new JFXDialog();
-                JFXButton save = new JFXButton();
-
-                try {
-                    jfxDialog.setContent(FXMLLoader.load(MainWindow.class.getResource("SelectDialog.fxml")));
-                    jfxDialog.setDialogContainer(stackPane);
-                    jfxDialog.show();
-
-                    jfxDialog.setOnDialogClosed(jfxDialogEvent -> {
-
-                    });
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
+        selectTags.setOnMousePressed(pressed-> openTagSelectDialog(singleJfxDialog));
 
         search.textProperty().addListener((observableValue, s, current) -> {
-            Predicate<VBox> contains = i-> ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
+            Predicate<StackPane> contains = i-> ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
             filtredBooks.setPredicate(contains);
             if(current.isEmpty() || current.isBlank()){
                 filtredBooks.setPredicate(null);
@@ -177,6 +135,8 @@ public class LibraryWindowController implements Initializable {
             tilePane.getChildren().clear();
             tilePane.getChildren().addAll(filtredBooks);
         });
+
+
 
         addToUI();
     }
@@ -214,10 +174,31 @@ public class LibraryWindowController implements Initializable {
 
                 if(!Library.getInstance().getBooks().contains(book)){
                     Library.getInstance().addBook(book);
+                    book.setId(Library.getInstance().getLastBookId()); //Костыль
                     addToUI(book);
                 }
             }
         });
+    }
+
+    private void openTagSelectDialog(JFXDialog singleJfxDialog){
+        if (singleJfxDialog != null){
+            singleJfxDialog.close();
+            singleJfxDialog.show();
+            return;
+        }
+
+        singleJfxDialog = new JFXDialog();
+        JFXButton save = new JFXButton();
+
+        try {
+            singleJfxDialog.setContent(FXMLLoader.load(MainWindow.class.getResource("SelectDialog.fxml")));
+            singleJfxDialog.setDialogContainer(stackPane);
+            singleJfxDialog.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void addToUI()  {
@@ -229,22 +210,49 @@ public class LibraryWindowController implements Initializable {
     public void addToUI(Book book) {
         FXMLLoader bookloader = new FXMLLoader();
         bookloader.setLocation(MainWindow.class.getResource("LibraryItem.fxml"));
-        VBox vBox = null;
+        StackPane sp = null;
 
             try {
-                vBox = bookloader.load();
-                vBox.setOnMousePressed(event -> {
+                sp = bookloader.load();
+
+                BorderPane bp = (BorderPane) sp.lookup("#borderPane");
+                bp.setOnMousePressed(event -> {
                     if(event.isPrimaryButtonDown()) openEditDialog(book);
+                    System.out.println(event.getTarget());
                 });
 
-                vBox.setUserData(book);
+                sp.setUserData(book);
+                JFXButton deleteBtn = (JFXButton) sp.lookup("#deleteBtn");
 
-                VBox finalVBox = vBox;
-                vBox.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-                    @Override
-                    public void handle(ContextMenuEvent contextMenuEvent) {
-                        removeContextMenu.show(finalVBox, contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY());
-                    }
+                deleteBtn.setOnMousePressed(event -> {
+                   if(event.isPrimaryButtonDown()){
+
+                       JFXDialogLayout layout = new JFXDialogLayout();
+                       layout.setHeading(new Text("Внимание!"));
+                       layout.setBody(new Text(String.format("Вы действительно хотите удалить: %s?", book.getName())));
+                       JFXButton ok = new JFXButton("Да");
+                       JFXButton cancel = new JFXButton("Нет");
+
+                       layout.setActions(ok,cancel);
+
+                       JFXDialog jfxDialog = new JFXDialog(stackPane, layout, JFXDialog.DialogTransition.CENTER);
+                       jfxDialog.show();
+
+                       ok.setOnMousePressed(pressed -> {
+                           if (pressed.isPrimaryButtonDown()) {
+                               removeFromUi(book);
+                               Library.getInstance().removeBook(book);
+                               jfxDialog.close();
+                           }
+                       });
+
+                       cancel.setOnMousePressed(pressed -> {
+                           if(pressed.isPrimaryButtonDown()){
+                               jfxDialog.close();
+                           }
+                       });
+
+                   }
                 });
 
             } catch (IOException e) {
@@ -254,12 +262,12 @@ public class LibraryWindowController implements Initializable {
             LibraryItemController controller = bookloader.getController();
             controller.setBook(book);
 
-            tilePane.getChildren().add(vBox);
-        tempBooksUi.add(vBox);
+            tilePane.getChildren().add(sp);
+        tempBooksUi.add(sp);
     }
 
     public void removeFromUi(Book book){
-
+        tilePane.getChildren().removeIf(tile -> ((Book) tile.getUserData()).getId() == book.getId());
     }
 
 
@@ -275,5 +283,6 @@ public class LibraryWindowController implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
         return fileChooser.showOpenDialog(tilePane.getScene().getWindow());
     }
+
 
 }

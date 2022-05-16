@@ -58,11 +58,11 @@
             </exclusions>
         </dependency>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
             <version>12.2.0</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.kordamp.bootstrapfx</groupId>

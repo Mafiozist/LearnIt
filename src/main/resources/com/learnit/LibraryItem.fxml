@@ -2,12 +2,16 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
-
 <?import java.lang.String?>
-<VBox id="vBox" fx:id="vBox" alignment="TOP_CENTER" stylesheets="@css/LibraryItem.css"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.learnit.controllers.LibraryItemController" maxWidth="200" maxHeight="300">
+<?import javafx.scene.layout.StackPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.image.Image?>
+<StackPane  stylesheets="@css/LibraryItem.css"
+           xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.learnit.controllers.LibraryItemController" maxWidth="200" maxHeight="300">
 
       <styleClass>
             <String fx:value="shadow" />
@@ -21,7 +25,33 @@
             <fx:reference source="controller"/>
       </userData>
 
-      <ImageView id="libraryImage" fx:id="imgView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-      <Label id="libraryName" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"  text="There is a name of your information" textAlignment="CENTER" />
+      <JFXButton fx:id="delete" id="deleteBtn" style="-fx-border-radius:55; -fx-background-radius:55;"
+                 StackPane.alignment="TOP_RIGHT"  styleClass="mouse-moved" >
+            <graphic>
+                  <ImageView fitWidth="15" fitHeight="15">
+                        <Image url="@images/defaultDelete.png" />
+                  </ImageView>
+            </graphic>
 
-</VBox>
+            <padding>
+                  <Insets bottom="5"/>
+            </padding>
+      </JFXButton>
+
+      <BorderPane id="borderPane" fx:id="borderPane" StackPane.alignment="BOTTOM_CENTER">
+
+            <StackPane.margin>
+                  <Insets  top="15"/>
+            </StackPane.margin>
+
+            <center>
+                  <ImageView id="libraryImage" fx:id="imgView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"/>
+            </center>
+            <bottom>
+                  <Label id="libraryName" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"
+                         text="There is a name of your information" textAlignment="CENTER"
+                         BorderPane.alignment="CENTER"/>
+            </bottom>
+      </BorderPane>
+
+</StackPane>

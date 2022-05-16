@@ -7,6 +7,7 @@
 .round-layout{
     -fx-border-radius: 25;
     -fx-border-color: #D7D7D7;
+    -fx-background-radius:30;
 }
 .selected{
     -fx-background-color: #F3F3F3;

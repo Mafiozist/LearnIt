@@ -57,47 +57,38 @@ public class SelectDialogController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tags = TagHolder.getInstance().getTags();
 
-        try {
-            if(tags == null) throw new NullPointerException();
+        if(tags != null) {
+                for (Tag tag : tags) {
+                    JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
+                    jfxCheckBox.setUserData(tag);
 
-            for (Tag tag : tags) {
-                JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
-                jfxCheckBox.setUserData(tag);
+                    jfxCheckBox.setOnMouseClicked(event -> {
+                        if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                        else {
+                            changedObservableList.add(jfxCheckBox);
+                        }
+                    });
 
-                jfxCheckBox.setOnMouseClicked(event -> {
-                    if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                    else {
-                        changedObservableList.add(jfxCheckBox);
-                    }
-                });
-
-                jfxCheckBox.setPadding(new Insets(5));
-                observableList.add(jfxCheckBox);
-            }
-        } catch (NullPointerException exception){
-            exception.printStackTrace();
+                    jfxCheckBox.setPadding(new Insets(5));
+                    observableList.add(jfxCheckBox);
+                }
         }
 
-        try {
-            if(books == null) throw new NullPointerException();
+        if(books != null) {
+                for (Book book : books) {
+                    JFXCheckBox jfxCheckBox = new JFXCheckBox(book.getName());
+                    jfxCheckBox.setUserData(book);
 
-            for (Book book : books) {
-                JFXCheckBox jfxCheckBox = new JFXCheckBox(book.getName());
-                jfxCheckBox.setUserData(book);
+                    jfxCheckBox.setOnMouseClicked(event -> {
+                        if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                        else {
+                            changedObservableList.add(jfxCheckBox);
+                        }
+                    });
 
-                jfxCheckBox.setOnMouseClicked(event -> {
-                    if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                    else {
-                        changedObservableList.add(jfxCheckBox);
-                    }
-                });
-
-                jfxCheckBox.setPadding(new Insets(5));
-                observableList.add(jfxCheckBox);
-            }
-
-        } catch (NullPointerException ex){
-            ex.printStackTrace();
+                    jfxCheckBox.setPadding(new Insets(5));
+                    observableList.add(jfxCheckBox);
+                }
         }
 
 

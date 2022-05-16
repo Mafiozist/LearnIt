@@ -1,5 +1,6 @@
 package com.learnit.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
@@ -24,9 +25,11 @@ public class MainWindowController {
     @FXML
     private Tab tTab; //tags tab
     @FXML
-    private TabPane tabPane;
+    private JFXTabPane tabPane;
     @FXML
     private TextField search;
+    @FXML
+    StackPane stackPane;
 
     FXMLLoader lLoader, cLoader, rLoader, tLoader;
 
@@ -73,6 +76,8 @@ public class MainWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tabPane.tabMinWidthProperty().bind(stackPane.widthProperty().divide(tabPane.getTabs().size()));
 
      }
 

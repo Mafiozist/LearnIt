@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 <?import com.jfoenix.controls.JFXButton?>
-<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.LibraryWindowController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.LibraryWindowController">
     <VBox stylesheets="@css/LibraryItem.css" >
             <HBox>
                 <TextField fx:id="search" HBox.hgrow="ALWAYS" promptText="Поиск..." alignment="CENTER"/>
                 <JFXButton fx:id="selectTags" text="Выбрать по тегам" HBox.hgrow="ALWAYS"/>
             </HBox>
 
-            <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
+            <StackPane  VBox.vgrow="ALWAYS">
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                         <TilePane fx:id="tilePane" hgap="15" styleClass="transparent" tileAlignment="CENTER_LEFT" vgap="15">
                                 <padding>

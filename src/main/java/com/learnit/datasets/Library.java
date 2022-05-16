@@ -43,7 +43,7 @@ public class Library {
 
                    Book book = change.getAddedSubList().get(0);
                    Image image = book.getTitleImg();
-                   String qry = String.format("INSERT INTO books(name,htmlText) VALUES(%s, %s)", "\'"+book.getName()+"\'", "\' "+book.getHtmlText()+" \'");
+                   String qry = String.format("INSERT INTO books(name,htmlText) VALUES('%s', '%s')", book.getName(), book.getHtmlText());
                    executeQuery(qry);
 
                 } else if (change.wasRemoved()){
@@ -86,7 +86,7 @@ public class Library {
     public boolean executeQuery(String qry){
         boolean isExecuted = false;
         try {
-            PreparedStatement preparedStatement = null;
+            PreparedStatement preparedStatement;
             preparedStatement = connection.prepareStatement(qry);
             preparedStatement.executeUpdate();
             isExecuted = true;
@@ -117,4 +117,18 @@ public class Library {
     public ObservableList<Book> getBooks() {
         return books;
     }
+
+    public int getLastBookId() {
+        ResultSet rid = executeQueryWithResult("SELECT id FROM books WHERE id=(SELECT max(id) FROM books);");
+        int id = -1;
+        try {
+            rid.next();
+            id = rid.getInt(1);
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+
+        return id;
+    }
+
 }
