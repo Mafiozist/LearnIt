@@ -56,7 +56,7 @@ public class RevisingWindowController implements Initializable {
             RadioButton rb = (RadioButton) t1.getToggleGroup().getSelectedToggle();
             switch (rb.getText()) {
                 case "Все":
-                    //cards.addAll(FXCollections.observableList(CardHolder.getCards()));
+                    cards.addAll(FXCollections.observableList(CardHolder.getInstance().getCards()));
 
                     break;
 

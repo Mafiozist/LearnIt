@@ -2,8 +2,10 @@ package com.learnit.controllers;
 
 import com.jfoenix.controls.*;
 import com.learnit.MainWindow;
+import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
 import com.learnit.datasets.Library;
+import com.learnit.datasets.TagHolder;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
@@ -128,7 +130,7 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
-        selectTags.setOnMousePressed(pressed-> openTagSelectDialog(singleJfxDialog));
+        selectTags.setOnMousePressed(pressed-> MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags()));
 
         search.textProperty().addListener((observableValue, s, current) -> {
             Predicate<StackPane> contains = i-> ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
@@ -183,26 +185,6 @@ public class LibraryWindowController implements Initializable {
 
             }
         });
-
-    }
-
-    private void openTagSelectDialog(JFXDialog singleJfxDialog){
-        if (singleJfxDialog != null){
-            singleJfxDialog.close();
-            singleJfxDialog.show();
-            return;
-        }
-
-        singleJfxDialog = new JFXDialog();
-        JFXButton save = new JFXButton();
-
-        try {
-            singleJfxDialog.setContent(FXMLLoader.load(MainWindow.class.getResource("SelectDialog.fxml")));
-            singleJfxDialog.setDialogContainer(stackPane);
-            singleJfxDialog.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 

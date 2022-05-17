@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDialog;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
+import com.learnit.datasets.TagHolder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -93,6 +94,7 @@ public class CreateEditBookWindowController implements Initializable {
                     layout = fxmlLoader.load();
                     SelectDialogController controller = fxmlLoader.getController();
 
+                    controller.setTags(TagHolder.getInstance().getTags());
                     //Костыль
                     JFXButton button = new JFXButton("Save");
                     VBox vBox = (VBox) layout.lookup("#vBox");

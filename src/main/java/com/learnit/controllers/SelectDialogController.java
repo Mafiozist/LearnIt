@@ -1,6 +1,7 @@
 package com.learnit.controllers;
 
 import com.jfoenix.controls.*;
+import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
@@ -51,68 +52,15 @@ public class SelectDialogController implements Initializable {
         this.books = (ArrayList<Book>) books;
     }
 
-
     //Повторяющийся код, пока не придумал как исправить
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tags = TagHolder.getInstance().getTags();
-
         if(tags != null) {
-                for (Tag tag : tags) {
-                    JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
-                    jfxCheckBox.setUserData(tag);
-
-                    jfxCheckBox.setOnMouseClicked(event -> {
-                        if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                        else {
-                            changedObservableList.add(jfxCheckBox);
-                        }
-                    });
-
-                    jfxCheckBox.setPadding(new Insets(5));
-                    observableList.add(jfxCheckBox);
-                }
+            addTagsToUi(tags);
         }
 
         if(books != null) {
-                for (Book book : books) {
-                    JFXCheckBox jfxCheckBox = new JFXCheckBox(book.getName());
-                    jfxCheckBox.setUserData(book);
-
-                    jfxCheckBox.setOnMouseClicked(event -> {
-                        if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
-                        else {
-                            changedObservableList.add(jfxCheckBox);
-                        }
-                    });
-
-                    jfxCheckBox.setPadding(new Insets(5));
-                    observableList.add(jfxCheckBox);
-                }
-        }
-
-
-        filteredList = new FilteredList<>(observableList);
-        innerVBox.getChildren().addAll(filteredList);
-
-        //If there is nothing but zero tags
-        if(innerVBox.getChildren().size() == 0) {
-                JFXDialogLayout layout = new JFXDialogLayout();
-                layout.setHeading(new Text("Внимание!"));
-                layout.setBody(new Text("Список пуст. Вы можете создать теги или книги через отдкльную вкладку."));
-
-                JFXButton ok = new JFXButton("Ok");
-
-                JFXDialog jfxDialog = new JFXDialog(stackPane, innerVBox, JFXDialog.DialogTransition.CENTER);
-                jfxDialog.setContent(layout);
-                jfxDialog.show();
-
-                ok.setOnMousePressed(event -> {
-                    if(event.isPrimaryButtonDown()) {
-                        jfxDialog.close();
-                    }
-                });
-                layout.setActions(ok);
+            addBooksToUi(books);
         }
 
         textField.textProperty().addListener((observableValue, old, current) -> {
@@ -140,4 +88,67 @@ public class SelectDialogController implements Initializable {
         }
         return books;
     }
+
+    public SelectDialogController setBooks(ArrayList<Book> books) {
+        this.books = books;
+        addBooksToUi(books);
+        return this;
+    }
+
+    public SelectDialogController setTags(ArrayList<Tag> tags){
+        this.tags = tags;
+        addTagsToUi(tags);
+        return this;
+    }
+
+    private void addTagsToUi(ArrayList<Tag> tags){
+        observableList.clear();
+        for (Tag tag : tags) {
+            JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());
+            jfxCheckBox.setUserData(tag);
+
+            jfxCheckBox.setOnMouseClicked(event -> {
+                if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                else {
+                    changedObservableList.add(jfxCheckBox);
+                }
+            });
+
+            jfxCheckBox.setPadding(new Insets(5));
+            observableList.add(jfxCheckBox);
+        }
+
+        //If there is nothing but zero tags
+        if(observableList.size() == 0) {
+            MyUtils.openMessageDialog(stackPane, "Внимание!", "Список пуст. Вы можете создать теги или книги через отдкльную вкладку.");
+        }
+        filteredList = new FilteredList<>(observableList);
+        innerVBox.getChildren().addAll(filteredList);
+    }
+
+    private void addBooksToUi(ArrayList<Book> books){
+        observableList.clear();
+        for (Book book : books) {
+            JFXCheckBox jfxCheckBox = new JFXCheckBox(book.getName());
+            jfxCheckBox.setUserData(book);
+
+            jfxCheckBox.setOnMouseClicked(event -> {
+                if (changedObservableList.contains(jfxCheckBox)) changedObservableList.remove(jfxCheckBox);
+                else {
+                    changedObservableList.add(jfxCheckBox);
+                }
+            });
+
+            jfxCheckBox.setPadding(new Insets(5));
+            observableList.add(jfxCheckBox);
+        }
+
+        //If there is nothing but zero tags
+        if(observableList.size() == 0) {
+            MyUtils.openMessageDialog(stackPane, "Внимание!", "Список пуст. Вы можете создать теги или книги через отдкльную вкладку.");
+        }
+        filteredList = new FilteredList<>(observableList);
+        innerVBox.getChildren().addAll(filteredList);
+    }
+
 }
