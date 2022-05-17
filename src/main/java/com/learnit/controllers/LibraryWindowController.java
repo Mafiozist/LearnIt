@@ -4,6 +4,8 @@ import com.jfoenix.controls.*;
 import com.learnit.MainWindow;
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
+import com.learnit.database.data.tables.Card;
+import com.learnit.datasets.CardHolder;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
 import com.learnit.textconverters.SupportedTextFormats;
@@ -160,19 +162,33 @@ public class LibraryWindowController implements Initializable {
         }
 
         CreateEditBookWindowController finalController = controller;
-
         bWindow.setOnCloseRequest(windowEvent -> {
             if (finalController != null) {
                 book.setHtmlText(finalController.getHtmlEditor().getHtmlText());
             }
+            
+            ArrayList<Card> preparedCards = finalController.getPreparedNewCards();
+            
             if (book.getId() != -1){
                 Library.getInstance().updateBook(book);
+                if (preparedCards ==null) return;
+                // TODO: 17.05.2022 upload data and make reference from cards to book
+
+                for (Card card: preparedCards) {
+                    CardHolder.getInstance().addCard(card,book);
+                }
+
             }
             else if (book.getId() == -1 && !Library.getInstance().getBooks().contains(book)){ //If object aren't taken from db
-
                 Library.getInstance().addBook(book);
                 book.setId(Library.getInstance().getLastBookId()); //Костыль
                 addToUI(book);
+
+                if (preparedCards ==null) return;
+
+                for (Card card: preparedCards) {
+                    CardHolder.getInstance().addCard(card,book);
+                }
             }
         });
 

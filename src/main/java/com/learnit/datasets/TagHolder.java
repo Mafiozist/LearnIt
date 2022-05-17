@@ -1,4 +1,5 @@
 package com.learnit.datasets;
+import com.learnit.MyUtils;
 import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.database.data.tables.Tag;
 import javafx.beans.value.ObservableValue;
@@ -59,13 +60,11 @@ public class TagHolder {
     }
 
     public int getTagIdByName(String name) {
-        ResultSet res = executeStatementWithValue(String.format("SELECT id FROM %s WHERE name='%s';", "tags", name));
+        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT id FROM %s WHERE name='%s';", "tags", name));
         if(res !=null){
             try {
                 if (res.next()){
-                    int id = res.getInt(1);
-
-                    return id;
+                    return res.getInt(1);
                 }
 
             } catch (SQLException ex){
@@ -78,13 +77,13 @@ public class TagHolder {
     public boolean removeTag(Tag tag){
         System.out.println("Tag is deleted");
         tags.remove(tag);
-        return executeStatement(String.format("DELETE FROM %s WHERE id ='%s';", "tags",tag.getId()));
+        return MyUtils.executeQuery(String.format("DELETE FROM %s WHERE id ='%s';", "tags",tag.getId()));
     }
 
     public boolean addTag(Tag tag){
         System.out.println("Tag is added");
         boolean isAdded = false;
-        if (executeStatement(String.format("INSERT INTO %s(name,img) VALUES('%s', %s)","tags",tag.getName(), "null"))){
+        if (MyUtils.executeQuery(String.format("INSERT INTO %s(name,img) VALUES('%s', %s)","tags",tag.getName(), "null"))){
             isAdded = true;
             tags.add(tag);
         }
@@ -93,34 +92,7 @@ public class TagHolder {
     }
 
     public boolean updateTag(Tag tag){
-        return executeStatement(String.format("UPDATE %s SET name = '%s' WHERE id ='%s';", "tags",tag.getName(), tag.getId()));
-    }
-    private boolean executeStatement(String query){
-        boolean isExecuted = false;
-        Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
-            isExecuted=true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isExecuted;
-    }
-
-    private ResultSet executeStatementWithValue(String query){
-        Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
+        return MyUtils.executeQuery(String.format("UPDATE %s SET name = '%s' WHERE id ='%s';", "tags",tag.getName(), tag.getId()));
     }
 
     public void update(){

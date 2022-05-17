@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CreateEditBookWindowController implements Initializable {
@@ -30,37 +31,40 @@ public class CreateEditBookWindowController implements Initializable {
     private BorderPane borderPane; //for simple information alignment
     @FXML
     private StackPane stackPane; //for Jfx dialogs
-    LibraryWindowController controller; //for yes button
+    private LibraryWindowController controller; //for yes button
 
     private Book book;
     private int[] IdChangedTags; // the ids of tags that were changed at the book for using them to many-many table
     private Button tagButton,createCard;
 
+    private ArrayList<Card> preparedNewCards; //cards which to be uploaded when a window wil be closed
+
     private static final String SELECT_TEXT_SCRIPT =
-            "(function getSelectionText() {\n" +
-                    "    var text = \"\";\n" +
-                    "    if (window.getSelection) {\n" +
-                    "        text = window.getSelection().toString();\n" +
-                    "    } else if (document.selection && document.selection.type != \"Control\") {\n" +
-                    "        text = document.selection.createRange().text;\n" +
-                    "    }\n" +
-                    "    if (window.getSelection) {\n" +
-                    "      if (window.getSelection().empty) {  // Chrome\n" +
-                    "        window.getSelection().empty();\n" +
-                    "      } else if (window.getSelection().removeAllRanges) {  // Firefox\n" +
-                    "        window.getSelection().removeAllRanges();\n" +
-                    "      }\n" +
-                    "    } else if (document.selection) {  // IE?\n" +
-                    "      document.selection.empty();\n" +
-                    "    }" +
-                    "    return text;\n" +
-                    "})()";
+            """
+                    (function getSelectionText() {
+                        var text = "";
+                        if (window.getSelection) {
+                            text = window.getSelection().toString();
+                        } else if (document.selection && document.selection.type != "Control") {
+                            text = document.selection.createRange().text;
+                        }
+                        if (window.getSelection) {
+                          if (window.getSelection().empty) {  // Chrome
+                            window.getSelection().empty();
+                          } else if (window.getSelection().removeAllRanges) {  // Firefox
+                            window.getSelection().removeAllRanges();
+                          }
+                        } else if (document.selection) {  // IE?
+                          document.selection.empty();
+                        }    return text;
+                    })()""";
     private String selectedText;
 
     public CreateEditBookWindowController(){
         htmlEditor = new HTMLEditor();
         tagButton = new Button();
         createCard = new Button();
+        preparedNewCards = new ArrayList<>();
     }
 
     @Override
@@ -166,12 +170,27 @@ public class CreateEditBookWindowController implements Initializable {
         Stage stage = new Stage();
         try {
             BorderPane bp = fxmlLoader.load();
+
+            String q = card.getQuestion();
+            String a = card.getAnswer();
+
             CreateEditCardWindowController controller = fxmlLoader.getController();
             controller.setData(card,book);
+
             Scene scene = new Scene(bp);
             stage.setScene(scene);
             stage.setResizable(true);
             stage.show();
+
+            stage.setOnHidden(hidding ->{
+                StringBuilder sb = new StringBuilder(card.getAnswer());
+                StringBuilder sb2 = new StringBuilder(card.getQuestion());
+                if (sb.indexOf("head") == -1 || sb.indexOf("body") == -1 || sb2.indexOf("head") == -1 || sb2.indexOf("body") == -1) return; //if data wasnt get from html
+                if (q.equals(card.getQuestion()) && a.equals(card.getAnswer())) return; //default cards are not saves
+
+                preparedNewCards.add(card);
+            });
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,4 +201,9 @@ public class CreateEditBookWindowController implements Initializable {
     public HTMLEditor getHtmlEditor() {
         return htmlEditor;
     }
+
+    public ArrayList<Card> getPreparedNewCards() {
+        return preparedNewCards;
+    }
+
 }

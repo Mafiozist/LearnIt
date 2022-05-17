@@ -7,7 +7,7 @@
 <?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane prefHeight="551.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.CreateEditCardWindowController">
+<BorderPane fx:id="root" prefHeight="551.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.CreateEditCardWindowController">
    <center>
 
       <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
@@ -23,17 +23,15 @@
 
          </VBox>
 
-         <VBox prefHeight="400.0" prefWidth="327.0">
-
-            <WebView id="qestionView" fx:id="questionView" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
+         <VBox>
+            <WebView id="qestionView" fx:id="questionView" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
             <WebView id="AnswerView" fx:id="answerView" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
-
          </VBox>
 
       </SplitPane>
 
    </center>
    <bottom>
-      <JFXButton id="save" fx:id="save" text="Сохранить" BorderPane.alignment="CENTER" />
+      <JFXButton fx:id="save" text="Сохранить" BorderPane.alignment="CENTER"/>
    </bottom>
 </BorderPane>

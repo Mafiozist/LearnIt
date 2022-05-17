@@ -4,19 +4,67 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.learnit.controllers.SelectDialogController;
+import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Tag;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyUtils {
 
+
+    //ExecuteQuery
+    public static ResultSet executeQueryWithResult(String qry){
+        ResultSet resultSet = null;
+        try {
+            Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(qry);
+            resultSet = preparedStatement.executeQuery();
+        }catch (NullPointerException| SQLException exception){
+            exception.printStackTrace();
+            System.out.println("Cannot connect to db"); // TODO: 11.05.2022 db connection error
+        }
+        return resultSet;
+    }
+
+    public static boolean executeQuery(String query){
+        boolean isExecuted = false;
+        Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+            isExecuted=true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isExecuted;
+    }
+
+    public static int getLastAddedId(String tablename) {
+        ResultSet rid = MyUtils.executeQueryWithResult(String.format("SELECT id FROM `%s` WHERE id=(SELECT max(id) FROM `%s`);", tablename, tablename));
+        int id = -1;
+        try {
+            rid.next();
+            id = rid.getInt(1);
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+        return id;
+    }
 
     //Message dialogs
     public static void openMessageDialog(StackPane parent, String header, String msg){
@@ -63,6 +111,48 @@ public class MyUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //html
+    public static String getCentredHtml(String html){
+        Document document = Jsoup.parse(html);
+        Element head = document.head();
+        head.appendElement("style");
+        head.select("style").
+                append("""
+                            html,body {
+                            \theight: 100%;
+                            \twidth: 100%;
+                            }
+                            """).
+                append("""
+                            .container {
+                            \talign-items: center;
+                            \tdisplay: flex;
+                            \tjustify-content: center;
+                            \theight: 100%;
+                            \twidth: 100%;
+                            }
+                            """);
+
+        Element body = document.body();
+        //crating the new elements to center the info
+        Element divWrapper = new Element("div");
+        Element div = new Element("div");
+
+        divWrapper.addClass("container");
+        div.addClass("content");
+        div.appendChild(body);
+        divWrapper.appendChild(div);
+
+
+        //System.out.println(divWrapper.outerHtml());
+        body.html(divWrapper.outerHtml());
+        document.body().html(body.html());
+
+        //System.out.println(document.html());
+        return document.html();
     }
 
 }

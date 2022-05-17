@@ -1,5 +1,6 @@
 package com.learnit.datasets;
 
+import com.learnit.MyUtils;
 import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.database.data.tables.Book;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ public class Library {
 
     private Library() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
-        ResultSet resultSet = executeQueryWithResult(getBooksQuery);
+        ResultSet resultSet = MyUtils.executeQueryWithResult(getBooksQuery);
 
         while (resultSet != null && resultSet.next()){
             Book book = new Book();
@@ -44,11 +45,11 @@ public class Library {
                    Book book = change.getAddedSubList().get(0);
                    Image image = book.getTitleImg();
                    String qry = String.format("INSERT INTO books(name,htmlText) VALUES('%s', '%s')", book.getName(), book.getHtmlText());
-                   executeQuery(qry);
+                   MyUtils.executeQuery(qry);
 
                 } else if (change.wasRemoved()){
                    // TODO: 30.04.2022  if book was removed there is need to remove from db either
-                   executeQuery(String.format("DELETE FROM %s WHERE id = %d and name = '%s'","books",change.getRemoved().get(0).getId(),change.getRemoved().get(0).getName()));
+                   MyUtils.executeQuery(String.format("DELETE FROM %s WHERE id = %d and name = '%s'","books",change.getRemoved().get(0).getId(),change.getRemoved().get(0).getName()));
                }
            }
 
@@ -78,39 +79,13 @@ public class Library {
         String updateQuery = String.format(
         "UPDATE books SET htmlText = '%s' " +
                 "WHERE id = %d;", book.getHtmlText(), book.getId());
-        executeQuery(updateQuery);
+        MyUtils.executeQuery(updateQuery);
         return this;
     }
 
     public Library updateBookName(Book book){
-        executeQuery(String.format("UPDATE books SET name ='%s' WHERE id='%d';",book.getName(), book.getId()));
+        MyUtils.executeQuery(String.format("UPDATE books SET name ='%s' WHERE id='%d';",book.getName(), book.getId()));
         return this;
-    }
-
-    public boolean executeQuery(String qry){
-        boolean isExecuted = false;
-        try {
-            PreparedStatement preparedStatement;
-            preparedStatement = connection.prepareStatement(qry);
-            preparedStatement.executeUpdate();
-            isExecuted = true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isExecuted;
-    }
-
-    public ResultSet executeQueryWithResult(String qry){
-        ResultSet resultSet = null;
-        try {
-            connection = OfflineDatabaseConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(qry);
-            resultSet = preparedStatement.executeQuery();
-        }catch (NullPointerException|SQLException exception){
-            exception.printStackTrace();
-            System.out.println("Cannot connect to db"); // TODO: 11.05.2022 db connection error
-        }
-        return resultSet;
     }
 
     public Library removeBook(Book book){
@@ -123,7 +98,7 @@ public class Library {
     }
 
     public int getLastBookId() {
-        ResultSet rid = executeQueryWithResult("SELECT id FROM books WHERE id=(SELECT max(id) FROM books);");
+        ResultSet rid = MyUtils.executeQueryWithResult("SELECT id FROM books WHERE id=(SELECT max(id) FROM books);");
         int id = -1;
         try {
             rid.next();

@@ -59,9 +59,8 @@ public class RevisingWindowController implements Initializable {
             switch (rb.getText()) {
                 case "Все" ->
 
-
                         cards.addAll(FXCollections.observableList(CardHolder.getInstance().getCards()));
-                
+
                 case "Книги" ->
                         // TODO: 12.05.2022 there is feature for filtering cards by books
 

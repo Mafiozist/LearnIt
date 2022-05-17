@@ -2,6 +2,7 @@ package com.learnit.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.learnit.MainWindow;
+import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Card;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -60,7 +61,7 @@ public class CardReviseFaceController implements Initializable {
 
     public void setData(Card card){
         this.card = card;
-        question.getEngine().loadContent(card.getQuestion());
+        question.getEngine().loadContent(MyUtils.getCentredHtml(card.getQuestion()));
     }
 
     public void toBackside(){
