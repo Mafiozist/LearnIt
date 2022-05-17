@@ -3,6 +3,9 @@ package com.learnit.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Card;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,6 +47,11 @@ public class CardReviseBackController implements Initializable {
         });
         answer.contextMenuEnabledProperty().setValue(false);
         setData(card);
+
+        //deleting scrool bars
+        answer.getEngine().getLoadWorker().stateProperty().addListener((o, old, state) -> {
+            if (state == Worker.State.RUNNING || state == Worker.State.SUCCEEDED) answer.getEngine().executeScript("document.body.style.overflow = 'hidden';");
+        });
     }
 
     public void toFace(){

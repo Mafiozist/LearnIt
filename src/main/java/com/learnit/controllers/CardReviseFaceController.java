@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Card;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +23,11 @@ import java.util.ResourceBundle;
 
 public class CardReviseFaceController implements Initializable {
     @FXML
-    BorderPane cardViewFace;
+    private BorderPane cardViewFace;
     @FXML
-    WebView question;
+    private WebView question;
     @FXML
-    JFXButton changeToBack;
+    private JFXButton changeToBack;
 
     CardReviseBackController backController;
     BorderPane root;
@@ -48,6 +51,11 @@ public class CardReviseFaceController implements Initializable {
 
         question.contextMenuEnabledProperty().setValue(false);
         setData(card);
+
+        //deleting scrool bars
+        question.getEngine().getLoadWorker().stateProperty().addListener((o, old, state) -> {
+            if (state == Worker.State.RUNNING || state == Worker.State.SUCCEEDED) question.getEngine().executeScript("document.body.style.overflow = 'hidden';");
+        });
     }
 
     public void setData(Card card){

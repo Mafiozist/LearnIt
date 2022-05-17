@@ -9,7 +9,7 @@
 <?import javafx.geometry.Insets?>
 
 <?import javafx.scene.image.Image?>
-<StackPane  stylesheets="@css/LibraryItem.css"
+<StackPane fx:id="stackPane" stylesheets="@css/LibraryItem.css"
            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.learnit.controllers.LibraryItemController" maxWidth="200" maxHeight="300">
 
@@ -45,12 +45,12 @@
             </StackPane.margin>
 
             <center>
-                  <ImageView id="libraryImage" fx:id="imgView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"/>
+                  <ImageView id="imgView" fx:id="imgView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"/>
             </center>
             <bottom>
-                  <Label id="libraryName" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"
+                  <Label id="name" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"
                          text="There is a name of your information" textAlignment="CENTER"
-                         BorderPane.alignment="CENTER"/>
+                         BorderPane.alignment="CENTER" onMouseClicked="#changeName"  prefWidth="${imgView.fitWidth}" minHeight="50"/>
             </bottom>
       </BorderPane>
 

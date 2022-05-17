@@ -7,6 +7,8 @@ import com.learnit.datasets.Library;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
+import javafx.application.Platform;
+import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +22,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -146,7 +150,7 @@ public class LibraryWindowController implements Initializable {
         wloader.setLocation(MainWindow.class.getResource("CreateEditBookWindow.fxml"));
         CreateEditBookWindowController controller = null;
         Stage bWindow = new Stage();
-        bWindow.setTitle(book.getName());
+        bWindow.titleProperty().bind(book.getNameProperty());
         try {
             Scene scene = new Scene(wloader.load(),800, 600);
             controller = wloader.getController();
@@ -156,7 +160,8 @@ public class LibraryWindowController implements Initializable {
             bWindow.setResizable(true);
             bWindow.setScene(scene);
             bWindow.show();
-            //System.out.println(bWindow);
+
+           //System.out.println(bWindow);
         } catch (IOException ex){
             ex.printStackTrace(); //todo alert
         }
@@ -179,6 +184,7 @@ public class LibraryWindowController implements Initializable {
                 }
             }
         });
+
     }
 
     private void openTagSelectDialog(JFXDialog singleJfxDialog){
@@ -215,8 +221,8 @@ public class LibraryWindowController implements Initializable {
             try {
                 sp = bookloader.load();
 
-                BorderPane bp = (BorderPane) sp.lookup("#borderPane");
-                bp.setOnMousePressed(event -> {
+                ImageView imageView = (ImageView) sp.lookup("#imgView");
+                imageView.setOnMousePressed(event -> {
                     if(event.isPrimaryButtonDown()) openEditDialog(book);
                     System.out.println(event.getTarget());
                 });

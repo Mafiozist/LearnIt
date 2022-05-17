@@ -144,6 +144,7 @@ public class CreateEditBookWindowController implements Initializable {
                 if(finalBar.getItems().size() == 17) finalBar.getItems().addAll(tagButton, createCard);
             });
         }
+
     }
 
     public void setHtmlEditorText(String htmlText) {

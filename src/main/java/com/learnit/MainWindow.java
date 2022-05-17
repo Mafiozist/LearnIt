@@ -2,6 +2,7 @@ package com.learnit;
 
 import com.learnit.controllers.LibraryWindowController;
 import com.learnit.database.connection.OfflineDatabaseConnection;
+import com.learnit.database.data.tables.Book;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
 import fr.brouillard.oss.cssfx.CSSFX;

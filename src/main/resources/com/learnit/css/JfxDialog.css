@@ -1,0 +1,4 @@
+.jfx-dialog-overlay-pane > StackPane{
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}

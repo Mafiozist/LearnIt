@@ -1,6 +1,10 @@
 package com.learnit.database.data.tables;
 
 import com.learnit.MainWindow;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.scene.image.Image;
 
 import java.io.ByteArrayInputStream;
@@ -13,19 +17,26 @@ public class Book {
     private static int objectSize;
     private int id,appId;
     private ArrayList<Tag> tag;
-    private String name, htmlText;
+    private String htmlText;
+    private SimpleStringProperty name;
     private double textSize;
     private Date createDate, changeDate;
     private Image titleImg;
 
     public Book(){
         appId = objectSize++;
-        name = "The new book name";
+        name = new SimpleStringProperty("The new book name");
         id = -1;
         htmlText = "";
         textSize = 0d;
+
         createDate = new Date();
         changeDate = new Date();
+
+        name.addListener((observable, oldValue, newValue) -> {
+            System.out.println("nameChanged. New name is " + newValue);
+            if(newValue.isEmpty() || newValue.isBlank()) name = new SimpleStringProperty("Без названия");
+        });
     }
 
     public int getId() {
@@ -49,12 +60,16 @@ public class Book {
     }
 
     //Header
-    public String getName() {
-        return name;
+    public String  getName() {
+        return name.getName();
     }
     public Book setName(String name) {
-        this.name = name;
+        this.name.setValue(name);
         return this;
+    }
+
+    public SimpleStringProperty getNameProperty(){
+        return name;
     }
 
     //Body
