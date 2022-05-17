@@ -4,7 +4,6 @@ import com.jfoenix.controls.*;
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Tag;
-import com.learnit.datasets.TagHolder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,11 +13,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import javax.xml.transform.Source;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
@@ -34,7 +28,7 @@ public class SelectDialogController implements Initializable {
     private StackPane stackPane;
 
     private ArrayList<Tag> tags;
-    private ArrayList<Book> books;
+    private ObservableList<Book> books;
     private ObservableList<JFXCheckBox> observableList, changedObservableList;
     private FilteredList<JFXCheckBox> filteredList;
 
@@ -49,7 +43,7 @@ public class SelectDialogController implements Initializable {
 
     public SelectDialogController(List<Book> books){
         this();
-        this.books = (ArrayList<Book>) books;
+        //this.books =  books;
     }
 
     //Повторяющийся код, пока не придумал как исправить
@@ -89,7 +83,7 @@ public class SelectDialogController implements Initializable {
         return books;
     }
 
-    public SelectDialogController setBooks(ArrayList<Book> books) {
+    public SelectDialogController setBooks(ObservableList<Book> books) {
         this.books = books;
         addBooksToUi(books);
         return this;
@@ -126,7 +120,7 @@ public class SelectDialogController implements Initializable {
         innerVBox.getChildren().addAll(filteredList);
     }
 
-    private void addBooksToUi(ArrayList<Book> books){
+    private void addBooksToUi(ObservableList<Book> books){
         observableList.clear();
         for (Book book : books) {
             JFXCheckBox jfxCheckBox = new JFXCheckBox(book.getName());

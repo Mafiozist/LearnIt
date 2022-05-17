@@ -1276,3 +1276,239 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:174)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-05-17 19:41:24 database: flush
+org.h2.message.DbException: Внутренняя ошибка: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]" [50000-212]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:395)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:124)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:3349)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:590)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:466)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4118)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:288)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:808)
+	at org.h2.server.web.WebApp.login(WebApp.java:1033)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:153)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Внутренняя ошибка: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]" [50000-212]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 22 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at org.h2.mvstore.FileStore.open(FileStore.java:163)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:449)
+	... 16 more
+2022-05-17 19:43:48 database: flush
+org.h2.message.DbException: Внутренняя ошибка: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]" [50000-212]
+	at com.h2database@2.1.212/org.h2.message.DbException.get(DbException.java:212)
+	at com.h2database@2.1.212/org.h2.message.DbException.convert(DbException.java:395)
+	at com.h2database@2.1.212/org.h2.mvstore.db.Store.lambda$new$0(Store.java:124)
+	at com.h2database@2.1.212/org.h2.mvstore.MVStore.handleException(MVStore.java:3349)
+	at com.h2database@2.1.212/org.h2.mvstore.MVStore.panic(MVStore.java:590)
+	at com.h2database@2.1.212/org.h2.mvstore.MVStore.<init>(MVStore.java:466)
+	at com.h2database@2.1.212/org.h2.mvstore.MVStore$Builder.open(MVStore.java:4118)
+	at com.h2database@2.1.212/org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at com.h2database@2.1.212/org.h2.engine.Database.<init>(Database.java:324)
+	at com.h2database@2.1.212/org.h2.engine.Engine.openSession(Engine.java:92)
+	at com.h2database@2.1.212/org.h2.engine.Engine.openSession(Engine.java:222)
+	at com.h2database@2.1.212/org.h2.engine.Engine.createSession(Engine.java:201)
+	at com.h2database@2.1.212/org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at com.h2database@2.1.212/org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at com.h2database@2.1.212/org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:681)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:229)
+	at com.learnit.learnit/com.learnit.database.connection.OfflineDatabaseConnection.<init>(OfflineDatabaseConnection.java:43)
+	at com.learnit.learnit/com.learnit.database.connection.OfflineDatabaseConnection.getInstance(OfflineDatabaseConnection.java:50)
+	at com.learnit.learnit/com.learnit.datasets.Library.executeQueryWithResult(Library.java:106)
+	at com.learnit.learnit/com.learnit.datasets.Library.<init>(Library.java:23)
+	at com.learnit.learnit/com.learnit.datasets.Library.getInstance(Library.java:62)
+	at com.learnit.learnit/com.learnit.controllers.LibraryWindowController.<init>(LibraryWindowController.java:65)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ValueElement.processAttribute(FXMLLoader.java:938)
+	at javafx.fxml/javafx.fxml.FXMLLoader$InstanceDeclarationElement.processAttribute(FXMLLoader.java:980)
+	at javafx.fxml/javafx.fxml.FXMLLoader$Element.processStartElement(FXMLLoader.java:229)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ValueElement.processStartElement(FXMLLoader.java:754)
+	at javafx.fxml/javafx.fxml.FXMLLoader.processStartElement(FXMLLoader.java:2802)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2628)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2542)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:2511)
+	at com.learnit.learnit/com.learnit.controllers.MainWindowController.initialize(MainWindowController.java:57)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:76)
+	at jdk.internal.reflect.GeneratedMethodAccessor2.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:273)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:83)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2667)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2542)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:2511)
+	at com.learnit.learnit/com.learnit.MainWindow.start(MainWindow.java:39)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:849)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:474)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:447)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:446)
+	at javafx.graphics/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:174)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Внутренняя ошибка: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]" [50000-212]
+	at com.h2database@2.1.212/org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at com.h2database@2.1.212/org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 60 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: D:/JavaProjects/LearnIt/resources/learning.mv.db [2.1.212/7]
+	at com.h2database@2.1.212/org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at com.h2database@2.1.212/org.h2.mvstore.FileStore.open(FileStore.java:163)
+	at com.h2database@2.1.212/org.h2.mvstore.MVStore.<init>(MVStore.java:449)
+	... 54 more
+2022-05-17 19:59:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000a[*]MODIFY COLUMN LASTREPETITION DATETIME"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000a[*]MODIFY COLUMN LASTREPETITION DATETIME"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE cards
+MODIFY COLUMN LASTREPETITION DATETIME [42001-212]
+2022-05-17 20:01:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000a[*]MODIFY REPDATE DATETIME"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000a[*]MODIFY REPDATE DATETIME"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE cards
+MODIFY REPDATE DATETIME [42001-212]
+2022-05-17 20:01:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000aSET [*]REPDATE DATETIME"; ожидалось "REFERENTIAL_INTEGRITY"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000aSET [*]REPDATE DATETIME"; expected "REFERENTIAL_INTEGRITY"; SQL statement:
+ALTER TABLE cards
+SET REPDATE DATETIME [42001-212]
+2022-05-17 20:01:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000a[*]MODIFY REPDATE DATETIME"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000a[*]MODIFY REPDATE DATETIME"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE cards
+MODIFY REPDATE DATETIME [42001-212]
+2022-05-17 20:01:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000a[*]UPDATE REPDATE DATETIME"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000a[*]UPDATE REPDATE DATETIME"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE cards
+UPDATE REPDATE DATETIME [42001-212]
+2022-05-17 20:01:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000aRENAME [*]REPDATE DATETIME"; ожидалось "COLUMN, CONSTRAINT, TO"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000aRENAME [*]REPDATE DATETIME"; expected "COLUMN, CONSTRAINT, TO"; SQL statement:
+ALTER TABLE cards
+RENAME REPDATE DATETIME [42001-212]
+2022-05-17 20:03:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE cards\000d\000aSET [*]DATA TYPE REPDATE DATETIME"; ожидалось "REFERENTIAL_INTEGRITY"
+Syntax error in SQL statement "ALTER TABLE cards\000d\000aSET [*]DATA TYPE REPDATE DATETIME"; expected "REFERENTIAL_INTEGRITY"; SQL statement:
+ALTER TABLE cards
+SET DATA TYPE REPDATE DATETIME [42001-212]
+2022-05-17 20:04:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE REPETITION_STATS \000d\000aSET [*]DATA TYPE REPDATE DATETIME"; ожидалось "REFERENTIAL_INTEGRITY"
+Syntax error in SQL statement "ALTER TABLE REPETITION_STATS \000d\000aSET [*]DATA TYPE REPDATE DATETIME"; expected "REFERENTIAL_INTEGRITY"; SQL statement:
+ALTER TABLE REPETITION_STATS 
+SET DATA TYPE REPDATE DATETIME [42001-212]
+2022-05-17 20:06:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE CARDS \000d\000aALTER COLUMN LASTREPETITION[*],NEXTREPETITION  SET DATA TYPE DATETIME"; ожидалось "RENAME, DROP, TYPE, SELECTIVITY, SET, START, RESTART, SET, SET, IDENTITY, BIGSERIAL, SERIAL, data type"
+Syntax error in SQL statement "ALTER TABLE CARDS \000d\000aALTER COLUMN LASTREPETITION[*],NEXTREPETITION  SET DATA TYPE DATETIME"; expected "RENAME, DROP, TYPE, SELECTIVITY, SET, START, RESTART, SET, SET, IDENTITY, BIGSERIAL, SERIAL, data type"; SQL statement:
+ALTER TABLE CARDS 
+ALTER COLUMN LASTREPETITION,NEXTREPETITION  SET DATA TYPE DATETIME [42001-212]
+2022-05-17 20:07:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "REPDATE" не найдена
+Table "REPDATE" not found; SQL statement:
+ALTER TABLE REPDATE 
+ALTER COLUMN REPDATE SET O [42102-212]
+2022-05-17 20:08:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Невозможно преобразование строки  в тип "TIMESTAMP"
+Cannot parse "TIMESTAMP" constant ; SQL statement:
+INSERT INTO "PUBLIC"."REPETITION_STATS"("ID","CID","SID","REPDATE")VALUES(?,?,?,?) [22007-212]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:506)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:88)
+	at org.h2.value.Value.convertToTimestamp(Value.java:1980)
+	at org.h2.value.Value.convertTo(Value.java:1153)
+	at org.h2.value.Value.convertForAssignTo(Value.java:1092)
+	at org.h2.table.Column.validateConvertUpdateSequence(Column.java:369)
+	at org.h2.table.Table.convertInsertRow(Table.java:931)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:167)
+	at org.h2.command.dml.Insert.update(Insert.java:135)
+	at org.h2.command.dml.DataChangeStatement.update(DataChangeStatement.java:74)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:174)
+	at org.h2.command.Command.executeUpdate(Command.java:252)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:209)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:169)
+	at org.h2.result.UpdatableRow.insertRow(UpdatableRow.java:334)
+	at org.h2.jdbc.JdbcResultSet.insertRow(JdbcResultSet.java:3335)
+	at org.h2.server.web.WebApp.editResult(WebApp.java:1159)
+	at org.h2.server.web.WebApp.process(WebApp.java:250)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:153)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 0
+	at java.base/java.lang.StringLatin1.charAt(StringLatin1.java:48)
+	at java.base/java.lang.String.charAt(String.java:1512)
+	at org.h2.util.DateTimeUtils.parseDateValue(DateTimeUtils.java:166)
+	at org.h2.util.DateTimeUtils.parseTimestamp(DateTimeUtils.java:338)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:86)
+	... 20 more
+2022-05-17 20:08:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Невозможно преобразование строки  в тип "TIMESTAMP"
+Cannot parse "TIMESTAMP" constant ; SQL statement:
+INSERT INTO "PUBLIC"."REPETITION_STATS"("ID","CID","SID","REPDATE")VALUES(?,?,?,?) [22007-212]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:506)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:88)
+	at org.h2.value.Value.convertToTimestamp(Value.java:1980)
+	at org.h2.value.Value.convertTo(Value.java:1153)
+	at org.h2.value.Value.convertForAssignTo(Value.java:1092)
+	at org.h2.table.Column.validateConvertUpdateSequence(Column.java:369)
+	at org.h2.table.Table.convertInsertRow(Table.java:931)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:167)
+	at org.h2.command.dml.Insert.update(Insert.java:135)
+	at org.h2.command.dml.DataChangeStatement.update(DataChangeStatement.java:74)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:174)
+	at org.h2.command.Command.executeUpdate(Command.java:252)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:209)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:169)
+	at org.h2.result.UpdatableRow.insertRow(UpdatableRow.java:334)
+	at org.h2.jdbc.JdbcResultSet.insertRow(JdbcResultSet.java:3335)
+	at org.h2.server.web.WebApp.editResult(WebApp.java:1159)
+	at org.h2.server.web.WebApp.process(WebApp.java:250)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:153)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.lang.StringIndexOutOfBoundsException: String index out of range: 0
+	at java.base/java.lang.StringLatin1.charAt(StringLatin1.java:48)
+	at java.base/java.lang.String.charAt(String.java:1512)
+	at org.h2.util.DateTimeUtils.parseDateValue(DateTimeUtils.java:166)
+	at org.h2.util.DateTimeUtils.parseTimestamp(DateTimeUtils.java:338)
+	at org.h2.value.ValueTimestamp.parse(ValueTimestamp.java:86)
+	... 20 more
+2022-05-17 20:09:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Ошибка преобразования данных при конвертации "'' (REPETITION_STATS: ""CID"" INTEGER DEFAULT NULL)"
+Data conversion error converting "'' (REPETITION_STATS: ""CID"" INTEGER DEFAULT NULL)"; SQL statement:
+INSERT INTO "PUBLIC"."REPETITION_STATS"("ID","CID","SID","REPDATE")VALUES(?,?,?,?) [22018-212]
+2022-05-17 20:09:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Ошибка преобразования данных при конвертации "'' (REPETITION_STATS: ""CID"" INTEGER DEFAULT NULL)"
+Data conversion error converting "'' (REPETITION_STATS: ""CID"" INTEGER DEFAULT NULL)"; SQL statement:
+INSERT INTO "PUBLIC"."REPETITION_STATS"("ID","CID","SID","REPDATE")VALUES(?,?,?,?) [22018-212]

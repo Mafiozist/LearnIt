@@ -49,7 +49,6 @@ public class CardHolder {
         if(cardHolder == null) cardHolder = new CardHolder();
         return cardHolder;
     }
-
     // TODO: 12.05.2022 get card by bookname or id
     // TODO: 12.05.2022 get card by tagname or id
     // TODO: 12.05.2022 add card, remove card and update card

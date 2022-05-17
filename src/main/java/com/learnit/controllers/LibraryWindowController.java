@@ -9,24 +9,16 @@ import com.learnit.datasets.TagHolder;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
-import javafx.application.Platform;
-import javafx.beans.property.Property;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -35,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -182,7 +173,6 @@ public class LibraryWindowController implements Initializable {
                 Library.getInstance().addBook(book);
                 book.setId(Library.getInstance().getLastBookId()); //Костыль
                 addToUI(book);
-
             }
         });
 

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDialogLayout;
 import com.learnit.controllers.SelectDialogController;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Tag;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -41,11 +42,11 @@ public class MyUtils {
         openSelectDialog(parent,null,tags);
     }
 
-    public static void openBookSelectDialog(StackPane parent, ArrayList<Book> books){
+    public static void openBookSelectDialog(StackPane parent, ObservableList<Book> books){
         openSelectDialog(parent,books,null);
     }
 
-    private static void openSelectDialog(StackPane parent, ArrayList<Book> books, ArrayList<Tag> tags){
+    private static void openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
         JFXDialog singleJfxDialog = new JFXDialog();
         JFXButton save = new JFXButton();
 
