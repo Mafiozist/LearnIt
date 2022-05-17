@@ -175,13 +175,12 @@ public class LibraryWindowController implements Initializable {
             if (book.getId() != -1){
                 Library.getInstance().updateBook(book);
             }
-            else if (book.getId() == -1){ //If object aren't taken from db
+            else if (book.getId() == -1 && !Library.getInstance().getBooks().contains(book)){ //If object aren't taken from db
 
-                if(!Library.getInstance().getBooks().contains(book)){
-                    Library.getInstance().addBook(book);
-                    book.setId(Library.getInstance().getLastBookId()); //Костыль
-                    addToUI(book);
-                }
+                Library.getInstance().addBook(book);
+                book.setId(Library.getInstance().getLastBookId()); //Костыль
+                addToUI(book);
+
             }
         });
 

@@ -61,7 +61,7 @@ public class Book {
 
     //Header
     public String  getName() {
-        return name.getName();
+        return name.getValue();
     }
     public Book setName(String name) {
         this.name.setValue(name);

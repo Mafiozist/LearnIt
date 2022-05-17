@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,7 +50,8 @@ public class LibraryItemController implements Initializable {
     public void changeName(MouseEvent event) {
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Text("Введите новое название:"));
-        TextField textField = new TextField(book.getName());
+        TextArea textField = new TextArea();
+        textField.setWrapText(true);
         layout.setBody(textField);
         JFXButton ok = new JFXButton("Сохранить");
         JFXButton cancel = new JFXButton("Отменить");
@@ -61,6 +63,7 @@ public class LibraryItemController implements Initializable {
         ok.setOnMousePressed(pressed -> {
             if (pressed.isPrimaryButtonDown()) {
                 book.setName(textField.getText());
+                Library.getInstance().updateBookName(book);
                 jfxDialog.close();
             }
         });

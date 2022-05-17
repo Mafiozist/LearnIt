@@ -76,10 +76,14 @@ public class Library {
     public Library updateBook(Book book){ // TODO: 30.04.2022  need to add image and tags
         System.out.println("Db. Book is updated");
         String updateQuery = String.format(
-        "UPDATE books SET name = '%s', " +
-                "htmlText = '%s' " +
-                "WHERE id = %d;", book.getName(), book.getHtmlText(), book.getId());
+        "UPDATE books SET htmlText = '%s' " +
+                "WHERE id = %d;", book.getHtmlText(), book.getId());
         executeQuery(updateQuery);
+        return this;
+    }
+
+    public Library updateBookName(Book book){
+        executeQuery(String.format("UPDATE books SET name ='%s' WHERE id='%d';",book.getName(), book.getId()));
         return this;
     }
 
