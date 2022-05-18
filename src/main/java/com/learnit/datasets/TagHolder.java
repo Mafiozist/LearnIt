@@ -49,6 +49,10 @@ public class TagHolder {
         return tags;
     }
 
+    public void clearCopy(Tag tag){
+        tags.remove(tags.indexOf(tag));
+    }
+
     public int[] getTagsIdsByNames(String ... names){ // there is need to be changed on sql realization
         int i = 0;
         int[] tagsIds = new int[names.length];
@@ -62,7 +66,7 @@ public class TagHolder {
     }
 
     public int getTagIdByName(String name) {
-        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT id FROM %s WHERE name='%s';", "tags", name));
+        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT tid FROM %s WHERE name='%s';", "tags", name));
         if(res !=null){
             try {
                 if (res.next()){
@@ -105,7 +109,7 @@ public class TagHolder {
     }
 
     public boolean updateTag(Tag tag){
-        return MyUtils.executeQuery(String.format("UPDATE %s SET name = '%s' WHERE id ='%s';", "tags",tag.getName(), tag.getId()));
+        return MyUtils.executeQuery(String.format("UPDATE %s SET name = '%s' WHERE tid ='%s';", "tags",tag.getName(), tag.getId()));
     }
 
     public boolean selectTag(Tag tag, Book book){

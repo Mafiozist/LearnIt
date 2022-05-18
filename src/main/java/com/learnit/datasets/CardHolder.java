@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 //The base class for all further realization of i
@@ -20,9 +21,7 @@ public class CardHolder {
     private static CardHolder cardHolder;
     private ArrayList<Card> cards;
     private int bid,tid;
-    private String getCardsQry = String.format("SELECT id,question,answer,nextRepetition,baseinterval FROM %s;","cards");
-    private String getCardsIdsQryByBookId = String.format("SELECT cid FROM %s WHERE bid = %d;", "tbc_mm", bid);
-    private String getCardsIdsQryByTagId = String.format("SELECT cid FROM %s WHERE tid = %d;", "tbc_mm", tid); // get cards ids from many-many table
+    private String getCardsQry = String.format("SELECT cid,question,answer,nextRepetition,baseinterval FROM %s;","cards");
     private final String[] cardTables = new String[] {"repetition-stats", "book-card", "card-tag", "cards"}; //right order do matter
 
     private CardHolder(){
@@ -58,14 +57,15 @@ public class CardHolder {
     // TODO: 12.05.2022 remove card and update card
 
     public CardHolder addCard(Card card, Book book){
-        if(MyUtils.executeQuery(String.format("INSERT INTO cards(sid,question,answer,baseinterval) VALUES('%d','%s','%s','%d');",1, card.getQuestion(), card.getAnswer(),1))){
+        if(MyUtils.executeQuery(String.format(Locale.ROOT,"INSERT INTO cards(question, answer, baseinterval) VALUES('%s','%s', %.2f );",card.getQuestion(), card.getAnswer(), 1.3f))){
             //if card was added there is need to make reference in many-to-many table from book to card
 
-            int id = MyUtils.getLastAddedId("cards");
+            int id = MyUtils.getLastAddedId("cards","cid");
             card.setId(id);
 
-            if(MyUtils.executeQuery(String.format("INSERT INTO `book-card` VALUES('%d',%d);",book.getId(),card.getId()))){
+            if(MyUtils.executeQuery(String.format(Locale.ROOT,"INSERT INTO `book-card` VALUES(%d,%d);",book.getId(),card.getId()))){
                 System.out.println("Card added and reference are connected");
+                cards.add(card);
             }
         }
         return this;
@@ -74,14 +74,14 @@ public class CardHolder {
     public CardHolder removeCardWithStatistics(Card card){
 
         for (String table: cardTables) {
-            MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE cid='%d'",table,card.getId()));
+            MyUtils.executeQuery(String.format(Locale.ROOT,"DELETE FROM `%s` WHERE cid='%d'",table,card.getId()));
         }
 
         return this;
     }
 
     public CardHolder removeCard(Card card){
-        MyUtils.executeQuery(String.format("UPDATE TABLE `cards` SET isdeleted =`1` WHERE cid='%d'",card.getId()));
+        MyUtils.executeQuery(String.format(Locale.ROOT,"UPDATE TABLE `cards` SET isdeleted =`1` WHERE cid='%d'",card.getId()));
         return this;
     }
 }

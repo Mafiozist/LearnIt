@@ -36,7 +36,7 @@ public class MainWindow extends Application {
         Scene scene = null;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("MainWindow.fxml") /*, bundle*/);
-            scene = new Scene(fxmlLoader.load());
+            scene = new Scene(fxmlLoader.load(),800,600);
         } catch (IOException exception){
             exception.printStackTrace();
         }

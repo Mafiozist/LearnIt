@@ -52,7 +52,9 @@ public class CardWindowController implements Initializable {
 
         }
 
-
+        // TODO: 18.05.2022 remove from UI  
+        // TODO: 18.05.2022 add card to ui 
+        // TODO: 18.05.2022 open card, apply tags to it, apply books to it 
 
     }
 }

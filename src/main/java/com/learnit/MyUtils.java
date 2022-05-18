@@ -43,7 +43,7 @@ public class MyUtils {
     public static boolean executeQuery(String query){
         boolean isExecuted = false;
         Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
@@ -54,8 +54,8 @@ public class MyUtils {
         return isExecuted;
     }
 
-    public static int getLastAddedId(String tablename) {
-        ResultSet rid = MyUtils.executeQueryWithResult(String.format("SELECT id FROM `%s` WHERE id=(SELECT max(id) FROM `%s`);", tablename, tablename));
+    public static int getLastAddedId(String tablename, String idStr) {
+        ResultSet rid = MyUtils.executeQueryWithResult(String.format("SELECT %s FROM `%s` WHERE %s=(SELECT max(%s) FROM `%s`);",idStr, tablename, idStr, idStr,tablename));
         int id = -1;
         try {
             rid.next();

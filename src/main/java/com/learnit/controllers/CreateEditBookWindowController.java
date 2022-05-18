@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -178,6 +179,7 @@ public class CreateEditBookWindowController implements Initializable {
             controller.setData(card,book);
 
             Scene scene = new Scene(bp);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.setResizable(true);
             stage.show();
@@ -190,7 +192,6 @@ public class CreateEditBookWindowController implements Initializable {
 
                 preparedNewCards.add(card);
             });
-
 
         } catch (IOException e) {
             e.printStackTrace();

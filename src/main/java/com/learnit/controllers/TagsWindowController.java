@@ -5,27 +5,22 @@ import com.jfoenix.controls.*;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-//import com.mysql.cj.xdevapi.Schema;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import org.controlsfx.dialog.FontSelectorDialog;
 import org.controlsfx.validation.ValidationSupport;
-import org.controlsfx.validation.Validator;
 
 import java.io.*;
 import java.net.URL;
@@ -92,18 +87,20 @@ public class TagsWindowController implements Initializable {
         borderWidth.setTooltip(new Tooltip("Ширина границ"));
         borderRadius.setTooltip(new Tooltip("Радиус границ"));
 
-        jfxListView.setOnContextMenuRequested(contextMenuEvent -> {
-            contextMenu.show(jfxListView, contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY());
-        });
+        jfxListView.setOnContextMenuRequested(contextMenuEvent -> contextMenu.show(jfxListView, contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY()));
 
 
         tags.addListener((ListChangeListener<Tag>) change -> {
-
             while (change.next()){
                 if(change.wasAdded()){// if tag was created by user
                     Tag tag = change.getAddedSubList().get(0);
-                    TagHolder.getInstance().addTag(tag); //adding it to db
-                    tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
+
+                    if(tag.getId() == -1){ //Fixing porblem with double representing of new added tag (at the moment i have no idea how its happened)
+                        TagHolder.getInstance().addTag(tag); //adding it to db
+                        tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
+                        TagHolder.getInstance().clearCopy(tag);
+                    }
+
                     addTagsToUi(url, tag); // cause at 1 operation adding 1 tag as well
                 }
                 else if(change.wasRemoved()){
@@ -136,38 +133,29 @@ public class TagsWindowController implements Initializable {
                 transparentBackground.selectedProperty()
                         .setValue(isStringParameterSet("tHBox.tagitem", "-fx-background-color", "transparent"));
 
-                cssTextArea.textProperty().addListener(new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observableValue, String old, String current) {
-                        currentController.setNewCssContent(current);
-                        currentController.getCssParser().updateCssFile(url,current, currentController.getTag().getId());
-                        currentController.updateCssOnNode();
-                    }
+                cssTextArea.textProperty().addListener((observableValue, old, current) -> {
+                    currentController.setNewCssContent(current);
+                    currentController.getCssParser().updateCssFile(url,current, currentController.getTag().getId());
+                    currentController.updateCssOnNode();
                 });
 
-                borderColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                    changeColorParameter("tHBox.tagitem",
-                            "-fx-border-color",
-                            (int) (t1.getRed() * 255),
-                            (int) (t1.getGreen() * 255),
-                            (int) (t1.getBlue() * 255));
-                });
+                borderColorPicker.valueProperty().addListener((observableValue, color, t1) -> changeColorParameter("tHBox.tagitem",
+                        "-fx-border-color",
+                        (int) (t1.getRed() * 255),
+                        (int) (t1.getGreen() * 255),
+                        (int) (t1.getBlue() * 255)));
 
-                fontColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                    changeColorParameter("tLabel.tagitem",
-                            "-fx-text-fill",
-                            (int) (t1.getRed() * 255),
-                            (int) (t1.getGreen() * 255),
-                            (int) (t1.getBlue() * 255));
-                });
+                fontColorPicker.valueProperty().addListener((observableValue, color, t1) -> changeColorParameter("tLabel.tagitem",
+                        "-fx-text-fill",
+                        (int) (t1.getRed() * 255),
+                        (int) (t1.getGreen() * 255),
+                        (int) (t1.getBlue() * 255)));
 
-                backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-                    changeColorParameter("tHBox.tagitem",
-                            "-fx-background-color",
-                            (int) (t1.getRed() * 255),
-                            (int) (t1.getGreen() * 255),
-                            (int) (t1.getBlue() * 255));
-                });
+                backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> changeColorParameter("tHBox.tagitem",
+                        "-fx-background-color",
+                        (int) (t1.getRed() * 255),
+                        (int) (t1.getGreen() * 255),
+                        (int) (t1.getBlue() * 255)));
 
                 borderInsets.valueProperty().addListener((observableValue, number, t1) ->
                         changeIntParameter("tHBox.tagitem", "-fx-border-insets", (int) borderInsets.getValue()));
@@ -223,6 +211,7 @@ public class TagsWindowController implements Initializable {
                 showMessageDialog("Такой тег уже существует!");
             } else {
                 tags.add(tag);
+                System.out.println();
             }
         });
 
@@ -320,7 +309,7 @@ public class TagsWindowController implements Initializable {
         StringBuilder sb = new StringBuilder(cssTextArea.getText());
         int[] pos = findParameterValue(cssObject,cssParameter);
 
-        char[] val = null;
+        char[] val;
         try {
            val = new char[pos[1]-pos[0]];
            sb.getChars(pos[0],pos[1],val,0);
@@ -373,9 +362,7 @@ public class TagsWindowController implements Initializable {
 
         if (hBox != null) {
             hBox.setSpacing(15d);
-            hBox.setOnMousePressed(event -> {
-                System.out.println(event.getTarget());
-            });
+            hBox.setOnMousePressed(event -> System.out.println(event.getTarget()));
         }
 
         jfxListView.getItems().add(0,hBox);
@@ -391,7 +378,7 @@ public class TagsWindowController implements Initializable {
         for (HBox hbox: jfxListView.getItems()) {
             TagItemController controller = (TagItemController) hbox.getUserData();
             if(controller!=null && controller.getTag().equals(tag)){
-                jfxListView.getItems().remove(tag);
+                jfxListView.getItems().remove(hbox);
                 controller.getCssParser().removeCssFile();
             }
         }
@@ -414,7 +401,7 @@ public class TagsWindowController implements Initializable {
     }
 
     public void showMessageDialog(String msg){
-        Dialog<String> dialog = new Dialog<String>();
+        Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Внимание");
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.setContentText(msg);

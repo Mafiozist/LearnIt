@@ -8,13 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Locale;
 
 //it's use for containing and changing appearance of books
 //parameters for appearance loads from disk directly and users can change them
 public class Library {
     private static Library library;
     private ObservableList<Book> books;
-    private String getBooksQuery = String.format("SELECT * FROM %s;", "books");
+    private String getBooksQuery = String.format(Locale.ROOT,"SELECT * FROM %s;", "books");
     private String addBooksQuery;
     private Connection connection;
     private final String[] booksTables = new String[]{"book-card","book-tag","books"}; //the order is do matter
@@ -44,13 +45,13 @@ public class Library {
 
                    Book book = change.getAddedSubList().get(0);
                    Image image = book.getTitleImg();
-                   String qry = String.format("INSERT INTO books(name,htmlText) VALUES('%s', '%s')", book.getName(), book.getHtmlText());
+                   String qry = String.format(Locale.ROOT,"INSERT INTO books(name,htmlText) VALUES('%s', '%s')", book.getName(), book.getHtmlText());
                    MyUtils.executeQuery(qry);
 
                 } else if (change.wasRemoved()){
 
                    for (String table: booksTables) {
-                       MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE bid = %d;",table, change.getRemoved().get(0).getId()));
+                       MyUtils.executeQuery(String.format(Locale.ROOT,"DELETE FROM `%s` WHERE bid = %d;",table, change.getRemoved().get(0).getId()));
                    }
 
                }
@@ -81,13 +82,13 @@ public class Library {
         System.out.println("Db. Book is updated");
         String updateQuery = String.format(
         "UPDATE books SET htmlText = '%s' " +
-                "WHERE id = %d;", book.getHtmlText(), book.getId());
+                "WHERE bid = %d;", book.getHtmlText(), book.getId());
         MyUtils.executeQuery(updateQuery);
         return this;
     }
 
     public Library updateBookName(Book book){
-        MyUtils.executeQuery(String.format("UPDATE books SET name ='%s' WHERE id='%d';",book.getName(), book.getId()));
+        MyUtils.executeQuery(String.format(Locale.ROOT,"UPDATE books SET name ='%s' WHERE bid='%d';",book.getName(), book.getId()));
         return this;
     }
 
@@ -101,7 +102,7 @@ public class Library {
     }
 
     public int getLastBookId() {
-        ResultSet rid = MyUtils.executeQueryWithResult("SELECT id FROM books WHERE id=(SELECT max(id) FROM books);");
+        ResultSet rid = MyUtils.executeQueryWithResult("SELECT bid FROM books WHERE bid=(SELECT max(bid) FROM books);");
         int id = -1;
         try {
             rid.next();

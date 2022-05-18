@@ -21,6 +21,7 @@ public class Tag {
 
    public Tag() {
       size++;
+      id = -1;
       appId = size;
       priority = 0;
       color = Color.AQUA;
