@@ -171,6 +171,7 @@ public class LibraryWindowController implements Initializable {
             
             if (book.getId() != -1){
                 Library.getInstance().updateBook(book);
+
                 if (preparedCards ==null) return;
                 // TODO: 17.05.2022 upload data and make reference from cards to book
 
@@ -184,7 +185,7 @@ public class LibraryWindowController implements Initializable {
                 book.setId(Library.getInstance().getLastBookId()); //Костыль
                 addToUI(book);
 
-                if (preparedCards ==null) return;
+                if (preparedCards == null) return;
 
                 for (Card card: preparedCards) {
                     CardHolder.getInstance().addCard(card,book);

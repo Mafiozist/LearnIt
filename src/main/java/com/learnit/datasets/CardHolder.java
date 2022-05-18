@@ -23,6 +23,7 @@ public class CardHolder {
     private String getCardsQry = String.format("SELECT id,question,answer,nextRepetition,baseinterval FROM %s;","cards");
     private String getCardsIdsQryByBookId = String.format("SELECT cid FROM %s WHERE bid = %d;", "tbc_mm", bid);
     private String getCardsIdsQryByTagId = String.format("SELECT cid FROM %s WHERE tid = %d;", "tbc_mm", tid); // get cards ids from many-many table
+    private final String[] cardTables = new String[] {"repetition-stats", "book-card", "card-tag", "cards"}; //right order do matter
 
     private CardHolder(){
         try {
@@ -70,10 +71,17 @@ public class CardHolder {
         return this;
     }
 
-    public CardHolder removeCard(Card card){
-        if(MyUtils.executeQuery(String.format("DELETE FROM cards WHERE id='%d'",card.getId())))
-            MyUtils.executeQuery(String.format("DELETE FROM \"book-card\" WHERE cid='%d'",card.getId()));
+    public CardHolder removeCardWithStatistics(Card card){
+
+        for (String table: cardTables) {
+            MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE cid='%d'",table,card.getId()));
+        }
+
         return this;
     }
 
+    public CardHolder removeCard(Card card){
+        MyUtils.executeQuery(String.format("UPDATE TABLE `cards` SET isdeleted =`1` WHERE cid='%d'",card.getId()));
+        return this;
+    }
 }

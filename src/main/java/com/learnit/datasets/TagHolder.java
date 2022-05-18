@@ -1,20 +1,22 @@
 package com.learnit.datasets;
+
 import com.learnit.MyUtils;
 import com.learnit.database.connection.OfflineDatabaseConnection;
+import com.learnit.database.data.tables.Book;
+import com.learnit.database.data.tables.Card;
 import com.learnit.database.data.tables.Tag;
-import javafx.beans.value.ObservableValue;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.Arrays;
 
 public class TagHolder {
     private static TagHolder tagHolder;
     private ArrayList<Tag> tags;
     private final String getTagsQuery = "SELECT * FROM tags;";
+    private final String[] tagsTables = new String[]{"book-tag","card-tag", "tags"};
 
     //Установка значения по-умолчанию
     private TagHolder()  {
@@ -74,10 +76,21 @@ public class TagHolder {
         return -1;
     }
 
-    public boolean removeTag(Tag tag){
+    public boolean removeTag(Tag tag){ //true only if all the tables from tagsTables removes well
         System.out.println("Tag is deleted");
         tags.remove(tag);
-        return MyUtils.executeQuery(String.format("DELETE FROM %s WHERE id ='%s';", "tags",tag.getId()));
+
+        int[] isFullyDeleted = new int[tagsTables.length];
+        int i = 0;
+
+        for (String table: tagsTables) {
+            isFullyDeleted[i++] = (MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE tid = %d;",table, tag.getId())))? 1:0;
+        }
+
+        i=0;
+        i += Arrays.stream(isFullyDeleted).sum(); // if all tables from tagsTables removes then the amount of counter == tagsTables.length
+
+        return i==tagsTables.length;
     }
 
     public boolean addTag(Tag tag){
@@ -93,6 +106,14 @@ public class TagHolder {
 
     public boolean updateTag(Tag tag){
         return MyUtils.executeQuery(String.format("UPDATE %s SET name = '%s' WHERE id ='%s';", "tags",tag.getName(), tag.getId()));
+    }
+
+    public boolean selectTag(Tag tag, Book book){
+        return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(`%d`,`%d`)","book-tag",book.getId(),tag.getId()));
+    }
+
+    public boolean selectTag(Tag tag, Card card){
+        return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(`%d`,`%d`)","card-tag",tag.getId(),card.getId()));
     }
 
     public void update(){

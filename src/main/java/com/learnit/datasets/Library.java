@@ -1,7 +1,6 @@
 package com.learnit.datasets;
 
 import com.learnit.MyUtils;
-import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.database.data.tables.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -17,7 +16,8 @@ public class Library {
     private ObservableList<Book> books;
     private String getBooksQuery = String.format("SELECT * FROM %s;", "books");
     private String addBooksQuery;
-    Connection connection;
+    private Connection connection;
+    private final String[] booksTables = new String[]{"book-card","book-tag","books"}; //the order is do matter
 
     private Library() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -48,8 +48,11 @@ public class Library {
                    MyUtils.executeQuery(qry);
 
                 } else if (change.wasRemoved()){
-                   // TODO: 30.04.2022  if book was removed there is need to remove from db either
-                   MyUtils.executeQuery(String.format("DELETE FROM %s WHERE id = %d and name = '%s'","books",change.getRemoved().get(0).getId(),change.getRemoved().get(0).getName()));
+
+                   for (String table: booksTables) {
+                       MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE bid = %d;",table, change.getRemoved().get(0).getId()));
+                   }
+
                }
            }
 
