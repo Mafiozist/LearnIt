@@ -34,6 +34,9 @@ public class Library {
 
             if(blob != null) book.setTitleImg(blob.getBytes(0, (int) blob.length()));
 
+            //there is binding for tag and book
+            book.setTags(TagHolder.getInstance().getBondedTags(book));
+
             bookArrayList.add(book);
         }
 

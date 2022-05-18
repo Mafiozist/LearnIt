@@ -84,4 +84,5 @@ public class CardHolder {
         MyUtils.executeQuery(String.format(Locale.ROOT,"UPDATE TABLE `cards` SET isdeleted =`1` WHERE cid='%d'",card.getId()));
         return this;
     }
+
 }

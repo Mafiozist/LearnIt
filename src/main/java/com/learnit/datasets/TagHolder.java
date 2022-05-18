@@ -50,7 +50,7 @@ public class TagHolder {
     }
 
     public void clearCopy(Tag tag){
-        tags.remove(tags.indexOf(tag));
+        tags.remove(tags.indexOf(tag)); //delete only 1 object
     }
 
     public int[] getTagsIdsByNames(String ... names){ // there is need to be changed on sql realization
@@ -111,13 +111,84 @@ public class TagHolder {
     public boolean updateTag(Tag tag){
         return MyUtils.executeQuery(String.format("UPDATE %s SET name = '%s' WHERE tid ='%s';", "tags",tag.getName(), tag.getId()));
     }
+    public void selectTags(ArrayList<Tag> tags, Book book){
+        System.out.println("Количество тэгов до:" +book.getTags().size());
+        for (Tag tag: tags) {
+            selectTag(tag,book);
+        }
+        System.out.println("Количество тэгов после:" +book.getTags().size());
+    }
+    public void selectTags(ArrayList<Tag> tags, Card card){
+        for (Tag tag: tags) {
+            selectTag(tag,card);
+        }
+    }
+    public boolean selectTag(Tag tag, Book book){ //If tag was selected, but he has reference values it means reference will be deleted
+        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT bid FROM `%s` WHERE bid=%d and tid=%d;","book-tag",book.getId(),tag.getId()));
+        try {
+            res.next();
+            //if bind exist
+            if(res.getInt(1) != -1) { //if bind was created there is need to unbind it by deleting
+               return MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE tid=%d and bid=%d;","book-tag", tag.getId(), book.getId()));
+            }
 
-    public boolean selectTag(Tag tag, Book book){
-        return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(`%d`,`%d`)","book-tag",book.getId(),tag.getId()));
+        } catch (SQLException e) {
+            //if bind doesn't exist
+            return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(%d,%d)","book-tag",book.getId(),tag.getId()));
+        }
+
+        return false;
+    }
+    public boolean selectTag(Tag tag, Card card){
+        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT cid FROM `%s` WHERE cid=%d and tid=%d;","card-tag",card.getId(),tag.getId()));
+
+        try {
+            res.next();
+
+            if(res.getInt(1) != -1) { //if bind was created there is need to unbind it by deleting
+                return MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE tid=%d and cid=%d;","card-tag", tag.getId(),card.getId()));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(%d,%d)","card-tag",tag.getId(),card.getId()));
     }
 
-    public boolean selectTag(Tag tag, Card card){
-        return MyUtils.executeQuery(String.format("INSERT into `%s` VALUES(`%d`,`%d`)","card-tag",tag.getId(),card.getId()));
+    public ArrayList<Tag> getBondedTags(Card card){
+        ArrayList<Tag> tmp = new ArrayList<>();
+        ResultSet res = MyUtils.executeQueryWithResult(String.format("SELECT tid FROM `card-tag` WHERE cid=%d;",card.getId()));
+
+        try {
+            while (res.next()){
+                int id = res.getInt(1);
+                tmp.add(getTagById(id));
+            }
+        }catch (SQLException ignored){}
+
+        return tmp;
+    }
+
+    public ArrayList<Tag> getBondedTags(Book book){
+        ArrayList<Tag> tmp = new ArrayList<>(); // there isnt need additional tags so there will be using tags from TagHolder.tags
+        ResultSet res= MyUtils.executeQueryWithResult(String.format("SELECT tid FROM `book-tag` WHERE bid=%d;",book.getId()));
+
+        try {
+            while (res.next()){
+                int id = res.getInt(1);
+                tmp.add(getTagById(id));
+            }
+        }catch (SQLException ignored){}
+
+        return tmp;
+    }
+
+    private Tag getTagById(int id){
+        for (Tag tag: tags) {
+            if(tag.getId() == id) return tag;
+        }
+        return null;
     }
 
     public void update(){

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDialog;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
+import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,9 +36,8 @@ public class CreateEditBookWindowController implements Initializable {
     private LibraryWindowController controller; //for yes button
 
     private Book book;
-    private int[] IdChangedTags; // the ids of tags that were changed at the book for using them to many-many table
+    private ArrayList<Tag> changedTags; // the ids of tags that were changed at the book for using them to many-many table
     private Button tagButton,createCard;
-
     private ArrayList<Card> preparedNewCards; //cards which to be uploaded when a window wil be closed
 
     private static final String SELECT_TEXT_SCRIPT =
@@ -97,9 +97,13 @@ public class CreateEditBookWindowController implements Initializable {
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(MainWindow.class.getResource("SelectDialog.fxml"));
                     layout = fxmlLoader.load();
-                    SelectDialogController controller = fxmlLoader.getController();
 
+                    SelectDialogController controller = fxmlLoader.getController();
                     controller.setTags(TagHolder.getInstance().getTags());
+                    controller.setCurrentBook(book);
+                    controller.updateUi();
+
+
                     //Костыль
                     JFXButton button = new JFXButton("Save");
                     VBox vBox = (VBox) layout.lookup("#vBox");
@@ -110,8 +114,13 @@ public class CreateEditBookWindowController implements Initializable {
                     jfxDialog.show();
 
                     button.setOnMousePressed(closeEvent -> {
-                        //IdChangedTags = TagHolder.getInstance().getTagsIdsByNames(controller.getNamesChangedTags());
-                        //System.out.println(tagsIds.length);
+                        //change tag only for instance for in case when user don't created book yet
+                        for (Tag tag: controller.getChangedTags()) {
+                            if(book.getTags().contains(tag)) book.getTags().remove(tag);
+                            else book.getTags().add(tag);
+                        }
+
+                        changedTags = controller.getChangedTags();
                         jfxDialog.close();
                     });
 
@@ -207,4 +216,7 @@ public class CreateEditBookWindowController implements Initializable {
         return preparedNewCards;
     }
 
+    public ArrayList<Tag> getChangedTags() {
+        return changedTags;
+    }
 }

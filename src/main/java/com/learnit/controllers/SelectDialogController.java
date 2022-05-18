@@ -4,12 +4,14 @@ import com.jfoenix.controls.*;
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -32,9 +34,16 @@ public class SelectDialogController implements Initializable {
     private ObservableList<JFXCheckBox> observableList, changedObservableList;
     private FilteredList<JFXCheckBox> filteredList;
 
+    private Book currentBook;
+
     public SelectDialogController(){
         observableList = FXCollections.observableList(new ArrayList<>());
         changedObservableList = FXCollections.observableList(new ArrayList<>());
+        vBox = new VBox();
+        innerVBox = new VBox();
+        textField = new TextField();
+        scrollPane = new ScrollPane();
+        stackPane = new StackPane();
     }
     public SelectDialogController(ArrayList<Tag> tags) {
         this();
@@ -72,6 +81,7 @@ public class SelectDialogController implements Initializable {
         for (JFXCheckBox c: changedObservableList) {
             tags.add((Tag) c.getUserData());
         }
+        //System.out.println("Changed tags: " + tags);
         return tags;
     }
 
@@ -80,6 +90,7 @@ public class SelectDialogController implements Initializable {
         for (JFXCheckBox c: changedObservableList) {
             books.add((Book) c.getUserData());
         }
+        //System.out.println("Changed books: " + books);
         return books;
     }
 
@@ -145,4 +156,16 @@ public class SelectDialogController implements Initializable {
         innerVBox.getChildren().addAll(filteredList);
     }
 
+    public void updateUi() {
+        if(currentBook!= null){
+            for (JFXCheckBox checkBox : filteredList) {
+                checkBox.selectedProperty().setValue(currentBook.getTags().contains((Tag) checkBox.getUserData()));
+            }
+        }
+
+    }
+
+    public void setCurrentBook(Book currentBook) {
+        this.currentBook = currentBook;
+    }
 }

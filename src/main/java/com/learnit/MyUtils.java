@@ -86,31 +86,50 @@ public class MyUtils {
 
     //there maybe is need a commander pattern or a constructor
     //Dialogs which outputs the selected items ids
-    public static void openTagSelectDialog(StackPane parent, ArrayList<Tag> tags){
-        openSelectDialog(parent,null,tags);
+    //returns ArrayList of tags or books
+    public static ArrayList openTagSelectDialog(StackPane parent, ArrayList<Tag> tags){
+        return openSelectDialog(parent,null,tags);
     }
 
-    public static void openBookSelectDialog(StackPane parent, ObservableList<Book> books){
-        openSelectDialog(parent,books,null);
+    public static ArrayList openBookSelectDialog(StackPane parent, ObservableList<Book> books){
+        return openSelectDialog(parent,books,null);
     }
 
-    private static void openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
+    private static ArrayList openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
         JFXDialog singleJfxDialog = new JFXDialog();
         JFXButton save = new JFXButton();
+        ArrayList changedItems = null;
 
         try {
             FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("SelectDialog.fxml"));
             singleJfxDialog.setContent(loader.load());
             SelectDialogController controller = loader.getController();
 
-            if(books!=null) controller.setBooks(books);
-            if(tags!=null) controller.setTags(tags);
+            if(books!=null) {
+                controller.setBooks(books);
+                changedItems = new ArrayList<Book>();
+            }
+            if(tags!=null) {
+                controller.setTags(tags);
+                changedItems = new ArrayList<Tag>();
+            }
 
             singleJfxDialog.setDialogContainer(parent);
             singleJfxDialog.show();
+
+
+            ArrayList finalChangedItems = changedItems;
+            singleJfxDialog.setOnDialogClosed(closed->{
+
+                if(books!=null) finalChangedItems.addAll(controller.getChangedBooks());
+
+                if (tags!= null) finalChangedItems.addAll(controller.getChangedTags());
+
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return changedItems;
     }
 
 

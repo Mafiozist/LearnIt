@@ -29,7 +29,7 @@ public class Book {
         id = -1;
         htmlText = "";
         textSize = 0d;
-
+        tag = new ArrayList<>();
         createDate = new Date();
         changeDate = new Date();
 
