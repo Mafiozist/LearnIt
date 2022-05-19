@@ -87,18 +87,16 @@ public class MyUtils {
     //there maybe is need a commander pattern or a constructor
     //Dialogs which outputs the selected items ids
     //returns ArrayList of tags or books
-    public static ArrayList openTagSelectDialog(StackPane parent, ArrayList<Tag> tags){
+    public static JFXDialog openTagSelectDialog(StackPane parent, ArrayList<Tag> tags){
         return openSelectDialog(parent,null,tags);
     }
 
-    public static ArrayList openBookSelectDialog(StackPane parent, ObservableList<Book> books){
+    public static JFXDialog openBookSelectDialog(StackPane parent, ObservableList<Book> books){
         return openSelectDialog(parent,books,null);
     }
 
-    private static ArrayList openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
+    private static JFXDialog openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
         JFXDialog singleJfxDialog = new JFXDialog();
-        JFXButton save = new JFXButton();
-        ArrayList changedItems = null;
 
         try {
             FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("SelectDialog.fxml"));
@@ -107,29 +105,18 @@ public class MyUtils {
 
             if(books!=null) {
                 controller.setBooks(books);
-                changedItems = new ArrayList<Book>();
             }
             if(tags!=null) {
                 controller.setTags(tags);
-                changedItems = new ArrayList<Tag>();
             }
 
+            singleJfxDialog.setUserData(controller);
             singleJfxDialog.setDialogContainer(parent);
             singleJfxDialog.show();
 
+        } catch (IOException ignored) {}
 
-            ArrayList finalChangedItems = changedItems;
-            singleJfxDialog.setOnDialogClosed(closed->{
-
-                if(books!=null) finalChangedItems.addAll(controller.getChangedBooks());
-
-                if (tags!= null) finalChangedItems.addAll(controller.getChangedTags());
-
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return changedItems;
+        return singleJfxDialog;
     }
 
 

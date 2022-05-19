@@ -7,6 +7,8 @@ import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,7 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.robot.Robot;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -154,11 +158,11 @@ public class CreateEditBookWindowController implements Initializable {
                 ex.printStackTrace();
             }
 
-            //Костыль на отображение собственных кнопок
+            //Костыль на отображение собственных кнопок (при создании экземпляра редактора кнопок 17)
             ToolBar finalBar = bar;
-            htmlEditor.setOnMouseClicked(event -> { //костыль
-                if(finalBar.getItems().size() == 17) finalBar.getItems().addAll(tagButton, createCard);
-            });
+            htmlEditor.setOnMouseDragEntered(event -> {if(finalBar.getItems().size() == 17) finalBar.getItems().addAll(tagButton, createCard);});
+            htmlEditor.setOnMouseClicked(event ->{if(finalBar.getItems().size() == 17) finalBar.getItems().addAll(tagButton, createCard); });
+
         }
 
     }

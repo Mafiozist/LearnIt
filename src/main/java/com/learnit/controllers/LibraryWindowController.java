@@ -5,6 +5,7 @@ import com.learnit.MainWindow;
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
+import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.CardHolder;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
@@ -53,6 +54,10 @@ public class LibraryWindowController implements Initializable {
     private ArrayList<StackPane> tempBooksUi;
     private ObservableList<StackPane> booksUi;
     private JFXDialog singleJfxDialog;
+
+    //Filtering methods
+    private Predicate<StackPane> containsName;
+    private Predicate<StackPane> containsTags;
 
     public LibraryWindowController(){
         books = FXCollections.observableList(Library.getInstance().getBooks());
@@ -123,21 +128,69 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
-        selectTags.setOnMousePressed(pressed-> MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags()));
+        selectTags.setOnMousePressed(pressed-> {
+            singleJfxDialog = MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags());
+
+            singleJfxDialog.setOnDialogClosed(event-> {
+
+                containsTags = pane -> {
+
+                    if(!((SelectDialogController)singleJfxDialog.getUserData()).getChangedTags().isEmpty()){
+                      ArrayList<Tag> arr = new ArrayList<>( ( (SelectDialogController) singleJfxDialog.getUserData() ).getChangedTags() );
+                      return ( (Book) pane.getUserData() ).getTags().containsAll(arr);
+                    }
+
+                    return false;
+                };
+
+                if(((SelectDialogController)singleJfxDialog.getUserData()).getChangedTags().isEmpty()){
+                    containsTags = null;
+                }
+
+                filterUI();
+
+            });
+
+        });
+
+
 
         search.textProperty().addListener((observableValue, s, current) -> {
-            Predicate<StackPane> contains = i-> ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
-            filtredBooks.setPredicate(contains);
-            if(current.isEmpty() || current.isBlank()){
-                filtredBooks.setPredicate(null);
-            }
-            tilePane.getChildren().clear();
-            tilePane.getChildren().addAll(filtredBooks);
+            //filtredBooks.setPredicate(containsName);
+
+
+            containsName = i-> {
+                if(!(current.isEmpty() || current.isBlank())){
+                    return ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
+                }
+                return false;
+            };
+
+            if(current.isEmpty() || current.isBlank()) containsName = null;
+
+            filterUI();
         });
 
 
 
         addToUI();
+    }
+
+    public void filterUI(){
+
+        if(containsName == null && containsTags != null)  filtredBooks.setPredicate(containsTags);
+        else if ( (containsName != null && !isSearchEmpty() ) && containsTags == null) filtredBooks.setPredicate(containsName);
+        else if( containsTags != null && containsName != null && !isSearchEmpty()) filtredBooks.setPredicate(containsName.and(containsTags));
+        else if( containsTags != null && containsName != null && isSearchEmpty()) filtredBooks.setPredicate(containsName.or(containsTags)); //somehow need to deny checkboxes filter but how
+        else {
+            filtredBooks.setPredicate(null);
+        }
+
+        updateUi();
+    }
+
+    private boolean isSearchEmpty(){
+        return search.textProperty().get().isEmpty() || search.textProperty().get().isBlank();
     }
 
     public void openEditDialog(Book book){
@@ -197,6 +250,11 @@ public class LibraryWindowController implements Initializable {
             }
         });
 
+    }
+
+    public void updateUi(){
+        tilePane.getChildren().clear();
+        tilePane.getChildren().addAll(filtredBooks);
     }
 
     public void addToUI()  {
