@@ -97,7 +97,7 @@ public class TagsWindowController implements Initializable {
                     if(tag.getId() == -1){ //Fixing porblem with double representing of new added tag (at the moment i have no idea how its happened)
                         TagHolder.getInstance().addTag(tag); //adding it to db
                         tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
-                        TagHolder.getInstance().clearCopy(tag);
+                        TagHolder.getInstance().clearCopy(tag); // FIXME: 23.05.2022 Double representing of 1 object reference
                     }
 
                     addTagsToUi(url, tag); // cause at 1 operation adding 1 tag as well

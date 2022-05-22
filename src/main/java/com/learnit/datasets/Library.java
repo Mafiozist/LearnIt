@@ -2,6 +2,7 @@ package com.learnit.datasets;
 
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
+import com.learnit.database.data.tables.Tag;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -69,12 +70,13 @@ public class Library {
        });
 
 
-
-
-
   }
 
-    public static Library getInstance(){
+  public void clearCopy(Book book){
+        books.remove(books.indexOf(book)); //delete only 1 object
+    }
+
+  public static Library getInstance(){
         if(library == null) {
             try {
                 library = new Library();
@@ -83,38 +85,38 @@ public class Library {
             }
         }
         return library;
-    }
+  }
 
-    public Library addBook(Book book){
+  public Library addBook(Book book){
         books.add(book);
         return this;
-    }
+  }
 
 
-    public Library updateBook(Book book){ // TODO: 30.04.2022  need to add image and tags
+  public Library updateBook(Book book){ // TODO: 30.04.2022  need to add image and tags
         System.out.println("Db. Book is updated");
         String updateQuery = String.format(
         "UPDATE books SET htmlText = '%s' " +
                 "WHERE bid = %d;", book.getHtmlText(), book.getId());
         MyUtils.executeQuery(updateQuery);
         return this;
-    }
+  }
 
-    public Library updateBookName(Book book){
+  public Library updateBookName(Book book){
         MyUtils.executeQuery(String.format(Locale.ROOT,"UPDATE books SET name ='%s' WHERE bid='%d';",book.getName(), book.getId()));
         return this;
-    }
+  }
 
-    public Library removeBook(Book book){
+  public Library removeBook(Book book){
         books.remove(book);
         return this;
-    }
+  }
 
-    public ObservableList<Book> getBooks() {
+  public ObservableList<Book> getBooks() {
         return books;
     }
 
-    public int getLastBookId() {
+  public int getLastBookId() {
         ResultSet rid = MyUtils.executeQueryWithResult("SELECT bid FROM books WHERE bid=(SELECT max(bid) FROM books);");
         int id = -1;
         try {
@@ -125,9 +127,9 @@ public class Library {
         }
 
         return id;
-    }
+  }
 
-    public SimpleIntegerProperty getBooksSizeProperty() {
+  public SimpleIntegerProperty getBooksSizeProperty() {
         return booksSize;
     }
 }

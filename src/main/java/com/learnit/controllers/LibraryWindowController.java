@@ -119,13 +119,19 @@ public class LibraryWindowController implements Initializable {
 
         books.addListener((ListChangeListener<? super Book>) change ->{
             while (change.next()){
+
                 if(change.wasAdded()){
-                    addToUI(change.getAddedSubList().get(0)); //Because at the same time, i am always add only one book
+                    for (Book book: change.getAddedSubList()) {
+                        addToUI(book);
+                    }
                 }
                 if (change.wasRemoved()){
                     removeFromUi(change.getRemoved().get(0));
                 }
+
+
             }
+
         });
 
         selectTags.setOnMousePressed(pressed-> {
@@ -238,6 +244,7 @@ public class LibraryWindowController implements Initializable {
             else if (book.getId() == -1 && !Library.getInstance().getBooks().contains(book)){ //If object aren't taken from db
                 Library.getInstance().addBook(book);
                 book.setId(Library.getInstance().getLastBookId()); //Костыль
+                Library.getInstance().clearCopy(book); // FIXME: 23.05.2022 Double representing of 1 object reference
                 addToUI(book);
 
                 if(finalController.getChangedTags() != null) TagHolder.getInstance().selectTags(finalController.getChangedTags(), book); //update book-tags binds
@@ -255,6 +262,11 @@ public class LibraryWindowController implements Initializable {
     public void updateUi(){
         tilePane.getChildren().clear();
         tilePane.getChildren().addAll(filtredBooks);
+    }
+
+    public void updateUiNode(Book book){
+        removeFromUi(book);
+        addToUI(book);
     }
 
     public void addToUI()  {

@@ -63,7 +63,10 @@ public class CardWindowController implements Initializable {
             System.out.println("The amount of cards changed");
             while (c.next()){
                 if (c.wasAdded()){
-                    cardsUiList.add(addCardToUi(c.getAddedSubList().get(0)));
+
+                    for (Card card: c.getAddedSubList()) {
+                        cardsUiList.add(addCardToUi(card));
+                    }
 
                     updateFilter();
                     updateUI();
