@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0" styleClass="tagitem" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="tHBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="48.0" minWidth="50.0"
+      styleClass="tagitem" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
 
       <AnchorPane>
            <Label id="tLabel" fx:id="tLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="tagitem" text="Tag item" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />

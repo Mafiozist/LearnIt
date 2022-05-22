@@ -50,7 +50,7 @@
             <bottom>
                   <Label id="name" fx:id="name" alignment="CENTER" wrapText="true" contentDisplay="CENTER"
                          text="There is a name of your information" textAlignment="CENTER"
-                         BorderPane.alignment="CENTER" onMouseClicked="#changeName"  prefWidth="${imgView.fitWidth}" minHeight="50"/>
+                         BorderPane.alignment="CENTER" onMousePressed="#changeName"  prefWidth="${imgView.fitWidth}" minHeight="50"/>
             </bottom>
       </BorderPane>
 

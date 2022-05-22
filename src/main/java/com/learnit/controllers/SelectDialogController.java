@@ -29,7 +29,7 @@ public class SelectDialogController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-    private ArrayList<Tag> tags;
+    private ObservableList<Tag> tags;
     private ObservableList<Book> books;
     private ObservableList<JFXCheckBox> observableList, changedObservableList;
     private FilteredList<JFXCheckBox> filteredList;
@@ -45,7 +45,7 @@ public class SelectDialogController implements Initializable {
         scrollPane = new ScrollPane();
         stackPane = new StackPane();
     }
-    public SelectDialogController(ArrayList<Tag> tags) {
+    public SelectDialogController(ObservableList<Tag> tags) {
         this();
         this.tags = tags;
     }
@@ -68,6 +68,7 @@ public class SelectDialogController implements Initializable {
 
         textField.textProperty().addListener((observableValue, old, current) -> {
             Predicate<JFXCheckBox> contains = i-> i.getText().toLowerCase().contains(current.toLowerCase(Locale.ROOT));
+
             filteredList.setPredicate(contains);
             if(current.isEmpty() || current.isBlank()) filteredList.setPredicate(null);
             innerVBox.getChildren().clear();
@@ -100,13 +101,13 @@ public class SelectDialogController implements Initializable {
         return this;
     }
 
-    public SelectDialogController setTags(ArrayList<Tag> tags){
+    public SelectDialogController setTags(ObservableList<Tag> tags){
         this.tags = tags;
         addTagsToUi(tags);
         return this;
     }
 
-    private void addTagsToUi(ArrayList<Tag> tags){
+    private void addTagsToUi(ObservableList<Tag> tags){
         observableList.clear();
         for (Tag tag : tags) {
             JFXCheckBox jfxCheckBox = new JFXCheckBox(tag.getName());

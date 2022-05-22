@@ -1,5 +1,6 @@
 package com.learnit.database.data.tables;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Card {
@@ -8,13 +9,16 @@ public class Card {
     private String answer;
     private double baseInterval;
     private Date nextRepetition;
-    private int[] booksIds, tagsIds;
+
+    private ArrayList<Tag> tags;
+    private Book book;
 
     public Card(){
+        tags = new ArrayList<>();
+        book = null;
         id = -1;
         question = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "В чем смысл бытия?");
         answer = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "Ответ придется искать самому.");
-
         nextRepetition = new Date();
     }
 
@@ -47,20 +51,6 @@ public class Card {
     }
     public Date getNextRepetition() {
         return nextRepetition;
-    }
-    public int[] getBooksIds() {
-        return booksIds;
-    }
-    public Card setBooksIds(int[] booksIds) {
-        this.booksIds = booksIds;
-        return this;
-    }
-    public int[] getTagsIds() {
-        return tagsIds;
-    }
-    public Card setTagsIds(int[] tagsIds) {
-        this.tagsIds = tagsIds;
-        return this;
     }
     public Card setBaseInterval(float interval) {
         baseInterval = (double) interval;

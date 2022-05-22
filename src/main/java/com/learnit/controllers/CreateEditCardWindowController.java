@@ -9,10 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 

@@ -56,7 +56,6 @@ public class TagsWindowController implements Initializable {
     private HBox hBox;
     private TagItemController currentController;
     private Font font;
-    private ValidationSupport validationSupport;
 
     public TagsWindowController() {
         jfxListView = new JFXListView<>();

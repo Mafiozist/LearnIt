@@ -17,36 +17,34 @@ import java.util.ResourceBundle;
 
 
 public class TagItemController implements Initializable {
-    @FXML
-    private HBox tHBox;
-    @FXML
-    private Label tLabel;
-    @FXML
-    private BorderPane borderLabelPane ,borderImgPane;
-    @FXML
-    private ImageView img;
+    @FXML private HBox tHBox;
+    @FXML private Label tLabel;
+    @FXML private BorderPane borderLabelPane ,borderImgPane;
+    @FXML private ImageView img;
     private Tag tag;
 
     private CssParser cssParser;
 
     //For tag change functionality
     private final String defaultCssContent =
-            "#tHBox.tagitem {\n" +
-                    "    -fx-border-color: rgb(33, 125, 151);\n" +
-                    "    -fx-border-insets: 1;\n" +
-                    "    -fx-border-width: 10;\n" +
-                    "    -fx-border-radius: 10;\n" +
-                    "    -fx-background-color:transparent;\n" +
-                    "    -fx-background-radius: 10;\n"+
-                    "}\n" +
-            "#tLabel.tagitem {\n" +
-                    "    -fx-text-fill: rgb(23, 125, 125);\n" +
-                    "    -fx-text-align: right;\n" +
-                    "    -fx-font-size: 15;\n" +
-                    "    -fx-font-weight: bold;\n" +
-                    "    -fx-font-style: normal;\n" +
-                    "    -fx-font-family: 'Times New Roman', Times, serif;\n" +
-                    "}\n";
+            """
+                    #tHBox.tagitem {
+                        -fx-border-color: rgb(33, 125, 151);
+                        -fx-border-insets: 1;
+                        -fx-border-width: 10;
+                        -fx-border-radius: 10;
+                        -fx-background-color:transparent;
+                        -fx-background-radius: 10;
+                    }
+                    #tLabel.tagitem {
+                        -fx-text-fill: rgb(23, 125, 125);
+                        -fx-text-align: right;
+                        -fx-font-size: 15;
+                        -fx-font-weight: bold;
+                        -fx-font-style: normal;
+                        -fx-font-family: 'Times New Roman', Times, serif;
+                    }
+                    """;
 
     public TagItemController(URL url,Tag tag){
         this.tag = tag;

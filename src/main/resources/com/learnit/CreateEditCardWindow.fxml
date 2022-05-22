@@ -7,7 +7,7 @@
 <?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane fx:id="root" prefHeight="551.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.CreateEditCardWindowController">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.CreateEditCardWindowController">
    <center>
 
       <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">

@@ -2,6 +2,7 @@ package com.learnit.datasets;
 
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -19,6 +20,7 @@ public class Library {
     private String addBooksQuery;
     private Connection connection;
     private final String[] booksTables = new String[]{"book-card","book-tag","books"}; //the order is do matter
+    private SimpleIntegerProperty booksSize;
 
     private Library() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -42,6 +44,9 @@ public class Library {
 
        books = FXCollections.observableList(bookArrayList);
 
+       booksSize = new SimpleIntegerProperty(books.size());
+       //booksSize.addListener((observable, oldValue, newValue) -> System.out.println(String.format("BooksSize changed from: %d to %d",oldValue,newValue)));
+
        books.addListener( (ListChangeListener<? super Book>) change -> {
            while (change.next()){
                if(change.wasAdded()){
@@ -51,16 +56,21 @@ public class Library {
                    String qry = String.format(Locale.ROOT,"INSERT INTO books(name,htmlText) VALUES('%s', '%s')", book.getName(), book.getHtmlText());
                    MyUtils.executeQuery(qry);
 
+                   booksSize.set(books.size());
                 } else if (change.wasRemoved()){
 
                    for (String table: booksTables) {
                        MyUtils.executeQuery(String.format(Locale.ROOT,"DELETE FROM `%s` WHERE bid = %d;",table, change.getRemoved().get(0).getId()));
                    }
 
+                   booksSize.set(books.size());
                }
            }
-
        });
+
+
+
+
 
   }
 
@@ -117,4 +127,7 @@ public class Library {
         return id;
     }
 
+    public SimpleIntegerProperty getBooksSizeProperty() {
+        return booksSize;
+    }
 }

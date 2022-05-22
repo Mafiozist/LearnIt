@@ -87,7 +87,7 @@ public class MyUtils {
     //there maybe is need a commander pattern or a constructor
     //Dialogs which outputs the selected items ids
     //returns ArrayList of tags or books
-    public static JFXDialog openTagSelectDialog(StackPane parent, ArrayList<Tag> tags){
+    public static JFXDialog openTagSelectDialog(StackPane parent, ObservableList<Tag> tags){
         return openSelectDialog(parent,null,tags);
     }
 
@@ -95,7 +95,7 @@ public class MyUtils {
         return openSelectDialog(parent,books,null);
     }
 
-    private static JFXDialog openSelectDialog(StackPane parent, ObservableList<Book> books, ArrayList<Tag> tags){
+    private static JFXDialog openSelectDialog(StackPane parent, ObservableList<Book> books, ObservableList<Tag> tags){
         JFXDialog singleJfxDialog = new JFXDialog();
 
         try {

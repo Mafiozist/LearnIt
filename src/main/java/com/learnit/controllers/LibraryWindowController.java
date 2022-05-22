@@ -12,6 +12,7 @@ import com.learnit.datasets.TagHolder;
 import com.learnit.textconverters.SupportedTextFormats;
 import com.learnit.textconverters.TextConverter;
 import com.learnit.textconverters.TextConverterFactory;
+import com.learnit.wrappers.TagWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,7 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -37,22 +38,20 @@ import java.util.stream.Stream;
 
 //there it could be added smooth animation of adding and changing of library cards on layout
 public class LibraryWindowController implements Initializable {
-    @FXML
-    private TilePane tilePane;
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private TextField search;
-    @FXML
-    private JFXButton selectTags;
-    @FXML
-    private StackPane stackPane;
+    @FXML private ListView<TagWrapper> tagView;
+    @FXML private TilePane tilePane;
+    @FXML private ScrollPane scrollPane;
+    @FXML private TextField search;
+    @FXML private JFXButton selectTags;
+    @FXML private StackPane stackPane;
 
     private ContextMenu contextMenu;
     private ObservableList<Book> books;
+
     private FilteredList<StackPane> filtredBooks;
     private ArrayList<StackPane> tempBooksUi;
     private ObservableList<StackPane> booksUi;
+
     private JFXDialog singleJfxDialog;
 
     //Filtering methods
@@ -60,7 +59,7 @@ public class LibraryWindowController implements Initializable {
     private Predicate<StackPane> containsTags;
 
     public LibraryWindowController(){
-        books = FXCollections.observableList(Library.getInstance().getBooks());
+        books = Library.getInstance().getBooks();
         tempBooksUi = new ArrayList<>();
         filtredBooks = new FilteredList<>(FXCollections.observableList(tempBooksUi));
         scrollPane = new ScrollPane();
@@ -68,6 +67,7 @@ public class LibraryWindowController implements Initializable {
         booksUi = FXCollections.observableList(tempBooksUi);
         MenuItem addBook = new MenuItem("Добавить");
         MenuItem addNewBook = new MenuItem("Создать");
+        tagView = new ListView();
 
         scrollPane.viewportBoundsProperty().addListener((observableValue, bounds, t1) -> tilePane.setPrefSize(bounds.getWidth(),bounds.getHeight()));
 
@@ -137,6 +137,8 @@ public class LibraryWindowController implements Initializable {
 
                     if(!((SelectDialogController)singleJfxDialog.getUserData()).getChangedTags().isEmpty()){
                       ArrayList<Tag> arr = new ArrayList<>( ( (SelectDialogController) singleJfxDialog.getUserData() ).getChangedTags() );
+
+                      updateTagView(url, arr);
                       return ( (Book) pane.getUserData() ).getTags().containsAll(arr);
                     }
 
@@ -144,21 +146,17 @@ public class LibraryWindowController implements Initializable {
                 };
 
                 if(((SelectDialogController)singleJfxDialog.getUserData()).getChangedTags().isEmpty()){
+                    updateTagView(url, null);
                     containsTags = null;
                 }
 
                 filterUI();
-
             });
 
         });
 
-
-
         search.textProperty().addListener((observableValue, s, current) -> {
             //filtredBooks.setPredicate(containsName);
-
-
             containsName = i-> {
                 if(!(current.isEmpty() || current.isBlank())){
                     return ((Book)i.getUserData()).getName().toLowerCase().contains(current.toLowerCase());
@@ -183,7 +181,9 @@ public class LibraryWindowController implements Initializable {
         else if( containsTags != null && containsName != null && !isSearchEmpty()) filtredBooks.setPredicate(containsName.and(containsTags));
         else if( containsTags != null && containsName != null && isSearchEmpty()) filtredBooks.setPredicate(containsName.or(containsTags)); //somehow need to deny checkboxes filter but how
         else {
+
             filtredBooks.setPredicate(null);
+            if(filtredBooks.isEmpty()) filtredBooks = new FilteredList<>(booksUi);
         }
 
         updateUi();
@@ -284,8 +284,17 @@ public class LibraryWindowController implements Initializable {
                    if(event.isPrimaryButtonDown()){
 
                        JFXDialogLayout layout = new JFXDialogLayout();
-                       layout.setHeading(new Text("Внимание!"));
-                       layout.setBody(new Text(String.format("Вы действительно хотите удалить: %s?", book.getName())));
+
+                       Label header = new Label("Внимание!");
+                       header.setFont(Font.font("Times New Roman Bold", 24));
+                       layout.setHeading(header);
+
+                       Label label = new Label(String.format("Вы действительно хотите удалить:\n%s?", book.getName()));
+                       label.setFont(Font.font("Times new roman", 14));
+
+                       label.wrapTextProperty().setValue(true);
+
+                       layout.setBody(label);
                        JFXButton ok = new JFXButton("Да");
                        JFXButton cancel = new JFXButton("Нет");
 
@@ -319,13 +328,12 @@ public class LibraryWindowController implements Initializable {
             controller.setBook(book);
 
             tilePane.getChildren().add(sp);
-        tempBooksUi.add(sp);
+            tempBooksUi.add(sp);
     }
 
     public void removeFromUi(Book book){
         tilePane.getChildren().removeIf(tile -> ((Book) tile.getUserData()).getId() == book.getId());
     }
-
 
     public File getFileWithFilter(){
         FileChooser fileChooser = new FileChooser();
@@ -340,5 +348,15 @@ public class LibraryWindowController implements Initializable {
         return fileChooser.showOpenDialog(tilePane.getScene().getWindow());
     }
 
+    private void updateTagView(URL css,ArrayList<Tag> tags) {
+        tagView.getItems().clear();
+
+        if (tags == null || tags.isEmpty()) return;
+
+        for (Tag tag: tags){
+           TagWrapper tagWrapper = new TagWrapper(css, tag);
+           tagView.getItems().add(tagWrapper);
+        }
+    }
 
 }

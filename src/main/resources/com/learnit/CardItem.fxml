@@ -3,25 +3,62 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-<VBox fx:id = "cardVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="300" prefWidth="300"
-      xmlns="http://javafx.com/javafx/11.0.2"
-      fx:controller="com.learnit.controllers.CardItemController" xmlns:fx="http://javafx.com/fxml/1"
-      onMouseClicked="#onCardClicked">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.2"
+           fx:controller="com.learnit.controllers.CardItemController"
+           xmlns:fx="http://javafx.com/fxml/1" stylesheets="@css/Card.css" prefWidth="250" prefHeight="200">
 
-        <children>
-       
-            <GridPane fx:id="tagsGridPane" gridLinesVisible="true" prefHeight="291.0" prefWidth="718.0" VBox.vgrow="ALWAYS"/>
+    <VBox>
+        <BorderPane>
+            <top>
+                <JFXButton fx:id="delete" id="delete" style="-fx-border-color:red;" BorderPane.alignment="TOP_RIGHT" >
+                    <graphic>
+                        <ImageView fitWidth="15" fitHeight="15">
+                            <Image url="@images/defaultDelete.png" />
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+            </top>
+        </BorderPane>
 
-            <Label fx:id="questionLabel" alignment="CENTER" contentDisplay="CENTER"
-                      prefHeight="213.0" prefWidth="759.0" text="This is a test message"
-                      textAlignment="CENTER" VBox.vgrow="SOMETIMES">
+        <userData>
+            <fx:reference source="controller"/>
+        </userData>
 
-                 <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                 </padding>
-            </Label>
+        <styleClass>
+            <String fx:value="shadow" />
+            <String fx:value="white-background" />
+            <String fx:value="mouse-moved"/>
+            <!--<String fx:value="selected"/>-->
+            <String fx:value="round-layout"/>
+        </styleClass>
 
-         </children>
-</VBox>
+        <padding>
+            <Insets bottom="15"/>
+        </padding>
+
+        <VBox fx:id="cardVBox" id="cardVBox">
+
+            <BorderPane>
+                <center>
+                    <GridPane fx:id="tagsGridPane" gridLinesVisible="false" VBox.vgrow="ALWAYS" vgap="5"/>
+                </center>
+
+                <bottom>
+                    <Label fx:id="questionLabel" id="questionLabel" wrapText="true" alignment="CENTER" contentDisplay="CENTER"
+                           textAlignment="CENTER" VBox.vgrow="SOMETIMES" BorderPane.alignment="BOTTOM_CENTER" minHeight="50" maxWidth="${tagsGridPane.width}"
+                           text="This is a test message">
+
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </padding>
+                    </Label>
+                </bottom>
+            </BorderPane>
+        </VBox>
+    </VBox>
+</StackPane>

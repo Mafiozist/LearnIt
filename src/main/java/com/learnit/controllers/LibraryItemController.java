@@ -48,30 +48,33 @@ public class LibraryItemController implements Initializable {
     }
 
     public void changeName(MouseEvent event) {
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text("Введите новое название:"));
-        TextArea textField = new TextArea();
-        textField.setWrapText(true);
-        layout.setBody(textField);
-        JFXButton ok = new JFXButton("Сохранить");
-        JFXButton cancel = new JFXButton("Отменить");
-        layout.setActions(ok,cancel);
+        if(event.isPrimaryButtonDown()){
 
-        JFXDialog jfxDialog = new JFXDialog(stackPane, layout, JFXDialog.DialogTransition.CENTER);
-        jfxDialog.show();
+            JFXDialogLayout layout = new JFXDialogLayout();
+            layout.setHeading(new Text("Введите новое название:"));
+            TextArea textField = new TextArea();
+            textField.setWrapText(true);
+            layout.setBody(textField);
+            JFXButton ok = new JFXButton("Сохранить");
+            JFXButton cancel = new JFXButton("Отменить");
+            layout.setActions(ok,cancel);
 
-        ok.setOnMousePressed(pressed -> {
-            if (pressed.isPrimaryButtonDown()) {
-                book.setName(textField.getText());
-                Library.getInstance().updateBookName(book);
-                jfxDialog.close();
-            }
-        });
+            JFXDialog jfxDialog = new JFXDialog(stackPane, layout, JFXDialog.DialogTransition.CENTER);
+            jfxDialog.show();
 
-        cancel.setOnMousePressed(pressed -> {
-            if(pressed.isPrimaryButtonDown()){
-                jfxDialog.close();
-            }
-        });
+            ok.setOnMousePressed(pressed -> {
+                if (pressed.isPrimaryButtonDown()) {
+                    book.setName(textField.getText());
+                    Library.getInstance().updateBookName(book);
+                    jfxDialog.close();
+                }
+            });
+
+            cancel.setOnMousePressed(pressed -> {
+                if(pressed.isPrimaryButtonDown()){
+                    jfxDialog.close();
+                }
+            });
+        }
     }
 }

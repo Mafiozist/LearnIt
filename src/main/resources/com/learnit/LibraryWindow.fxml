@@ -8,12 +8,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ListView?>
 <StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.learnit.controllers.LibraryWindowController">
     <VBox stylesheets="@css/LibraryItem.css" >
-            <HBox>
+
+            <HBox fx:id="hBox">
                 <TextField fx:id="search" HBox.hgrow="ALWAYS" promptText="Поиск..." alignment="CENTER"/>
                 <JFXButton fx:id="selectTags" text="Выбрать по тегам" HBox.hgrow="ALWAYS"/>
             </HBox>
+
+            <ListView fx:id="tagView" orientation="HORIZONTAL" maxHeight="55" styleClass="transparent" />
 
             <StackPane  VBox.vgrow="ALWAYS">
                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">

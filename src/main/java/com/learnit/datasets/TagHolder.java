@@ -5,6 +5,9 @@ import com.learnit.database.connection.OfflineDatabaseConnection;
 import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
 import com.learnit.database.data.tables.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,14 +17,15 @@ import java.util.Arrays;
 
 public class TagHolder {
     private static TagHolder tagHolder;
-    private ArrayList<Tag> tags;
+    private ObservableList<Tag> tags;
     private final String getTagsQuery = "SELECT * FROM tags;";
     private final String[] tagsTables = new String[]{"book-tag","card-tag", "tags"};
 
     //Установка значения по-умолчанию
     private TagHolder()  {
         try {
-            tags = new ArrayList<>();
+
+            ArrayList<Tag> tagArrayList = new ArrayList<>();
             Connection connection = OfflineDatabaseConnection.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(getTagsQuery);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -29,11 +33,12 @@ public class TagHolder {
             while (resultSet.next()) {
                 Tag tag = new Tag();
                 tag.setId(resultSet.getInt(1)).setName(resultSet.getString(2));
-                this.tags.add(tag);
+                tagArrayList.add(tag);
 
                 // TODO: 28.04.2022 getting data from pc
             }
 
+            tags = FXCollections.observableList(tagArrayList);
             resultSet.close();
         } catch (NullPointerException|SQLException exception){
             exception.printStackTrace(); // TODO: 02.05.2022 alert
@@ -45,7 +50,7 @@ public class TagHolder {
         return tagHolder;
     }
 
-    public ArrayList<Tag> getTags(){
+    public ObservableList<Tag> getTags(){
         return tags;
     }
 
