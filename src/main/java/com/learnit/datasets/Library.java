@@ -25,6 +25,7 @@ public class Library {
 
     private Library() throws SQLException {
         ArrayList<Book> bookArrayList = new ArrayList<>();
+        books = FXCollections.observableArrayList(new ArrayList<>());
         ResultSet resultSet = MyUtils.executeQueryWithResult(getBooksQuery);
 
         while (resultSet != null && resultSet.next()){
@@ -43,7 +44,7 @@ public class Library {
             bookArrayList.add(book);
         }
 
-       books = FXCollections.observableList(bookArrayList);
+       books = FXCollections.observableArrayList(bookArrayList);
 
        booksSize = new SimpleIntegerProperty(books.size());
        //booksSize.addListener((observable, oldValue, newValue) -> System.out.println(String.format("BooksSize changed from: %d to %d",oldValue,newValue)));
@@ -71,10 +72,6 @@ public class Library {
 
 
   }
-
-  public void clearCopy(Book book){
-        books.remove(books.indexOf(book)); //delete only 1 object
-    }
 
   public static Library getInstance(){
         if(library == null) {

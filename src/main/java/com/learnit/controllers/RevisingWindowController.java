@@ -1,5 +1,6 @@
 package com.learnit.controllers;
 
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXRadioButton;
 import com.learnit.MainWindow;
 import com.learnit.MyUtils;
@@ -8,6 +9,8 @@ import com.learnit.datasets.CardHolder;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,10 +28,11 @@ public class RevisingWindowController implements Initializable {
     @FXML private BorderPane root;
     @FXML private ToggleGroup revisingState;
     @FXML private JFXRadioButton all,booksOnly,tagsOnly;
-    @FXML private Queue<Card> cards;
+    @FXML private Queue<Card> cardsQueue;
 
     public RevisingWindowController(){
         root = new BorderPane();
+        cardsQueue = new LinkedList<>();
     }
 
     @Override
@@ -49,31 +53,57 @@ public class RevisingWindowController implements Initializable {
 
         revisingState.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
             RadioButton rb = (RadioButton) t1.getToggleGroup().getSelectedToggle();
-            /*if(CardHolder.getInstance().getCards().isEmpty()) {
-                MyUtils.openMessageDialog(stackPane,"Внимание!","Нет карточек для работы.\n" +
-                        "Вы можете добавить карточки прямо в библиотеке,\n" +
-                        "из файла с которым работаете.");
-                return;
-            }*/
+            ObservableList<Card> cards = CardHolder.getInstance().getCards();
+            FilteredList<Card> filtredCards = new FilteredList<>(cards);
+
+            JFXDialog dialog = null;
+
 
             switch (rb.getText()) {
                 case "Все" ->
+                        cardsQueue = new LinkedList<>(sortByDate(cards));
 
-                        cards.addAll(FXCollections.observableList(CardHolder.getInstance().getCards()));
 
                 case "Книги" ->
                         // TODO: 12.05.2022 there is feature for filtering cards by books
+                        dialog = MyUtils.openBookSelectDialog(stackPane, Library.getInstance().getBooks());
 
 
-                        MyUtils.openBookSelectDialog(stackPane, Library.getInstance().getBooks());
+
                 case "Тэги" ->
                         // TODO: 12.05.2022 there is feature for filtering cards by tags
-                        MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags());
+                        dialog = MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags());
+
+
+
             }
         });
     }
 
+    public Queue<Card> filterByTags(ObservableList<Card> cards){
 
+
+        return null;
+    }
+
+    public List<Card> sortByDate(ObservableList<Card> cards){
+        List<Card> tmp = new ArrayList<>(cards);
+
+        
+        tmp.sort((o1, o2) -> {
+            if (o1.getNextRepetition() == null || o2.getNextRepetition() == null)
+                return 0;
+            return o1.getNextRepetition().compareTo(o2.getNextRepetition());
+        });
+
+        return tmp;
+    }
+
+    public Queue<Card> filterByBooks(ObservableList<Card> cards){
+
+
+        return null;
+    }
 
 
 }

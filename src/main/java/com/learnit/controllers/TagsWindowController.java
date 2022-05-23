@@ -68,9 +68,7 @@ public class TagsWindowController implements Initializable {
         addTag = new MenuItem("Добавить");
         contextMenu.getItems().addAll(addTag,removeTag);
 
-        jfxListView.setOnScroll(scrollEvent -> {
-            jfxListView.refresh();
-        });
+        jfxListView.setOnScroll(scrollEvent -> jfxListView.refresh());
 
     }
 
@@ -93,17 +91,10 @@ public class TagsWindowController implements Initializable {
             while (change.next()){
                 if(change.wasAdded()){// if tag was created by user
                     Tag tag = change.getAddedSubList().get(0);
-
-                    if(tag.getId() == -1){ //Fixing porblem with double representing of new added tag (at the moment i have no idea how its happened)
-                        TagHolder.getInstance().addTag(tag); //adding it to db
-                        tag.setId(TagHolder.getInstance().getTagIdByName(tag.getName()));
-                        TagHolder.getInstance().clearCopy(tag); // FIXME: 23.05.2022 Double representing of 1 object reference
-                    }
-
                     addTagsToUi(url, tag); // cause at 1 operation adding 1 tag as well
                 }
                 else if(change.wasRemoved()){
-                    TagHolder.getInstance().removeTag(change.getRemoved().get(0));
+                    //TagHolder.getInstance().removeTag(change.getRemoved().get(0));
                     removeTagFromUi(change.getRemoved().get(0));
                 }
             }

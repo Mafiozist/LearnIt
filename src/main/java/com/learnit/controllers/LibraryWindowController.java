@@ -128,8 +128,6 @@ public class LibraryWindowController implements Initializable {
                 if (change.wasRemoved()){
                     removeFromUi(change.getRemoved().get(0));
                 }
-
-
             }
 
         });
@@ -239,13 +237,12 @@ public class LibraryWindowController implements Initializable {
                 for (Card card: preparedCards) {
                     CardHolder.getInstance().addCard(card,book);
                 }
-
             }
             else if (book.getId() == -1 && !Library.getInstance().getBooks().contains(book)){ //If object aren't taken from db
                 Library.getInstance().addBook(book);
+
                 book.setId(Library.getInstance().getLastBookId()); //Костыль
-                Library.getInstance().clearCopy(book); // FIXME: 23.05.2022 Double representing of 1 object reference
-                addToUI(book);
+                //Library.getInstance().clearCopy(book); // FIXME: 23.05.2022 Double representing of 1 object reference
 
                 if(finalController.getChangedTags() != null) TagHolder.getInstance().selectTags(finalController.getChangedTags(), book); //update book-tags binds
 

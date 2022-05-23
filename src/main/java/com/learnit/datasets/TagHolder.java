@@ -6,6 +6,7 @@ import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
 import com.learnit.database.data.tables.Tag;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
@@ -40,6 +41,29 @@ public class TagHolder {
 
             tags = FXCollections.observableList(tagArrayList);
             resultSet.close();
+
+            tags.addListener((ListChangeListener<Tag>) c -> {
+                while (c.next()){
+                    if(c.wasAdded()){
+                        Tag added = c.getAddedSubList().get(0);
+                        MyUtils.executeQuery(String.format("INSERT INTO %s(name,img) VALUES('%s', %s)","tags",c.getAddedSubList().get(0).getName(), "null"));
+                        added.setId(TagHolder.getInstance().getTagIdByName(added.getName()));
+                    }
+
+                    if(c.wasRemoved()){
+                        int[] isFullyDeleted = new int[tagsTables.length];
+                        int i = 0;
+
+                        for (String table: tagsTables) {
+                            isFullyDeleted[i++] = (MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE tid = %d;",table, c.getRemoved().get(0).getId())))? 1:0;
+                        }
+
+                        i=0;
+                        i += Arrays.stream(isFullyDeleted).sum(); // if all tables from tagsTables removes then the amount of counter == tagsTables.length
+                    }
+                }
+            });
+
         } catch (NullPointerException|SQLException exception){
             exception.printStackTrace(); // TODO: 02.05.2022 alert
         }
@@ -52,10 +76,6 @@ public class TagHolder {
 
     public ObservableList<Tag> getTags(){
         return tags;
-    }
-
-    public void clearCopy(Tag tag){
-        tags.remove(tags.indexOf(tag)); //delete only 1 object
     }
 
     public int[] getTagsIdsByNames(String ... names){ // there is need to be changed on sql realization
@@ -88,29 +108,12 @@ public class TagHolder {
     public boolean removeTag(Tag tag){ //true only if all the tables from tagsTables removes well
         System.out.println("Tag is deleted");
         tags.remove(tag);
-
-        int[] isFullyDeleted = new int[tagsTables.length];
-        int i = 0;
-
-        for (String table: tagsTables) {
-            isFullyDeleted[i++] = (MyUtils.executeQuery(String.format("DELETE FROM `%s` WHERE tid = %d;",table, tag.getId())))? 1:0;
-        }
-
-        i=0;
-        i += Arrays.stream(isFullyDeleted).sum(); // if all tables from tagsTables removes then the amount of counter == tagsTables.length
-
-        return i==tagsTables.length;
+        return !tags.contains(tag);
     }
 
     public boolean addTag(Tag tag){
-        System.out.println("Tag is added");
-        boolean isAdded = false;
-        if (MyUtils.executeQuery(String.format("INSERT INTO %s(name,img) VALUES('%s', %s)","tags",tag.getName(), "null"))){
-            isAdded = true;
-            tags.add(tag);
-        }
-
-        return isAdded;
+        tags.add(tag);
+        return tags.contains(tag);
     }
 
     public boolean updateTag(Tag tag){
