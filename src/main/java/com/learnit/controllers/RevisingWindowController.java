@@ -119,7 +119,7 @@ public class RevisingWindowController implements Initializable {
             return;
         }
 
-        Predicate<Card> containsBook = choseBooks::contains;
+        Predicate<Card> containsBook = card -> choseBooks.contains(card.getBook());
         list.setPredicate(deleted.negate().and(todayIsDate).and(containsBook));
     }
 
@@ -130,9 +130,13 @@ public class RevisingWindowController implements Initializable {
 
         CardReviseFaceController controller = new CardReviseFaceController(root);
         controller.setData(card);
+        fxmlLoader.setController(controller);
 
-
-
+        try {
+            root.setCenter(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

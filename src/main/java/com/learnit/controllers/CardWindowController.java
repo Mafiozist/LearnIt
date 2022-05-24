@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class CardWindowController implements Initializable {
     @FXML private ListView<String> listview;
@@ -40,7 +41,7 @@ public class CardWindowController implements Initializable {
     @FXML private StackPane stackPane;
 
     //filterData
-    ObservableList<Card> cards = CardHolder.getInstance().getCards();
+    private ObservableList<Card> cards = CardHolder.getInstance().getCards();
 
     private FilteredList<StackPane> cardsUiFilterList;
     private ObservableList<StackPane> cardsUiList;
@@ -101,6 +102,17 @@ public class CardWindowController implements Initializable {
                    // FIXME: 22.05.2022 representing of selected books on the screen
                    SelectDialogController selectDialogController = ((SelectDialogController) currentFilterDialog.getUserData());
                    updateListView(selectDialogController.getChangedBooks());
+
+                   if(selectDialogController.getChangedBooks() == null || selectDialogController.getChangedBooks().isEmpty()) {
+                       updateFilter();
+                       updateUI();
+                       return;
+                   }
+
+                   Predicate<StackPane> containsBook = i-> selectDialogController.getChangedBooks().contains(((CardItemController)i.getUserData()).getCard().getBook());
+                   cardsUiFilterList.setPredicate(containsBook);
+                   updateUI();
+
                });
 
             }
