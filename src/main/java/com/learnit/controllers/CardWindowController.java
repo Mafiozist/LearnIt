@@ -226,7 +226,8 @@ public class CardWindowController implements Initializable {
                 label.setFont(Font.font("Times new roman", 14));
 
                 layout.setBody(label);
-                JFXButton ok = new JFXButton("Да");
+                JFXButton ok = new JFXButton("Удалить полностью");
+                JFXButton yes = new JFXButton("Удалить");
                 JFXButton cancel = new JFXButton("Нет");
 
                 layout.setActions(ok,cancel);
@@ -238,6 +239,14 @@ public class CardWindowController implements Initializable {
                     if (pressed.isPrimaryButtonDown()) {
                         removeFromUi(card);
                         CardHolder.getInstance().removeCardWithStatistics(card);
+                        jfxDialog.close();
+                    }
+                });
+
+                yes.setOnMousePressed(pressed->{
+                    if (pressed.isPrimaryButtonDown()) {
+                        removeFromUi(card);
+                        CardHolder.getInstance().removeCard(card);
                         jfxDialog.close();
                     }
                 });

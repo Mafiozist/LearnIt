@@ -30,7 +30,7 @@ public class Settings {
 
 
     ////////////////////////Settings in cardHolders appearance
-    private static int caTagQuantity;// between 0 and 9 because
+    private static int caTagQuantity = 3;// between 0 and 9 because
 
     ///////////////////////RevisingSettings/////////////////////
     private static int minutesToAgain = 5;
@@ -42,7 +42,13 @@ public class Settings {
     private static double goodIntervalMultiplier = 1.3;
     public static  double easyIntervalMultiplier = 1.5;
     public static  double hardIntervalMultiplier = 0.5d;
+
     private static int maxCardsPerDay = 75;
+    private static int maxDayInterval = 100;
+    private static int minDayInterval = 1;
+    private static int repeatInMinutes = 10;
+
+    private static int[] learningPhaseMinutes = new int[]{1, 10, 25}; //if all the walls passed by 1 day with good result or 1 of them with easy result which
 
     //Taking data from pc...
     private Settings(){

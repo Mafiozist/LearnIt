@@ -4,11 +4,11 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXRadioButton;
 import com.learnit.MainWindow;
 import com.learnit.MyUtils;
+import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
 import com.learnit.datasets.CardHolder;
 import com.learnit.datasets.Library;
 import com.learnit.datasets.TagHolder;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -22,18 +22,19 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class RevisingWindowController implements Initializable {
     @FXML private StackPane stackPane;
     @FXML private BorderPane root;
     @FXML private ToggleGroup revisingState;
     @FXML private JFXRadioButton all,booksOnly,tagsOnly;
-    @FXML private Queue<Card> cardsQueue;
+    private Queue<Card> cardsQueue;
 
     public RevisingWindowController(){
         root = new BorderPane();
         cardsQueue = new LinkedList<>();
-    }
+            }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,38 +59,46 @@ public class RevisingWindowController implements Initializable {
 
             JFXDialog dialog = null;
 
-
             switch (rb.getText()) {
-                case "Все" ->
-                        cardsQueue = new LinkedList<>(sortByDate(cards));
+                case "Все" -> {
 
+                    filterCards(filtredCards, null);
+                    cardsQueue = new LinkedList<>(sortByDate(filtredCards));
 
-                case "Книги" ->
-                        // TODO: 12.05.2022 there is feature for filtering cards by books
-                        dialog = MyUtils.openBookSelectDialog(stackPane, Library.getInstance().getBooks());
+                    loadCard(cardsQueue.poll());
+                }
 
+                case "Книги" -> {
+                    dialog = MyUtils.openBookSelectDialog(stackPane, Library.getInstance().getBooks());
 
+                    JFXDialog finalDialog = dialog;
+                    dialog.setOnDialogClosed(closed->{
+                        ArrayList<Book> books = ((SelectDialogController) finalDialog.getUserData()).getChangedBooks();
 
-                case "Тэги" ->
-                        // TODO: 12.05.2022 there is feature for filtering cards by tags
-                        dialog = MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags());
+                        if(books!= null || !books.isEmpty()){
 
+                            filterCards(filtredCards,books);
+                            cardsQueue = new LinkedList<>(sortByDate(filtredCards));
 
+                            loadCard(cardsQueue.poll());
+                        }
 
+                    });
+
+                }
+
+                case "Тэги" ->{
+                    // TODO: 12.05.2022 there is feature for filtering cards by tags
+                    dialog = MyUtils.openTagSelectDialog(stackPane, TagHolder.getInstance().getTags());
+                }
             }
         });
-    }
-
-    public Queue<Card> filterByTags(ObservableList<Card> cards){
-
-
-        return null;
     }
 
     public List<Card> sortByDate(ObservableList<Card> cards){
         List<Card> tmp = new ArrayList<>(cards);
 
-        
+        //Date date = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
         tmp.sort((o1, o2) -> {
             if (o1.getNextRepetition() == null || o2.getNextRepetition() == null)
                 return 0;
@@ -99,11 +108,31 @@ public class RevisingWindowController implements Initializable {
         return tmp;
     }
 
-    public Queue<Card> filterByBooks(ObservableList<Card> cards){
+    public void filterCards(FilteredList<Card> list, ArrayList<Book> choseBooks){
+        list.setPredicate(null);
+        Predicate<Card> deleted = Card::isDeleted;
+        Predicate<Card> todayIsDate = i -> i.getNextRepetition().compareTo(new GregorianCalendar().getTime()) <= 0;
 
 
-        return null;
+        if (choseBooks == null || choseBooks.isEmpty()) {
+            list.setPredicate(deleted.negate().and(todayIsDate));
+            return;
+        }
+
+        Predicate<Card> containsBook = choseBooks::contains;
+        list.setPredicate(deleted.negate().and(todayIsDate).and(containsBook));
     }
 
+
+    public void loadCard(Card card){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(MainWindow.class.getResource("CardReviseFace.fxml"));
+
+        CardReviseFaceController controller = new CardReviseFaceController(root);
+        controller.setData(card);
+
+
+
+    }
 
 }

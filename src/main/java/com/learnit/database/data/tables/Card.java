@@ -2,6 +2,7 @@ package com.learnit.database.data.tables;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Card {
     private int id;
@@ -9,6 +10,7 @@ public class Card {
     private String answer;
     private double baseInterval;
     private Date nextRepetition;
+    private boolean isDeleted;
 
     private ArrayList<Tag> tags;
     private Book book;
@@ -19,7 +21,7 @@ public class Card {
         id = -1;
         question = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "В чем смысл бытия?");
         answer = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "Ответ придется искать самому.");
-        nextRepetition = new Date();
+        nextRepetition = new GregorianCalendar().getTime();
     }
 
     public Card setAnswer(String answer) {
@@ -55,5 +57,19 @@ public class Card {
     public Card setBaseInterval(float interval) {
         baseInterval = (double) interval;
         return this;
+    }
+    public Card setDeleted(boolean var){
+        isDeleted = var; return this;
+    }
+    public boolean isDeleted(){
+        return isDeleted;
+    }
+
+    public Card setBook(Book book) {
+        this.book = book; return this;
+    }
+
+    public Book getBook(){
+        return book;
     }
 }

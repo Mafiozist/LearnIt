@@ -19,6 +19,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -28,6 +30,11 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage stage)  {
         CSSFX.start();
+
+        //GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        //gregorianCalendar.setTimeInMillis(2579262354193l);
+        //Date date = gregorianCalendar.getTime();
+        //System.out.println(date);
 
         //Current windows locale
         Locale currentLocale = Locale.getDefault();

@@ -3,7 +3,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.web.WebView?>
-<BorderPane fx:id="cardViewFace" id="CardViewFace" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane fx:id="cardViewFace" id="CardViewFace" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
             maxWidth="Infinity" maxHeight="Infinity" stylesheets="@css/RevisingWindow.css">
 
    <center>

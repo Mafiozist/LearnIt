@@ -93,8 +93,7 @@ public class Library {
   public Library updateBook(Book book){ // TODO: 30.04.2022  need to add image and tags
         System.out.println("Db. Book is updated");
         String updateQuery = String.format(
-        "UPDATE books SET htmlText = '%s' " +
-                "WHERE bid = %d;", book.getHtmlText(), book.getId());
+        "UPDATE books SET htmlText = '%s' WHERE bid = %d;", book.getHtmlText(), book.getId());
         MyUtils.executeQuery(updateQuery);
         return this;
   }
@@ -124,6 +123,13 @@ public class Library {
         }
 
         return id;
+  }
+
+  public Book getBookById(int id){
+      for (Book book: books) {
+          if(book.getId() == id) return book;
+      }
+      return null;
   }
 
   public SimpleIntegerProperty getBooksSizeProperty() {
