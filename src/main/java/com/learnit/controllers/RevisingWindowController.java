@@ -12,6 +12,7 @@ import com.learnit.datasets.TagHolder;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -54,6 +55,8 @@ public class RevisingWindowController implements Initializable{
         filtredCards = new FilteredList<>(cards);
         hasAnyAvaliableCards = new SimpleBooleanProperty(false);
 
+        cards.addListener((ListChangeListener<Card>) c -> filtredCards = new FilteredList<>(cards));
+
         checkCardsAvailabilityTask = ()->{
             while (true){
                 System.out.println(filtredCards);
@@ -91,7 +94,7 @@ public class RevisingWindowController implements Initializable{
         currentCardUi.bindBidirectional(root.centerProperty());
 
         currentCardUi.addListener((observable, oldValue, newValue) -> {
-            System.out.println("Changed");
+            //System.out.println("Changed");
             root.centerProperty().setValue(newValue);
 
             if(newValue == null && cardsQueue.isEmpty()){
