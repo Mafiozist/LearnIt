@@ -46,7 +46,7 @@ public class CardItemController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Tag> tags = TagHolder.getInstance().getTags();
 
-        for (int i = 0, p=0; i < 3; i++) {
+        /*for (int i = 0, p=0; i < 3; i++) {
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(MainWindow.class.getResource("TagItem.fxml"));
@@ -64,8 +64,7 @@ public class CardItemController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-        }
-
+        } */
 
     }
     public Card getCard() {

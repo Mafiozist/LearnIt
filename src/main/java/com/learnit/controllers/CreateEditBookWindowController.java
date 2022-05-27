@@ -7,23 +7,21 @@ import com.learnit.database.data.tables.Book;
 import com.learnit.database.data.tables.Card;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.robot.Robot;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -99,7 +97,7 @@ public class CreateEditBookWindowController implements Initializable {
                 try {
                     //Нужно что-то сделать с повторяющимся кодом - это плохо, но времени уже мало...
                     FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(MainWindow.class.getResource("SelectDialog.fxml"));
+                    fxmlLoader.setLocation(MainWindow.class.getResource("dialogsView/SelectDialog.fxml"));
                     layout = fxmlLoader.load();
 
                     SelectDialogController controller = fxmlLoader.getController();
@@ -178,7 +176,7 @@ public class CreateEditBookWindowController implements Initializable {
 
     public void openCardEditorDialog(Card card, Book book){
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(MainWindow.class.getResource("CreateEditCardWindow.fxml"));
+        fxmlLoader.setLocation(MainWindow.class.getResource("dialogsView/CreateEditCardWindow.fxml"));
         //Doing some stuff with controller....
 
         Stage stage = new Stage();

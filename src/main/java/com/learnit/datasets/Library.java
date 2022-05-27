@@ -2,7 +2,6 @@ package com.learnit.datasets;
 
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Book;
-import com.learnit.database.data.tables.Tag;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -19,7 +18,6 @@ public class Library {
     private ObservableList<Book> books;
     private String getBooksQuery = String.format(Locale.ROOT,"SELECT * FROM %s;", "books");
     private String addBooksQuery;
-    private Connection connection;
     private final String[] booksTables = new String[]{"book-card","book-tag","books"}; //the order is do matter
     private SimpleIntegerProperty booksSize;
 

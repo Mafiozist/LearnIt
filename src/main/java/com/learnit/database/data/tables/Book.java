@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Book {
-    private static int objectSize;
+    private static int objectsSize;
     private int id,appId;
     private ArrayList<Tag> tag;
     private String htmlText;
@@ -24,7 +24,7 @@ public class Book {
     private Image titleImg;
 
     public Book(){
-        appId = objectSize++;
+        appId = objectsSize++;
         name = new SimpleStringProperty("The new book name");
         id = -1;
         htmlText = "";
@@ -34,7 +34,7 @@ public class Book {
         changeDate = new Date();
 
         name.addListener((observable, oldValue, newValue) -> {
-            System.out.println("nameChanged. New name is " + newValue);
+            //System.out.println("nameChanged. New name is " + newValue);
             if(newValue.isEmpty() || newValue.isBlank()) name = new SimpleStringProperty("Без названия");
         });
     }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.web.HTMLEditor?>
+<StackPane fx:id="stackPane" fx:controller="com.learnit.controllers.CreateEditBookWindowController"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           minWidth="100" minHeight="150">
+
+                <HTMLEditor fx:id="htmlEditor"
+                            htmlText=
+                                    "&lt;html&gt;
+                                        &lt;head&gt;
+                                        &lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;
+                                        /body&gt;&lt;
+                                    /html&gt;"
+                            BorderPane.alignment="CENTER"
+                            minWidth="100" minHeight="150"/>
+
+</StackPane>

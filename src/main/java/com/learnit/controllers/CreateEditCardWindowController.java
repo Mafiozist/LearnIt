@@ -59,4 +59,11 @@ public class CreateEditCardWindowController implements Initializable {
         answerView.getEngine().loadContent(MyUtils.getCentredHtml(card.getAnswer()));
     }
 
+    public String getQuestion() {
+        return question.getHtmlText();
+    }
+
+    public String getAnswer() {
+        return answer.getHtmlText();
+    }
 }

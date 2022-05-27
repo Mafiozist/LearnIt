@@ -1,8 +1,7 @@
 package com.learnit.database.connection;
 
-import javafx.scene.control.Alert;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 //# Класс отвечающий за доступ к офлайн версии базы данных
 //Возможно стоит включить и создание БД в случае ее отсутствия??? Либо вывести в отдельный класс для дальнейшей работы
@@ -10,17 +9,18 @@ import java.sql.*;
 public class OfflineDatabaseConnection {
     private static OfflineDatabaseConnection connection;
     private static Connection dbLink;
-    // TODO: 11.05.2022 autocreating db 
+
+    // TODO: 11.05.2022 autocreating db
     private String tags =
             "CREATE TABLE tags (\n" +
-            "  id INT UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
+            "  id INT NOT NULL AUTO_INCREMENT,\n" +
             "  name VARCHAR(100) NOT NULL DEFAULT '',\n" +
             "  img BLOB DEFAULT NULL,\n" +
             "  PRIMARY KEY (id)\n" +
             ")";
     private String books =
             "CREATE TABLE books (\n" +
-            "  id INT UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
+            "  id INT  NOT NULL AUTO_INCREMENT,\n" +
             "  name VARCHAR(100) NOT NULL,\n" +
             "  htmlText LONGTEXT NOT NULL,\n" +
             "  size FLOAT NOT NULL DEFAULT -1,\n" +

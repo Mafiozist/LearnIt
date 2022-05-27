@@ -99,7 +99,7 @@ public class MyUtils {
         JFXDialog singleJfxDialog = new JFXDialog();
 
         try {
-            FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("SelectDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("dialogsView/SelectDialog.fxml"));
             singleJfxDialog.setContent(loader.load());
             SelectDialogController controller = loader.getController();
 

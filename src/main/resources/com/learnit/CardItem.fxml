@@ -15,7 +15,7 @@
     <VBox>
         <BorderPane>
             <top>
-                <JFXButton fx:id="delete" id="delete" style="-fx-border-color:red;" BorderPane.alignment="TOP_RIGHT" >
+                <JFXButton fx:id="delete" id="delete" BorderPane.alignment="TOP_RIGHT" >
                     <graphic>
                         <ImageView fitWidth="15" fitHeight="15">
                             <Image url="@images/defaultDelete.png" />

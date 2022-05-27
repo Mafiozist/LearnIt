@@ -3,16 +3,14 @@ package com.learnit.controllers;
 import com.learnit.CssParser;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Tag;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import java.io.*;
+import java.io.File;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 
@@ -48,6 +46,7 @@ public class TagItemController implements Initializable {
 
     public TagItemController(URL url,Tag tag){
         this.tag = tag;
+        tLabel = new Label();
 
         if(tag.getId()!=-1) {
             //Getting absolute path to the data
@@ -65,6 +64,13 @@ public class TagItemController implements Initializable {
                     MainWindow.class.getResource(String.format("css/tags/%d.css", tag.getId())), formatedStr);
 
             tHBox = new HBox();
+
+            //tLabel.textProperty().bind(tag.getNameProperty());
+            tag.getNameProperty().addListener((observable, oldValue, newValue) -> {
+                tLabel.setText(newValue);
+            });
+
+
             //cssParser.parse();
         } else if(tag.getId() == -1){ //Object isn't contained at db
             this.tag = tag;

@@ -5,15 +5,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class Card {
-    private int id;
+    private int id,sid;
     private String question;
     private String answer;
     private double baseInterval;
+    private double revisingBaseMultiplier;
     private Date nextRepetition;
     private boolean isDeleted;
-
     private ArrayList<Tag> tags;
     private Book book;
+
 
     public Card(){
         tags = new ArrayList<>();
@@ -22,6 +23,11 @@ public class Card {
         question = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "В чем смысл бытия?");
         answer = String.format("<html dir=\"ltr\"><head></head><body contenteditable=\"true\">%s</body></html>", "Ответ придется искать самому.");
         nextRepetition = new GregorianCalendar().getTime();
+    }
+
+    public Card setStatus(int id){
+        sid = id;
+        return this;
     }
 
     public Card setAnswer(String answer) {

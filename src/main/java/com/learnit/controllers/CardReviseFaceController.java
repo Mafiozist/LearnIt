@@ -4,22 +4,17 @@ import com.jfoenix.controls.JFXButton;
 import com.learnit.MainWindow;
 import com.learnit.MyUtils;
 import com.learnit.database.data.tables.Card;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Worker;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Queue;
 import java.util.ResourceBundle;
 
 public class CardReviseFaceController implements Initializable {
@@ -30,15 +25,15 @@ public class CardReviseFaceController implements Initializable {
     @FXML
     private JFXButton changeToBack;
 
-    CardReviseBackController backController;
-    BorderPane root;
-    Card card;
+    private CardReviseBackController backController;
+    private SimpleObjectProperty<Node> cardUi;
+    private Card card;
 
-    public CardReviseFaceController(BorderPane root){
+    public CardReviseFaceController(SimpleObjectProperty<Node> cardUi){
         cardViewFace = new BorderPane();
-        backController = new CardReviseBackController(root, this);
+        backController = new CardReviseBackController(cardUi, this);
         question = new WebView();
-        this.root = root;
+        this.cardUi = cardUi;
     }
 
     @Override
@@ -73,7 +68,7 @@ public class CardReviseFaceController implements Initializable {
 
             BorderPane bp = fxmlLoader.load(); //loading face of card
             //BorderPane borderPane = FXMLLoader.load(MainWindow.class.getResource("CardReviseBack.fxml")); //loading back of card
-            root.setCenter(bp);
+            cardUi.setValue(bp);
         } catch (IOException e) {
             e.printStackTrace();
         }

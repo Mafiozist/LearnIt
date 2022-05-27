@@ -25,7 +25,7 @@
                   </toggleGroup>
                </JFXRadioButton>
                <JFXRadioButton fx:id="booksOnly" id="books" text="Книги" toggleGroup="$revisingState" />
-               <JFXRadioButton fx:id="tagsOnly" id="tags" text="Тэги" toggleGroup="$revisingState" />
+               <JFXRadioButton fx:id="tagsOnly" id="tags" text="Тэги" toggleGroup="$revisingState" visible="false"/>
                <padding>
                   <Insets top="15.0" />
                </padding>

@@ -67,7 +67,7 @@ public class LibraryWindowController implements Initializable {
         booksUi = FXCollections.observableList(tempBooksUi);
         MenuItem addBook = new MenuItem("Добавить");
         MenuItem addNewBook = new MenuItem("Создать");
-        tagView = new ListView();
+        tagView = new ListView<>();
 
         scrollPane.viewportBoundsProperty().addListener((observableValue, bounds, t1) -> tilePane.setPrefSize(bounds.getWidth(),bounds.getHeight()));
 
@@ -199,7 +199,7 @@ public class LibraryWindowController implements Initializable {
 
     public void openEditDialog(Book book){
         FXMLLoader wloader = new FXMLLoader();
-        wloader.setLocation(MainWindow.class.getResource("CreateEditBookWindow.fxml"));
+        wloader.setLocation(MainWindow.class.getResource("dialogsView/CreateEditBookWindow.fxml"));
         CreateEditBookWindowController controller = null;
         Stage bWindow = new Stage();
         bWindow.titleProperty().bind(book.getNameProperty());

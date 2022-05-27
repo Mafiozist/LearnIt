@@ -1,12 +1,13 @@
 package com.learnit.controllers;
 
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.learnit.MainWindow;
 import com.learnit.database.data.tables.Tag;
 import com.learnit.datasets.TagHolder;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -16,15 +17,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.controlsfx.dialog.FontSelectorDialog;
-import org.controlsfx.validation.ValidationSupport;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 // TODO: 01.05.2022 create tag
 // TODO: 01.05.2022 edit tag 
@@ -32,30 +34,22 @@ import java.util.*;
 
 //Master-detail window
 public class TagsWindowController implements Initializable {
-    @FXML
-    TextField tagName;
-    @FXML
-    CheckBox transparentBackground;
-    @FXML
-    JFXButton changeFont,defaultButton;
-    @FXML
-    Slider borderInsets,borderWidth,borderRadius,backgroundRadius;
-    @FXML
-    TextArea cssTextArea;
-    @FXML
-    ColorPicker fontColorPicker,borderColorPicker,backgroundColorPicker;
-    @FXML
-    HBox root;
-    @FXML
-    JFXListView<HBox> jfxListView;
-    @FXML
-    private ContextMenu contextMenu;
+    @FXML TextField tagName;
+    @FXML CheckBox transparentBackground;
+    @FXML JFXButton changeFont,defaultButton;
+    @FXML Slider borderInsets,borderWidth,borderRadius,backgroundRadius;
+    @FXML TextArea cssTextArea;
+    @FXML ColorPicker fontColorPicker,borderColorPicker,backgroundColorPicker;
+    @FXML HBox root;
+    @FXML JFXListView<HBox> jfxListView;
+    @FXML  private ContextMenu contextMenu;
     private MenuItem removeTag,addTag;
 
     private ObservableList<Tag> tags;
     private HBox hBox;
     private TagItemController currentController;
-    private Font font;
+    private SimpleObjectProperty<Font> font;
+
 
     public TagsWindowController() {
         jfxListView = new JFXListView<>();
@@ -67,6 +61,15 @@ public class TagsWindowController implements Initializable {
         removeTag = new MenuItem("Удалить");
         addTag = new MenuItem("Добавить");
         contextMenu.getItems().addAll(addTag,removeTag);
+
+        font = new SimpleObjectProperty<>();
+
+        font.addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            setStringParameter("tLabel.tagitem","-fx-font-family", newValue.getName());
+            setStringParameter("tLabel.tagitem","-fx-font-style", newValue.getStyle());
+            changeIntParameter("tLabel.tagitem","-fx-font-size", (int) newValue.getSize());
+        });
 
         jfxListView.setOnScroll(scrollEvent -> jfxListView.refresh());
 
@@ -95,7 +98,7 @@ public class TagsWindowController implements Initializable {
                 }
                 else if(change.wasRemoved()){
                     //TagHolder.getInstance().removeTag(change.getRemoved().get(0));
-                    removeTagFromUi(change.getRemoved().get(0));
+                    Platform.runLater(()-> removeTagFromUi(change.getRemoved().get(0)));
                 }
             }
         });
@@ -166,7 +169,7 @@ public class TagsWindowController implements Initializable {
                 });
 
                 transparentBackground.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-                    if (t1) setStringColorParameter("tHBox.tagitem", "-fx-background-color", "transparent");
+                    if (t1) setStringParameter("tHBox.tagitem", "-fx-background-color", "transparent");
                 });
 
                 removeTag.setOnAction(actionEvent -> {
@@ -282,7 +285,7 @@ public class TagsWindowController implements Initializable {
         }
     }
 
-    public void setStringColorParameter(String cssObject, String cssParameter, String value){
+    public void setStringParameter(String cssObject, String cssParameter, String value){
         StringBuilder sb = new StringBuilder(cssTextArea.getText());
         int[] pos = findParameterValue(cssObject,cssParameter);
 
@@ -385,7 +388,7 @@ public class TagsWindowController implements Initializable {
             FontSelectorDialog fs = new FontSelectorDialog(null);
             Optional<Font> fontOptional = fs.showAndWait();
 
-            fontOptional.ifPresent(value -> font = value);
+            fontOptional.ifPresent(value -> font.setValue(value));
             if (font != null) System.out.println(font);
         }
     }

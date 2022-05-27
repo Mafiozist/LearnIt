@@ -1,31 +1,24 @@
 package com.learnit.database.data.tables;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 
 public class Tag {
    private static int size;
-   private int appId;
+   //private int appId;
 
    //DbData
    private int id;
-   private String name;
+   private SimpleStringProperty name;
    private Image img;
 
-   //Wrapper data containing at pc
-   private int priority;
-   private Color color;
-   private Boolean Highlighter;
-   private Color HighlighterColor;
 
    public Tag() {
       size++;
       id = -1;
-      appId = size;
-      priority = 0;
-      color = Color.AQUA;
-      name = "InitialName";
+      //appId = size;
+      name = new SimpleStringProperty("InitialName");
    }
 
    public Tag setId(int id) {
@@ -33,16 +26,16 @@ public class Tag {
       return this;
    }
 
-   public int getAppId() {
-      return appId;
-   }
+   //public int getAppId() {
+   //   return appId;
+   //}
 
    public int getId(){
       return id;
    }
 
    public Tag setName(String name){
-      this.name = name;
+      this.name.setValue(name);
       return this;
    }
    public Tag setImg(Image img){
@@ -52,7 +45,10 @@ public class Tag {
    }
 
    public String getName(){
-      return name;
+      return name.getValue();
    }
 
+   public SimpleStringProperty getNameProperty(){
+      return name;
+   }
 }

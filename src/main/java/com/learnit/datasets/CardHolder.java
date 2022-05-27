@@ -17,11 +17,9 @@ import java.util.*;
 public class CardHolder {
     private static CardHolder cardHolder;
     private ObservableList<Card> cards;
-    private String getCardsQry = String.format("SELECT cid,question,answer,nextRepetition,baseinterval,isdeleted FROM %s;","cards");
-
+    private String getCardsQry = String.format("SELECT cid,question,answer,nextRepetition,baseinterval,isdeleted,sid FROM %s;","cards");
     private final String[] cardTables = new String[] {"repetition_stats", "book-card", "card-tag", "cards"}; //right order do matter
     private final String[] revisingTables = new String[] {"cards", "repetition_stats"};
-
     private SimpleIntegerProperty cardSize;
 
 
@@ -38,7 +36,8 @@ public class CardHolder {
                         .setAnswer(resultSet.getString(3))
                         .setBaseInterval(resultSet.getFloat(5))
                         .setNextDate(resultSet.getTimestamp(4))
-                        .setDeleted(resultSet.getBoolean(6));
+                        .setDeleted(resultSet.getBoolean(6))
+                        .setStatus(resultSet.getInt(7));
 
                 card.setBook(getReferencedBook(card));
                 cardArrayList.add(card);
@@ -93,11 +92,13 @@ public class CardHolder {
             MyUtils.executeQuery(String.format(Locale.ROOT,"DELETE FROM `%s` WHERE cid='%d';",table,card.getId()));
         }
 
+        cards.remove(card);
         return this;
     }
 
     public CardHolder removeCard(Card card){
         MyUtils.executeQuery(String.format(Locale.ROOT,"UPDATE `cards` SET isdeleted =`1` WHERE cid='%d';",card.getId()));
+        card.setDeleted(true);
         return this;
     }
     public CardHolder updateCard(Card card){

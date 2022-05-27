@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+// TODO: 25.05.2022 if card was deleted then need to delete all the reference on it; 
+
 public class CardWindowController implements Initializable {
     @FXML private ListView<String> listview;
     @FXML private BorderPane borderPane;
@@ -61,7 +63,7 @@ public class CardWindowController implements Initializable {
         cardSize = CardHolder.getInstance().getCardSizeProperty();
 
         cards.addListener((ListChangeListener<Card>) c -> {
-            System.out.println("The amount of cards changed");
+            //System.out.println("The amount of cards changed");
             while (c.next()){
                 if (c.wasAdded()){
 
@@ -129,7 +131,7 @@ public class CardWindowController implements Initializable {
 
     public void openCardEditorDialog(Card card, StackPane parent){
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(MainWindow.class.getResource("CreateEditCardWindow.fxml"));
+        fxmlLoader.setLocation(MainWindow.class.getResource("dialogsView/CreateEditCardWindow.fxml"));
         //Doing some stuff with controller....
 
         try {
@@ -152,6 +154,9 @@ public class CardWindowController implements Initializable {
                 StringBuilder sb2 = new StringBuilder(card.getQuestion());
                 if (sb.indexOf("head") == -1 || sb.indexOf("body") == -1 || sb2.indexOf("head") == -1 || sb2.indexOf("body") == -1) return; //if data wasnt get from html
                 if (q.equals(card.getQuestion()) && a.equals(card.getAnswer())) return; //default cards are not saves
+
+                card.setQuestion(controller.getQuestion());
+                card.setAnswer(controller.getAnswer());
 
                 try {
                     ((CardItemController)parent.getUserData()).setData(card);
